@@ -1,20 +1,29 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './src/screens/HomeScreen';
-import LoginScreen from './src/screens/LoginScreen';
-import SignupScreen from './src/screens/SignupScreen';
+
+// Screens
+import {
+  FreeWriteScreen,
+  ChallengeScreen,
+  CreateStoryScreen,
+  AlbumsScreen,
+  FriendsScreen
+} from './src/screens/initialscreens';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Navigator initialRouteName="FreeWrite" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="FreeWrite" component={FreeWriteScreen} />
+        <Stack.Screen name="Challenge" component={ChallengeScreen} />
+        <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
+        <Stack.Screen name="Albums" component={AlbumsScreen} />
+        <Stack.Screen name="Friends" component={FriendsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
