@@ -9,10 +9,13 @@ import {
   FriendsScreen,
 } from './src/screens/initialscreens';
 
+import HomeIcon from './src/components/testicons/HomeIcon';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+    <>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="FreeWrite" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="FreeWrite" component={FreeWriteScreen} />
@@ -22,6 +25,8 @@ export default function App() {
         <Stack.Screen name="Friends" component={FriendsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
+    <div> HELLO </div>
+    </>
   );
 }
 
