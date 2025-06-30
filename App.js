@@ -1,29 +1,20 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-// Screens
-import {
-  FreeWriteScreen,
-  ChallengeScreen,
-  CreateStoryScreen,
-  AlbumsScreen,
-  FriendsScreen
-} from './src/screens/initialscreens';
-
-const Stack = createNativeStackNavigator();
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="FreeWrite" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="FreeWrite" component={FreeWriteScreen} />
-        <Stack.Screen name="Challenge" component={ChallengeScreen} />
-        <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
-        <Stack.Screen name="Albums" component={AlbumsScreen} />
-        <Stack.Screen name="Friends" component={FriendsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={styles.container}>
+      <Text>Open up App.js to start working on your app!</Text>
+      <StatusBar style="auto" />
+    </View>
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
