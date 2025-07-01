@@ -42,8 +42,9 @@ const TileWithFoldedCorner = () => {
     let shadow2_transformValue = `translate(${shadow2_X},${shadow2_Y})`
 
     return (
-        <View style={{ width: tileWidth, height: tileHeight, marginVertical: margin }}>
+        <View style={{ width: tileWidth, height: tileHeight, marginVertical: margin, position: 'relative' }}>
 
+            {/*layer 1 - File */}
             <Svg
 
                 viewBox={viewBoxValue}
@@ -66,6 +67,24 @@ const TileWithFoldedCorner = () => {
                     fill="#FFF4E2"
                     d="M314 0a6 6 0 0 1 6 6v90.433L289.151 126H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6h308Z"
                 />
+
+            </Svg>
+
+
+            {/*layer 3 - corner curl */}
+            <Svg
+
+                viewBox={viewBoxValue}
+                width="100%"
+                height="100%"
+                fill="none"
+                preserveAspectRatio="none"
+                style={{
+                    position: "absolute", // <--- THIS makes it overlay
+                    top: 0,
+                    left: 0,
+                }}
+            >
 
                 <Path
                     transform="translate(285,96)"
