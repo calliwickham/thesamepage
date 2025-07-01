@@ -1,13 +1,12 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
-const TileWithFoldedCorner = (props) => (
+const TileWithFoldedCorner = () => (
     <Svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewbox = "0 0 324 132"
+        
+        viewBox = "0 0 324 132"
         width= "100%"
         height= "100%"
         fill="none"
-        {...props}
     >
         <Path
             fill="rgba(0, 0, 0, 0.04)"

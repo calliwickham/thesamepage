@@ -1,26 +1,26 @@
-
+import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import TileWithFoldedCorner from '../components/testicons/TileWithFoldedCorner.js';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+
+import { Dimensions } from 'react-native';
+
+
 
 export default function GenericAlbumPage() {
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <TileWithFoldedCorner/>
-        <TileWithFoldedCorner/>
-        <TileWithFoldedCorner/>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
 
-const styles = StyleSheet.create({
-    safeArea: {
-        flex: 1,
-        backgroundColor: 'white',
-    },
-    scrollContainer: {
-        alignItems: 'center',
-        paddingVertical: 24,
-    }
-})
+    const screenWidth = Dimensions.get('window').width;
+    const tileWidth = screenWidth * 0.9;
+    const tileHeight = tileWidth * (132 / 324); // maintain the original aspect ratio
+
+    return (
+        <SafeAreaView style={{ flex: 1 }}>
+            <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+                <View style={{ width: tileWidth, height: tileHeight, marginVertical: 12}}>
+                    <TileWithFoldedCorner />
+                </View>
+                <View style={{ width: tileWidth, height: tileHeight, marginVertical: 12}}>
+                    <TileWithFoldedCorner />
+                </View>
+            </ScrollView>
+        </SafeAreaView>
+    );
+}
