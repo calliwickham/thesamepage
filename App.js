@@ -1,5 +1,5 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+
+/*import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   FreeWriteScreen,
@@ -24,4 +24,18 @@ export default function App() {
     </NavigationContainer>
   );
 }
+*/
 
+//App.js test file, use to view Generic Album Page Component
+import { View } from 'react-native';
+
+import GenericAlbumPage from './src/screens/GenericAlbumTest.js'
+
+
+export default function App() {
+  return (
+    <View style={{ flex: 1 , backgroundColor: 'white'}}>
+        <GenericAlbumPage/>
+    </View>
+  );
+}
