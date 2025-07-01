@@ -31,10 +31,13 @@ const TileWithFoldedCorner = () => {
     //calculate size of svg
     const screenWidth = Dimensions.get('window').width;
     const tileWidth = screenWidth * percentage;
-    const tileHeight = tileWidth * (svgHeight / svgWidth); // maintain the original aspect ratio
+    let tileHeight = tileWidth * (svgHeight / svgWidth); // maintain the original aspect ratio
+
+    //stretch tile for fun:
+    tileHeight += 40;
 
     //svg interpolated strings
-    let viewBoxValue = `0 0 ${tileWidth} ${tileHeight}`
+    let viewBoxValue = `0 0 ${svgWidth} ${svgHeight}`
     let shadow1_transformValue = `translate(${shadow1_X},${shadow1_Y})`
     let shadow2_transformValue = `translate(${shadow2_X},${shadow2_Y})`
 
@@ -47,6 +50,7 @@ const TileWithFoldedCorner = () => {
                 width="100%"
                 height="100%"
                 fill="none"
+                preserveAspectRatio="none"
             >
                 <Path
                     fill="rgba(0, 0, 0, 0.04)"
