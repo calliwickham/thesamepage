@@ -1,9 +1,9 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
-import { Dimensions, View } from "react-native"
+import { Dimensions, View, Text } from "react-native"
 
 
-const TileWithFoldedCorner = () => {
+const TileWithFoldedCorner = ({children}) => {
 
     /*original svg imported is 320 x 126
       calculations are for shadows and padding of box ONLY, 
@@ -69,6 +69,21 @@ const TileWithFoldedCorner = () => {
                 />
 
             </Svg>
+
+            {/* Layer 2: Content */}
+            <View
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                }}
+            >
+                {children}
+            </View>
 
 
             {/*layer 3 - corner curl */}
