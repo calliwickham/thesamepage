@@ -1,12 +1,8 @@
 import { SafeAreaView, ScrollView, StyleSheet, View, Text, Image } from 'react-native';
-import TileWithFoldedCorner from '../components/testicons/TileWithFoldedCorner.js';
-
-
+import TileWithFoldedCorner from '../newcomps/TileWithFoldedCorner.js';
 
 
 export default function GenericAlbumPage() {
-
-
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
