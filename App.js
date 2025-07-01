@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 
 import Header from './src/newcomps/Header';
-import SettingsIcon from './src/newcomps/SettingsIcon'; // adjust path if needed
+import Footer from './src/newcomps/Footer';
 
 import {
   FreeWriteScreen,
@@ -33,21 +33,21 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Header />
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="FreeWrite"
-          screenOptions={{ headerShown: false }}
-        >
-          <Stack.Screen name="FreeWrite" component={FreeWriteScreen} />
-          <Stack.Screen name="Challenge" component={ChallengeScreen} />
-          <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
-          <Stack.Screen name="Albums" component={AlbumsScreen} />
-          <Stack.Screen name="Friends" component={FriendsScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-      <View style={styles.settingsIcon}>
-        <SettingsIcon width={39} height={39} />
+      <View style={styles.content}>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="FreeWrite"
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name="FreeWrite" component={FreeWriteScreen} />
+            <Stack.Screen name="Challenge" component={ChallengeScreen} />
+            <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
+            <Stack.Screen name="Albums" component={AlbumsScreen} />
+            <Stack.Screen name="Friends" component={FriendsScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
       </View>
+      <Footer />
     </View>
   );
 }
@@ -62,9 +62,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  settingsIcon: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
+  content: {
+    flex: 1,
+    marginBottom: 72, // Reserve space for the footer height
   },
 });
