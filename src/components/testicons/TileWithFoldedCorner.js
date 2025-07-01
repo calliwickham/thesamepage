@@ -2,8 +2,15 @@ import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 import { Dimensions, View, Text } from "react-native"
 
-
-const TileWithFoldedCorner = ({children}) => {
+/**
+ * @param {children} the content between the Component that will be rendered as it's own min-page on the tile, anchored to the top of the file vector image.
+ * @param {children} need to be scaled externally. Children are rendered in a View anchored to the top center of the vector, scaling children will avoid corner below
+ * @param {verticalStretch} a percentage (i.e. 1.1 or 0.9), stretches the component vertically. Also can work as shrink if < 1.
+ * @param {shrink} a percentage <= 1, will make tile smaller and preserve aspect ratio.
+ * @param {margin} in pixels, adds margin above and below the TileWithFoldedCorner, so if multiple TileWithFoldedCorners are rendered in a column, they'll have spacing between them.
+ * verticalStretch
+ */
+const TileWithFoldedCorner = ({children, verticalStretch, shrink, margin}) => {
 
     /*original svg imported is 320 x 126
       calculations are for shadows and padding of box ONLY, 
@@ -24,17 +31,23 @@ const TileWithFoldedCorner = ({children}) => {
     svgHeight += shadow2_Y;
 
     //percentage is the width of the component compared to the original screen
-    let percentage = 0.9;
+    if (shrink == undefined){
+        shrink = 1;
+    }
     //margin is the top-bottom padding between each tile
-    let margin = 12;
+    if (margin == undefined){
+        margin = 0;
+    }
 
     //calculate size of svg
     const screenWidth = Dimensions.get('window').width;
-    const tileWidth = screenWidth * percentage;
+    const tileWidth = screenWidth * shrink;
     let tileHeight = tileWidth * (svgHeight / svgWidth); // maintain the original aspect ratio
 
     //stretch tile for fun:
-    tileHeight += 40;
+    if (verticalStretch != undefined){
+        tileHeight *= verticalStretch;
+    }
 
     //svg interpolated strings
     let viewBoxValue = `0 0 ${svgWidth} ${svgHeight}`
@@ -102,7 +115,7 @@ const TileWithFoldedCorner = ({children}) => {
             >
 
                 <Path
-                    transform="translate(285,96)"
+                    transform="translate(286,97)"
                     fill="#FFF4E2"
                     stroke="#FFD427"
                     d="M2.03 8.47C8.523 12.424 11.306 19.894 3.422 30l15.304-14.5L34.03 1l-32 7.47Z"
