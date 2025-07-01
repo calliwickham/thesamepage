@@ -10,6 +10,7 @@ import {
 } from './src/screens/initialscreens';
 import { View, Text } from 'react-native';
 import HomeIcon from './src/components/testicons/HomeIcon';
+import AlbumsIcon from './src/components/testicons/AlbumsIcon';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,9 +26,10 @@ export default function App() {
             <Stack.Screen name="Friends" component={FriendsScreen} />
             </Stack.Navigator>
         </NavigationContainer>
-        <View style={{ position: 'absolute', bottom: 20, left: 20 }}>
+        <View style={{ position: 'absolute', bottom: 30, left: 30 }}>
             <Text>Hello</Text>
-            <HomeIcon width={30} height={30} />
+            <HomeIcon width={29} height={31} />
+            <AlbumsIcon width={35} height={31} />
       </View>
     </View>
   );
