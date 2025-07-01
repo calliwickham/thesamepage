@@ -12,6 +12,11 @@ export default function GenericAlbumPage() {
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
                 <TileWithFoldedCorner>
+                    <View style={{flex: 1, justifyContent: 'center'}}>
+                        <Text> Hello World!</Text>
+                    </View>
+                </TileWithFoldedCorner>
+                <TileWithFoldedCorner>
                     <Image
                         source={{ uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Kot_Leon.JPG/1280px-Kot_Leon.JPG" }}
                         style={{
@@ -26,3 +31,4 @@ export default function GenericAlbumPage() {
         </SafeAreaView>
     );
 }
+
