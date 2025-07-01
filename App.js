@@ -8,25 +8,28 @@ import {
   AlbumsScreen,
   FriendsScreen,
 } from './src/screens/initialscreens';
-
+import { View, Text } from 'react-native';
 import HomeIcon from './src/components/testicons/HomeIcon';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <>
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="FreeWrite" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="FreeWrite" component={FreeWriteScreen} />
-        <Stack.Screen name="Challenge" component={ChallengeScreen} />
-        <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
-        <Stack.Screen name="Albums" component={AlbumsScreen} />
-        <Stack.Screen name="Friends" component={FriendsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-    <div> HELLO </div>
-    </>
+    <View style={{ flex: 1 }}>
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="FreeWrite" screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="FreeWrite" component={FreeWriteScreen} />
+            <Stack.Screen name="Challenge" component={ChallengeScreen} />
+            <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
+            <Stack.Screen name="Albums" component={AlbumsScreen} />
+            <Stack.Screen name="Friends" component={FriendsScreen} />
+            </Stack.Navigator>
+        </NavigationContainer>
+        <View style={{ position: 'absolute', bottom: 20, left: 20 }}>
+            <Text>Hello</Text>
+            <HomeIcon width={30} height={30} />
+      </View>
+    </View>
   );
 }
 
