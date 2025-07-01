@@ -1,59 +1,37 @@
-import React from 'react';
-import { View, StyleSheet, Dimensions, Text } from 'react-native';
-
-export default function TileWithFoldedCorner({ children }) {
-  const screenWidth = Dimensions.get('window').width;
-  const tileWidth = screenWidth * 0.9; // 90% of screen width
-  const tileHeight = tileWidth * 0.6;  // proportionally scaled
-
-  return (
-    <View style={styles.container}>
-      <View style={[styles.tile, { width: tileWidth, height: tileHeight }]}>
-        <Text style={styles.text}>{ children }</Text>
-        {/* Peeled corner */}
-        <View
-          style={[
-            styles.corner,
-            {
-              borderLeftWidth: tileWidth * 0.15,
-              borderTopWidth: tileHeight * 0.15,
-            },
-          ]}
+import * as React from "react"
+import Svg, { Path } from "react-native-svg"
+const TileWithFoldedCorner = (props) => (
+    <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox = "0 0 324 132"
+        width= "100%"
+        height= "100%"
+        fill="none"
+        {...props}
+    >
+        <Path
+            fill="rgba(0, 0, 0, 0.04)"
+            transform="translate(2,3)"
+            d="M314 0a6 6 0 0 1 6 6v90.433L289.151 126H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6h308Z"
         />
-      </View>
-    </View>
-  );
-}
+        <Path
+            fill="rgba(0,0,0,0.02)"
+            transform="translate(4,6)"
+            d="M314 0a6 6 0 0 1 6 6v90.433L289.151 126H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6h308Z"
+        />
+        <Path
+            fill="#FFF4E2"
+            d="M314 0a6 6 0 0 1 6 6v90.433L289.151 126H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6h308Z"
+        />
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tile: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    elevation: 3, // Android shadow
-    shadowColor: '#000', // iOS shadow
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    position: 'relative',
-  },
-  text: {
-    margin: 16,
-    fontSize: 16,
-  },
-  corner: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 0,
-    height: 0,
-    backgroundColor: 'transparent',
-    borderStyle: 'solid',
-    borderLeftColor: 'transparent',
-    borderTopColor: '#eee', // The "peeled" color
-  },
-});
+        <Path
+            transform="translate(285,96)"
+            fill="#FFF4E2"
+            stroke="#FFD427"
+            d="M2.03 8.47C8.523 12.424 11.306 19.894 3.422 30l15.304-14.5L34.03 1l-32 7.47Z"
+        />
+
+    </Svg>
+)
+export default TileWithFoldedCorner
+
