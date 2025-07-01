@@ -1,7 +1,11 @@
 import React from 'react';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, StyleSheet } from 'react-native';
+import { useFonts } from 'expo-font';
+
+import Header from './src/newcomps/Header';
+import SettingsIcon from './src/newcomps/SettingsIcon'; // adjust path if needed
 
 import {
   FreeWriteScreen,
@@ -11,70 +15,56 @@ import {
   FriendsScreen,
 } from './src/screens/initialscreens';
 
-import Logo from './src/newcomps/Logo';
-
 const Stack = createNativeStackNavigator();
 
-// Wraps any screen with the floating top-right logo
-const ScreenWrapper = ({ children }) => (
-  <View style={{ flex: 1 }}>
-    <View style={styles.logoContainer}>
-      <Logo width={40} height={40} />
-    </View>
-    {children}
-  </View>
-);
-
-// Wrap each screen to include the logo
-const FreeWriteWithLogo = () => (
-  <ScreenWrapper>
-    <FreeWriteScreen />
-  </ScreenWrapper>
-);
-
-const ChallengeWithLogo = () => (
-  <ScreenWrapper>
-    <ChallengeScreen />
-  </ScreenWrapper>
-);
-
-const CreateStoryWithLogo = () => (
-  <ScreenWrapper>
-    <CreateStoryScreen />
-  </ScreenWrapper>
-);
-
-const AlbumsWithLogo = () => (
-  <ScreenWrapper>
-    <AlbumsScreen />
-  </ScreenWrapper>
-);
-
-const FriendsWithLogo = () => (
-  <ScreenWrapper>
-    <FriendsScreen />
-  </ScreenWrapper>
-);
-
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Italianno: require('./assets/fonts/Italianno-Regular.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color="#BB77FF" />
+      </View>
+    );
+  }
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="FreeWrite" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="FreeWrite" component={FreeWriteWithLogo} />
-        <Stack.Screen name="Challenge" component={ChallengeWithLogo} />
-        <Stack.Screen name="CreateStory" component={CreateStoryWithLogo} />
-        <Stack.Screen name="Albums" component={AlbumsWithLogo} />
-        <Stack.Screen name="Friends" component={FriendsWithLogo} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={styles.container}>
+      <Header />
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="FreeWrite"
+          screenOptions={{ headerShown: false }}
+        >
+          <Stack.Screen name="FreeWrite" component={FreeWriteScreen} />
+          <Stack.Screen name="Challenge" component={ChallengeScreen} />
+          <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
+          <Stack.Screen name="Albums" component={AlbumsScreen} />
+          <Stack.Screen name="Friends" component={FriendsScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+      <View style={styles.settingsIcon}>
+        <SettingsIcon width={39} height={39} />
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  logoContainer: {
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFDF9',
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  settingsIcon: {
     position: 'absolute',
-    top: 40,
+    bottom: 20,
     right: 20,
-    zIndex: 1000,
   },
 });
