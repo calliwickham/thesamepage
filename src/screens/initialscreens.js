@@ -7,7 +7,9 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, FlatList } 
 // ------------------------------
 // 1. Free Write Screen
 // ------------------------------
-import SearchBox from '../newcomps/SearchBox'; // adjust path if needed
+import LargeTextBox from '../newcomps/LargeTextBox'; // adjust path if needed
+import SmallTextBox from '../newcomps/SmallTextBox';
+import SearchBox from '../newcomps/SearchBox';
 
 export function FreeWriteScreen() {
   const [text, setText] = useState('');
@@ -17,11 +19,15 @@ export function FreeWriteScreen() {
 
   return (
     <View className="flex-1 bg-white px-4 pt-10">
-      {/* Replace native TextInput with SmallTextBox */}
-      <View style={{ marginBottom: 16, marginTop: 10 }}>
-        <SearchBox
-          placeholder="Title (optional)"
-        />
+      {/* Title Input */}
+      <View style={{ marginBottom: 10, marginTop: 10 }}>
+        <LargeTextBox placeholder="Insert Text Here" />
+      </View>
+      <View style={{ marginBottom: 10, marginTop: 10 }}>
+        <SmallTextBox placeholder="Insert Text Here" />
+      </View>
+      <View style={{ marginBottom: 10, marginTop: 10 }}>
+        <SearchBox placeholder="Search Here..." />
       </View>
 
       <ScrollView className="flex-1 mb-4">
