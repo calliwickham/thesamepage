@@ -7,6 +7,8 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, FlatList } 
 // ------------------------------
 // 1. Free Write Screen
 // ------------------------------
+import SearchBox from '../newcomps/SearchBox'; // adjust path if needed
+
 export function FreeWriteScreen() {
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
@@ -15,12 +17,13 @@ export function FreeWriteScreen() {
 
   return (
     <View className="flex-1 bg-white px-4 pt-10">
-      <TextInput
-        placeholder="Title (optional)"
-        value={title}
-        onChangeText={setTitle}
-        className="text-xl font-semibold border-b border-gray-300 mb-4"
-      />
+      {/* Replace native TextInput with SmallTextBox */}
+      <View style={{ marginBottom: 16, marginTop: 10 }}>
+        <SearchBox
+          placeholder="Title (optional)"
+        />
+      </View>
+
       <ScrollView className="flex-1 mb-4">
         <TextInput
           multiline
@@ -30,6 +33,7 @@ export function FreeWriteScreen() {
           className="text-base h-[300px] text-gray-800"
         />
       </ScrollView>
+
       {inspireVisible && (
         <View className="bg-yellow-100 p-4 rounded-xl mb-4">
           <Text className="text-sm text-gray-700 mb-2">Use these words for inspiration:</Text>
@@ -40,6 +44,7 @@ export function FreeWriteScreen() {
           </View>
         </View>
       )}
+
       <View className="flex-row justify-between items-center">
         <TouchableOpacity
           onPress={() => setInspireVisible(!inspireVisible)}
@@ -63,8 +68,7 @@ export function FreeWriteScreen() {
         </View>
       </View>
     </View>
-  );
-}
+  );}
 
 // ------------------------------
 // 2. Daily Challenge Screen
