@@ -2,7 +2,7 @@ import { SafeAreaView, ScrollView, StyleSheet, View, Text, Image } from 'react-n
 import TileWithFoldedCorner from '../newcomps/TileWithFoldedCorner.js';
 
 
-export default function GenericAlbumPage() {
+export default function GenericAlbumPage({navigation}) {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
