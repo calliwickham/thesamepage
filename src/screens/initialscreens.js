@@ -10,6 +10,7 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, FlatList } 
 import LargeTextBox from '../newcomps/LargeTextBox'; // adjust path if needed
 import SmallTextBox from '../newcomps/SmallTextBox';
 import SearchBox from '../newcomps/SearchBox';
+import YellowButton from '../newcomps/YellowButton';
 
 export function FreeWriteScreen() {
   const [text, setText] = useState('');
@@ -29,6 +30,9 @@ export function FreeWriteScreen() {
       <View style={{ marginBottom: 10, marginTop: 10 }}>
         <SearchBox placeholder="Search Here..." />
       </View>
+      <YellowButton onPress={() => alert('Pressed!')}>
+      <Text style={{ position: 'absolute', fontWeight: 'bold' }}>Click Me</Text>
+      </YellowButton>
 
       <ScrollView className="flex-1 mb-4">
         <TextInput

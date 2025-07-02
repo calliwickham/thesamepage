@@ -23,6 +23,7 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     Italianno: require('./assets/fonts/Italianno-Regular.ttf'),
     'CrimsonText-Regular': require('./assets/fonts/CrimsonText-Regular.ttf'),
+    'CrimsonText-SemiBold': require('./assets/fonts/CrimsonText-SemiBold.ttf'),
   });
 
     if (!fontsLoaded) {
