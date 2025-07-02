@@ -12,6 +12,7 @@ import SmallTextBox from '../newcomps/SmallTextBox';
 import SearchBox from '../newcomps/SearchBox';
 import YellowButton from '../newcomps/YellowButton';
 import GreenButton from '../newcomps/GreenButton';
+import WordCard from '../newcomps/WordCard';
 
 export function FreeWriteScreen() {
   const [text, setText] = useState('');
@@ -37,6 +38,9 @@ export function FreeWriteScreen() {
       <GreenButton onPress={() => alert('Pressed!')}>
       <Text style={{ position: 'absolute', fontWeight: 'bold' }}>Click Me</Text>
       </GreenButton>
+      <View style={{ marginBottom: 10, marginTop: 10 }}>
+        <WordCard placeholder="Word Card Example" />
+      </View>
 
       <ScrollView className="flex-1 mb-4">
         <TextInput
