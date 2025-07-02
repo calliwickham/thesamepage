@@ -7,7 +7,7 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, FlatList } 
 // ------------------------------
 // 1. Free Write Screen
 // ------------------------------
-import LargeTextBox from '../newcomps/LargeTextBox'; // adjust path if needed
+import X from '../newcomps/X'; // adjust path if needed
 import SmallTextBox from '../newcomps/SmallTextBox';
 import SearchBox from '../newcomps/SearchBox';
 import YellowButton from '../newcomps/YellowButton';
@@ -24,7 +24,7 @@ export function FreeWriteScreen() {
     <View className="flex-1 bg-white px-4 pt-10">
       {/* Title Input */}
       <View style={{ marginBottom: 10, marginTop: 10 }}>
-        <LargeTextBox placeholder="Insert Text Here" />
+        <X placeholder="Insert Text Here" />
       </View>
       <View style={{ marginBottom: 10, marginTop: 10 }}>
         <SmallTextBox placeholder="Insert Text Here" />
