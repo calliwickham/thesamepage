@@ -11,7 +11,7 @@ const Footer = () => {
     const navigation = useNavigation();
     return (
         <View style={styles.footer}>
-            <TouchableOpacity onPress={() => navigation.navigate('FreeWrite')}>
+            <TouchableOpacity onPress={() => navigation.navigate('OnlineHomepage')}>
                 <HomeIcon width={36} height={34} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Albums')}>
@@ -20,7 +20,7 @@ const Footer = () => {
             <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
                 <FriendsIcon width={41} height={42} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => console.log('Settings clicked')}>
+            <TouchableOpacity onPress={() => navigation.navigate('OfflineHomepage')}>
                 <SettingsIcon width={39} height={39} />
             </TouchableOpacity>
         </View>

@@ -16,6 +16,8 @@ import {
     FriendsScreen,
 } from './src/screens/initialscreens';
 import GenericAlbumPage from './src/screens/GenericAlbumTest';
+import OnlineHomepage from './src/screens/OnlineHomepage';
+import OfflineHomepage from './src/screens/OfflineHomepage';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,9 +43,11 @@ export default function App() {
                 <Header />
                 <View style={styles.content}>
                     <Stack.Navigator
-                        initialRouteName="FreeWrite"
+                        initialRouteName="OnlineHomepage"
                         screenOptions={{ headerShown: false }}
                     >
+                        <Stack.Screen name="OnlineHomepage" component={OnlineHomepage} />
+                        <Stack.Screen name="OfflineHomepage" component={OfflineHomepage} />
                         <Stack.Screen name="FreeWrite" component={FreeWriteScreen} />
                         <Stack.Screen name="Challenge" component={ChallengeScreen} />
                         <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
