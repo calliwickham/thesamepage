@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, FlatList } from 'react-native';
 
 // ------------------------------
-// 1. Free Write Screen
+// 1. Component tester (TRASH AFTER SEEING ALL COMPONENTS)
 // ------------------------------
 import X from '../newcomps/X'; // adjust path if needed
 import SmallTextBox from '../newcomps/SmallTextBox';
@@ -13,6 +13,19 @@ import SearchBox from '../newcomps/SearchBox';
 import YellowButton from '../newcomps/YellowButton';
 import GreenButton from '../newcomps/GreenButton';
 import WordCard from '../newcomps/WordCard';
+import ClearButton from '../newcomps/ClearButton';
+import SaveIcon from '../newcomps/SaveIcon';
+import FriendlyNotif from '../newcomps/FriendlyNotif';
+import RedNotif from '../newcomps/RedNotif';
+import InProgressIcon from '../newcomps/InProgressIcon';
+import CheckBoxIcon from '../newcomps/CheckBoxIcon';
+import Bookmark from '../newcomps/Bookmark';
+import EmptyBookmark from '../newcomps/EmptyBookmark';
+import ThreeDots from '../newcomps/ThreeDots';
+import NavArrow from '../newcomps/NavArrow';
+import Hourglass from '../newcomps/Hourglass';
+import Add from '../newcomps/Add';
+import InfoIcon from '../newcomps/InfoIcon';
 
 export function FreeWriteScreen() {
   const [text, setText] = useState('');
@@ -21,71 +34,84 @@ export function FreeWriteScreen() {
   const inspireWords = ['remedy', 'technology', 'uniform'];
 
   return (
-    <View className="flex-1 bg-white px-4 pt-10">
-      {/* Title Input */}
-      <View style={{ marginBottom: 10, marginTop: 10 }}>
-        <X placeholder="Insert Text Here" />
-      </View>
-      <View style={{ marginBottom: 10, marginTop: 10 }}>
-        <SmallTextBox placeholder="Insert Text Here" />
-      </View>
-      <View style={{ marginBottom: 10, marginTop: 10 }}>
-        <SearchBox placeholder="Search Here..." />
-      </View>
-      <YellowButton onPress={() => alert('Pressed!')}>
+  <ScrollView className="flex-1 bg-white px-4 pt-10">
+    {/* Title Input */}
+    <View style={{ marginBottom: 10, marginTop: 10 }}>
+      <X placeholder="Insert Text Here" />
+    </View>
+    <View style={{ marginBottom: 10, marginTop: 10 }}>
+      <SmallTextBox placeholder="Insert Text Here" />
+    </View>
+    <View style={{ marginBottom: 10, marginTop: 10 }}>
+      <SearchBox placeholder="Search Here..." />
+    </View>
+    <YellowButton onPress={() => alert('Pressed!')}>
       <Text style={{ position: 'absolute', fontWeight: 'bold' }}>Click Me</Text>
-      </YellowButton>
-      <GreenButton onPress={() => alert('Pressed!')}>
+    </YellowButton>
+    <GreenButton onPress={() => alert('Pressed!')}>
       <Text style={{ position: 'absolute', fontWeight: 'bold' }}>Click Me</Text>
-      </GreenButton>
-      <View style={{ marginBottom: 10, marginTop: 10 }}>
-        <WordCard placeholder="Word Card Example" />
-      </View>
+    </GreenButton>
+    <View style={{ marginBottom: 10, marginTop: 10 }}>
+      <WordCard placeholder="Word Card Example" />
+    </View>
+    <View style={{ marginBottom: 10, marginTop: 10 }}>
+      <ClearButton />
+    </View>
+    <SaveIcon />
+    <FriendlyNotif />
+    <RedNotif />
+    <InProgressIcon />
+    <CheckBoxIcon />
+    <Bookmark />
+    <EmptyBookmark />
+    <ThreeDots />
+    <NavArrow />
+    <Hourglass />
+    <Add />
+    <InfoIcon />
 
-      <ScrollView className="flex-1 mb-4">
-        <TextInput
-          multiline
-          placeholder="Write your story here..."
-          value={text}
-          onChangeText={setText}
-          className="text-base h-[300px] text-gray-800"
-        />
-      </ScrollView>
+    <TextInput
+      multiline
+      placeholder="Write your story here..."
+      value={text}
+      onChangeText={setText}
+      className="text-base h-[300px] text-gray-800"
+    />
 
-      {inspireVisible && (
-        <View className="bg-yellow-100 p-4 rounded-xl mb-4">
-          <Text className="text-sm text-gray-700 mb-2">Use these words for inspiration:</Text>
-          <View className="flex-row flex-wrap gap-2">
-            {inspireWords.map((word, i) => (
-              <Text key={i} className="bg-yellow-300 px-2 py-1 rounded-full text-sm text-gray-800">{word}</Text>
-            ))}
-          </View>
+    {inspireVisible && (
+      <View className="bg-yellow-100 p-4 rounded-xl mb-4">
+        <Text className="text-sm text-gray-700 mb-2">Use these words for inspiration:</Text>
+        <View className="flex-row flex-wrap gap-2">
+          {inspireWords.map((word, i) => (
+            <Text key={i} className="bg-yellow-300 px-2 py-1 rounded-full text-sm text-gray-800">{word}</Text>
+          ))}
         </View>
-      )}
+      </View>
+    )}
 
-      <View className="flex-row justify-between items-center">
+    <View className="flex-row justify-between items-center mb-10">
+      <TouchableOpacity
+        onPress={() => setInspireVisible(!inspireVisible)}
+        className="px-4 py-2 bg-yellow-400 rounded-full"
+      >
+        <Text className="text-white font-semibold text-sm">Inspire Me</Text>
+      </TouchableOpacity>
+      <View className="flex-row gap-2">
         <TouchableOpacity
-          onPress={() => setInspireVisible(!inspireVisible)}
-          className="px-4 py-2 bg-yellow-400 rounded-full"
+          className="px-4 py-2 border border-gray-300 rounded-full"
+          onPress={() => Alert.alert('Saved', 'Your story has been saved.')}
         >
-          <Text className="text-white font-semibold text-sm">Inspire Me</Text>
+          <Text className="text-sm">Save</Text>
         </TouchableOpacity>
-        <View className="flex-row gap-2">
-          <TouchableOpacity
-            className="px-4 py-2 border border-gray-300 rounded-full"
-            onPress={() => Alert.alert('Saved', 'Your story has been saved.')}
-          >
-            <Text className="text-sm">Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className="px-4 py-2 bg-green-600 rounded-full"
-            onPress={() => Alert.alert('Published', 'Your story is now published!')}
-          >
-            <Text className="text-white font-semibold text-sm">Publish</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          className="px-4 py-2 bg-green-600 rounded-full"
+          onPress={() => Alert.alert('Published', 'Your story is now published!')}
+        >
+          <Text className="text-white font-semibold text-sm">Publish</Text>
+        </TouchableOpacity>
       </View>
     </View>
+  </ScrollView>
   );}
 
 // ------------------------------

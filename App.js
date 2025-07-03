@@ -24,6 +24,7 @@ export default function App() {
     Italianno: require('./assets/fonts/Italianno-Regular.ttf'),
     'CrimsonText-Regular': require('./assets/fonts/CrimsonText-Regular.ttf'),
     'CrimsonText-SemiBold': require('./assets/fonts/CrimsonText-SemiBold.ttf'),
+    'CrimsonText-Bold': require('./assets/fonts/CrimsonText-Bold.ttf'),
   });
 
     if (!fontsLoaded) {
