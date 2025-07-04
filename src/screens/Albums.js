@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SearchBox from '../newcomps/SearchBox';
+import Button from '../newcomps/Button';
 
 const albumData = [
     { name: 'Collaborative Writing Album', borderColor: "#E4E4E4", color: '#E3EBDD', route: 'GenericAlbumPage' },
@@ -36,7 +37,6 @@ export default function Albums() {
                     <TouchableOpacity
                         key={index}
                         style={[styles.card, { backgroundColor: album.color }, { borderColor: album.borderColor }]}
-                        onPress={() => navigation.navigate(album.route)}
                         activeOpacity={0.8}
                     >
                         {/* Upper Section */}
@@ -55,7 +55,7 @@ export default function Albums() {
                                 </Text>
                             </View>
                             <View style={styles.rightPlaceholder}>
-                                {/* Button goes here later */}
+                                <Button style={{marginLeft: 10}} onPress={() => navigation.navigate(album.route)}>View Files</Button>
                             </View>
                         </View>
                     </TouchableOpacity>
