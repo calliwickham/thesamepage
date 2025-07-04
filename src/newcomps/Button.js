@@ -20,7 +20,7 @@ export default Button = ({ children, style, color, onPress }) => {
     else if (color == 'red') {
         buttonColorStyle = styles.red;
     }
-    else if (color == 'error'){
+    else if (color == 'error') {
         buttonColorStyle = styles.error;
         labelStyle = styles.errorLabel;
     }
@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.15,
         shadowRadius: 3,
-        elevation: 4
+        elevation: 4,
+        flexDirection: 'row'
     },
     yellow: {
         backgroundColor: '#FFD427'
