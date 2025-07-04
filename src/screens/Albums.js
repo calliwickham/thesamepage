@@ -12,15 +12,17 @@ import { useNavigation } from '@react-navigation/native';
 import SearchBox from '../newcomps/SearchBox';
 
 const albumData = [
-    { name: 'Collaborative Writing Album', color: '#E3EBDD', route: 'GenericAlbumPage' },
-    { name: 'Free Writing Album', color: '#FFF4E2', route: 'GenericAlbumPage' },
-    { name: 'Daily Challenge Album', color: '#E4E4E4', route: 'GenericAlbumPage' },
-    { name: 'Favorites', color: '#FFFFFF', route: 'GenericAlbumPage' },
-    { name: 'Trash', color: '#F8D7DA', route: 'GenericAlbumPage' },
+    { name: 'Collaborative Writing Album', borderColor: "#E4E4E4", color: '#E3EBDD', route: 'GenericAlbumPage' },
+    { name: 'Daily Challenge Album', borderColor: "#E4E4E4", color: '#FFF4E2', route: 'GenericAlbumPage' },
+    { name: 'Free Writing Album', borderColor: "#D9D9D9", color: '#E4E4E4', route: 'GenericAlbumPage' },
+    { name: 'Favorites', borderColor: "#E4E4E4", color: '#FFFFFF', route: 'GenericAlbumPage' },
+    { name: 'Trash', borderColor: "#E4E4E4", color: '#F8D7DA', route: 'GenericAlbumPage' },
 ];
 
 const screenWidth = Dimensions.get('window').width;
-const cardHeight = 180;
+const screenHeight = Dimensions.get('window').height;
+
+const cardHeight = screenHeight / 7;
 
 export default function Albums() {
     const navigation = useNavigation();
@@ -33,7 +35,7 @@ export default function Albums() {
                 {albumData.map((album, index) => (
                     <TouchableOpacity
                         key={index}
-                        style={[styles.card, { backgroundColor: album.color }]}
+                        style={[styles.card, { backgroundColor: album.color }, { borderColor: album.borderColor }]}
                         onPress={() => navigation.navigate(album.route)}
                         activeOpacity={0.8}
                     >
@@ -82,7 +84,10 @@ const styles = StyleSheet.create({
         height: cardHeight,
         borderRadius: 16,
         marginBottom: 20,
-        padding: 16,
+        padding: 8,
+        borderColor: '#E4E4E4',
+        borderStyle: 'solid',
+        borderWidth: 1,
         elevation: 4,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
