@@ -56,6 +56,7 @@ export default function App() {
                         <Stack.Screen name="Challenge" component={ChallengeScreen} />
                         <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
                         <Stack.Screen name="Albums" component={Albums} />
+                        <Stack.Screen name="GenericAlbumPage" component={GenericAlbumPage} />
                         <Stack.Screen name="Friends" component={FriendsScreen} />
                         <Stack.Screen name="Login" component={LoginScreen} />
                         <Stack.Screen name="CreateAccount1" component={CreateOnline1} />

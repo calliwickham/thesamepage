@@ -6,28 +6,37 @@ import {
     Text,
     View,
     Dimensions,
+    TouchableOpacity,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import SearchBox from '../newcomps/SearchBox';
 
 const albumData = [
-    { name: 'Collaborative Writing Album', color: '#E3EBDD' },
-    { name: 'Free Writing Album', color: '#FFF4E2' },
-    { name: 'Daily Challenge Album', color: '#E4E4E4' },
-    { name: 'Favorites', color: '#FFFFFF' },
-    { name: 'Trash', color: '#F8D7DA' }, // Soft red for trash
+    { name: 'Collaborative Writing Album', color: '#E3EBDD', route: 'GenericAlbumPage' },
+    { name: 'Free Writing Album', color: '#FFF4E2', route: 'GenericAlbumPage' },
+    { name: 'Daily Challenge Album', color: '#E4E4E4', route: 'GenericAlbumPage' },
+    { name: 'Favorites', color: '#FFFFFF', route: 'GenericAlbumPage' },
+    { name: 'Trash', color: '#F8D7DA', route: 'GenericAlbumPage' },
 ];
 
 const screenWidth = Dimensions.get('window').width;
 const cardHeight = 180;
 
 export default function Albums() {
+    const navigation = useNavigation();
+
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.header}>My Albums</Text>
             <SearchBox placeholder="Search for..." />
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 {albumData.map((album, index) => (
-                    <View key={index} style={[styles.card, { backgroundColor: album.color }]}>
+                    <TouchableOpacity
+                        key={index}
+                        style={[styles.card, { backgroundColor: album.color }]}
+                        onPress={() => navigation.navigate(album.route)}
+                        activeOpacity={0.8}
+                    >
                         {/* Upper Section */}
                         <View style={styles.upperSection}>
                             <Text style={styles.albumTitle}>{album.name}</Text>
@@ -47,7 +56,7 @@ export default function Albums() {
                                 {/* Button goes here later */}
                             </View>
                         </View>
-                    </View>
+                    </TouchableOpacity>
                 ))}
             </ScrollView>
         </SafeAreaView>
@@ -111,6 +120,5 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        // Placeholder for future button
     },
 });
