@@ -22,7 +22,7 @@ export default function OfflineHomepage() {
                     style={[styles.card, { backgroundColor: '#FFF1DC' }, styles.right]}
                     onPress={() => navigation.navigate('FreeWrite')}
                 >
-                    <View style={styles.circle}>
+                    <View style={[styles.circle, {borderColor: '#F8E6C7'}]}>
                         <CalendarIcon width={40} height={40} />
                     </View>
                     <View style={styles.textContainer}>
@@ -42,7 +42,7 @@ export default function OfflineHomepage() {
                     style={[styles.card, { backgroundColor: '#E4E4E4' }, styles.left]}
                     onPress={() => navigation.navigate('FreeWrite')}
                 >
-                    <View style={styles.circle}>
+                    <View style={[styles.circle, {borderColor: '#DDDDDD'}]}>
                         <SinglePage width={40} height={40} />
                     </View>
                     <View style={styles.textContainer}>
@@ -56,7 +56,7 @@ export default function OfflineHomepage() {
                     style={[styles.card, { backgroundColor: '#E9F0E6' }, styles.right]}
                     onPress={() => navigation.navigate('FreeWrite')}
                 >
-                    <View style={styles.circle}>
+                    <View style={[styles.circle, {borderColor: '#DBE9D4'} ]}>
                         <View style={{ transform: [{ translateX: -3 }, { translateY: -2 }] }}>
                             <Puzzle width={40} height={40} />
                         </View>
@@ -125,11 +125,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 16,
-        elevation: 4,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
+        borderColor: 'white',
+        borderWidth: 2,
+        borderStyle: 'solid',
+        //elevation: 4,
+        //shadowColor: '#000',
+        //shadowOffset: { width: 0, height: 2 },
+        //shadowOpacity: 0.2,
+        //shadowRadius: 4,
     },
     textContainer: {
         flex: 1,
