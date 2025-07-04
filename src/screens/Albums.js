@@ -69,22 +69,35 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-        paddingHorizontal: 16,
     },
     header: {
         fontSize: 32,
         fontFamily: 'Crimson Text',
         marginVertical: 16,
+        fontWeight: 'bold',
+        paddingLeft: '5%',
+        marginBottom: 0
     },
     scrollContainer: {
-        paddingBottom: 24,
+        paddingBottom: 0,
+        paddingLeft: '5%',
+        paddingRight: '5%'
+    },
+    searchBoxContainer: {
+        marginTop: 10,
+        marginBottom: 10,
+        paddingLeft: '5%',
+        paddingRight: '5%'
     },
     card: {
         width: '100%',
         height: cardHeight,
         borderRadius: 16,
         marginBottom: 20,
-        padding: 8,
+        paddingTop: 8,
+        paddingBottom: 8,
+        paddingLeft: 12,
+        paddingRight: 12,
         borderColor: '#E4E4E4',
         borderStyle: 'solid',
         borderWidth: 1,
