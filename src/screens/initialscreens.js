@@ -11,7 +11,6 @@ import X from '../newcomps/X'; // adjust path if needed
 import SmallTextBox from '../newcomps/SmallTextBox';
 import SearchBox from '../newcomps/SearchBox';
 import WordCard from '../newcomps/WordCard';
-import ClearButton from '../newcomps/ClearButton';
 import SaveIcon from '../newcomps/SaveIcon';
 import FriendlyNotif from '../newcomps/FriendlyNotif';
 import RedNotif from '../newcomps/RedNotif';
@@ -45,7 +44,13 @@ export function FreeWriteScreen() {
                 <WordCard placeholder="Word Card Example" />
             </View>
 
-            <Button style={{ marginLeft: 10 }} onPress={() => navigation.navigate(album.route)}>View Files</Button>
+            <View style={{ gap: 12, flexDirection: 'column', marginVertical: 10, alignItems: 'center'}}>
+                <Button style={{ marginLeft: 10 }} onPress={() => alert('Files Viewed!')}>Can align as you wish</Button>
+                <Button style={{alignSelf: 'flex-start'}} color="error" onPress={() => alert('cleared!')}>clear</Button>
+                <Button color="red" onPress={() => alert('Deleted Succesfully! (Not really, this is just a pretend alert)')}>Delete User</Button>
+                <Button icon={<CheckBoxIcon />} style={{ paddingVertical: 0, paddingTop: 2 }} onPress={() => alert('Voted!')}>Vote this Entry!</Button>
+                <Button color="green" onPress={() => alert('green')}>Green</Button>
+            </View>
 
             <SaveIcon />
             <FriendlyNotif />

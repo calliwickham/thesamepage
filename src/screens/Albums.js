@@ -11,6 +11,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import SearchBox from '../newcomps/SearchBox';
 import Button from '../newcomps/Button';
+import CheckBoxIcon from '../newcomps/CheckBoxIcon';
 
 const albumData = [
     { name: 'Collaborative Writing Album', borderColor: "#E4E4E4", color: '#E3EBDD', route: 'GenericAlbumPage' },
@@ -55,7 +56,7 @@ export default function Albums() {
                                 </Text>
                             </View>
                             <View style={styles.rightPlaceholder}>
-                                <Button style={{marginLeft: 10}} onPress={() => navigation.navigate(album.route)}>View Files</Button>
+                                <Button icon={<CheckBoxIcon/>} style={{marginLeft: 10, paddingVertical: 0}} onPress={() => navigation.navigate(album.route)}>View Files</Button>
                             </View>
                         </View>
                     </TouchableOpacity>
