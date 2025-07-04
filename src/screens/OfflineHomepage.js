@@ -135,7 +135,6 @@ export default function OfflineHomepage() {
                     title="Collaborative Mode"
                     text="Weave a story together with new friends"
                     position="right"
-                    inProgress
                     isBlurred
                 />
             </ScrollView>
@@ -144,11 +143,6 @@ export default function OfflineHomepage() {
 }
 
 const styles = StyleSheet.create({
-    debug: {
-        borderWidth: 2,
-        borderColor: '#0000FF',
-        borderStyle: 'solid',
-    },
     container: {
         flex: 1,
         backgroundColor: '#fff',
@@ -229,7 +223,7 @@ const styles = StyleSheet.create({
     },
     topRight: {
         position: 'absolute',
-        top: 8,
+        top: '-15%',
         right: 8,
     },
     bottomRight: {
@@ -238,15 +232,22 @@ const styles = StyleSheet.create({
         right: 8,
     },
     errorBox: {
+        borderColor: '#ff7270',
+        borderStyle: 'solid',
+        borderWidth: 1,
         position: 'absolute',
-        top: '50%',
-        left: '5%',
+        top: '55%',
+        left: '8%',
         right: '5%',
         backgroundColor: '#FFECEC',
         borderRadius: 12,
-        padding: 12,
+        padding: 8,
         transform: [{ translateY: -30 }],
         elevation: 3,
+        shadowColor: '#000', // iOS shadow
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
     },
     errorText: {
         color: '#F00',
