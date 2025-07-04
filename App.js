@@ -31,6 +31,7 @@ export default function App() {
     'CrimsonText-Regular': require('./assets/fonts/CrimsonText-Regular.ttf'),
     'CrimsonText-SemiBold': require('./assets/fonts/CrimsonText-SemiBold.ttf'),
     'CrimsonText-Bold': require('./assets/fonts/CrimsonText-Bold.ttf'),
+    'CrimsonText-Italic': require('./assets/fonts/CrimsonText-Italic.ttf'),
   });
 
     if (!fontsLoaded) {
