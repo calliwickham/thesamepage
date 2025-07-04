@@ -14,7 +14,8 @@ import {
     CreateStoryScreen,
     FriendsScreen,
 } from './src/screens/initialscreens';
-import GenericAlbumPage from './src/screens/GenericAlbumTest';
+import GenericAlbumDebug from './src/screens/GenericAlbumTest';
+import GenericAlbum from './src/screens/GenericAlbum';
 import Albums from './src/screens/Albums.js'
 import OnlineHomepage from './src/screens/OnlineHomepage';
 import OfflineHomepage from './src/screens/OfflineHomepage';
@@ -57,7 +58,8 @@ export default function App() {
                         <Stack.Screen name="CollaborativeLanding" component={OnlineHomepage} />
                         <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
                         <Stack.Screen name="Albums" component={Albums} />
-                        <Stack.Screen name="GenericAlbumPage" component={GenericAlbumPage} />
+                        <Stack.Screen name="GenericAlbumDebug" component={GenericAlbumDebug} />
+                        <Stack.Screen name="GenericAlbum" component={GenericAlbum} />
                         <Stack.Screen name="Friends" component={FriendsScreen} />
                         <Stack.Screen name="Login" component={LoginScreen} />
                         <Stack.Screen name="CreateAccount1" component={CreateOnline1} />

@@ -14,11 +14,11 @@ import Button from '../newcomps/Button';
 import CheckBoxIcon from '../newcomps/CheckBoxIcon';
 
 const albumData = [
-    { name: 'Collaborative Writing Album', borderColor: "#E4E4E4", color: '#E3EBDD', route: 'GenericAlbumPage' },
-    { name: 'Daily Challenge Album', borderColor: "#E4E4E4", color: '#FFF4E2', route: 'GenericAlbumPage' },
-    { name: 'Free Writing Album', borderColor: "#D9D9D9", color: '#E4E4E4', route: 'GenericAlbumPage' },
-    { name: 'Favorites', borderColor: "#E4E4E4", color: '#FFFFFF', route: 'GenericAlbumPage' },
-    { name: 'Trash', borderColor: "#E4E4E4", color: '#F8D7DA', route: 'GenericAlbumPage' },
+    { name: 'Collaborative Writing Album', borderColor: "#E4E4E4", color: '#E3EBDD', route: 'GenericAlbum' },
+    { name: 'Daily Challenge Album', borderColor: "#E4E4E4", color: '#FFF4E2', route: 'GenericAlbumDebug' },
+    { name: 'Free Writing Album', borderColor: "#D9D9D9", color: '#E4E4E4', route: 'GenericAlbumDebug' },
+    { name: 'Favorites', borderColor: "#E4E4E4", color: '#FFFFFF', route: 'GenericAlbumDebug' },
+    { name: 'Trash', borderColor: "#E4E4E4", color: '#F8D7DA', route: 'GenericAlbumDebug' },
 ];
 
 const screenWidth = Dimensions.get('window').width;
