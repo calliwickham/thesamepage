@@ -12,7 +12,6 @@ import {
     FreeWriteScreen,
     ChallengeScreen,
     CreateStoryScreen,
-    AlbumsScreen,
     FriendsScreen,
 } from './src/screens/initialscreens';
 import GenericAlbumPage from './src/screens/GenericAlbumTest';
