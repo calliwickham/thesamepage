@@ -16,6 +16,7 @@ import {
     FriendsScreen,
 } from './src/screens/initialscreens';
 import GenericAlbumPage from './src/screens/GenericAlbumTest';
+import Albums from './src/screens/Albums.js'
 import OnlineHomepage from './src/screens/OnlineHomepage';
 import OfflineHomepage from './src/screens/OfflineHomepage';
 import LoginScreen from './src/screens/login';
@@ -54,7 +55,7 @@ export default function App() {
                         <Stack.Screen name="FreeWrite" component={FreeWriteScreen} />
                         <Stack.Screen name="Challenge" component={ChallengeScreen} />
                         <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
-                        <Stack.Screen name="Albums" component={GenericAlbumPage} />
+                        <Stack.Screen name="Albums" component={Albums} />
                         <Stack.Screen name="Friends" component={FriendsScreen} />
                         <Stack.Screen name="Login" component={LoginScreen} />
                         <Stack.Screen name="CreateAccount1" component={CreateOnline1} />
