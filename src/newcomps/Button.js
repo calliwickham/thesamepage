@@ -10,18 +10,24 @@ import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Platform } from '
  */
 export default Button = ({ children, style, color, onPress }) => {
 
-    const buttonColorStyle = styles.yellow;
+    let buttonColorStyle = styles.yellow;
+    let labelStyle = styles.label;
 
     if (color == 'green') {
         buttonColorStyle = styles.green;
+        labelStyle = styles.greenLabel;
     }
     else if (color == 'red') {
         buttonColorStyle = styles.red;
     }
+    else if (color == 'error'){
+        buttonColorStyle = styles.error;
+        labelStyle = styles.errorLabel;
+    }
 
     return (
         <TouchableOpacity style={[styles.button, buttonColorStyle, style]} onPress={() => onPress()}>
-            <Text style={styles.label}> {children} </Text>
+            <Text style={[styles.label, labelStyle]}> {children} </Text>
         </TouchableOpacity>
     )
 
@@ -29,7 +35,7 @@ export default Button = ({ children, style, color, onPress }) => {
 
 const styles = StyleSheet.create({
     label: {
-        color: '#000',
+        color: 'black',
         textAlign: 'center',
         fontFamily: 'CrimsonText-SemiBold',
         fontSize: 16,
@@ -54,11 +60,21 @@ const styles = StyleSheet.create({
     green: {
         backgroundColor: '#11460D'
     },
+    greenLabel: {
+        color: '#FFF4E2'
+    },
     red: {
         backgroundColor: '#FF0000'
     },
     error: {
+        borderColor: '#ffb3b3',
+        borderStyle: 'solid',
+        borderWidth: 1,
         backgroundColor: '#FFDBDB',
-        color: 'FF3D3D'
+        paddingVertical: 4,
+        paddingHorizontal: 6
+    },
+    errorLabel: {
+        color: '#FF3D3D'
     }
 })
