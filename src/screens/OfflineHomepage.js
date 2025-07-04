@@ -13,48 +13,12 @@ import Puzzle from '../newcomps/Puzzle';
 export default function OfflineHomepage() {
     const navigation = useNavigation();
 
-    //card constructor
-    const Card = ({ backgroundColor, icon, title, text, notif, inProgress, isBlurred }) => {
-        const CardContent = (
-            <>
-                <View style={styles.circle}>{icon}</View>
-                <View style={styles.textContainer}>
-                    <Text style={styles.cardTitle}>{title}</Text>
-                    <Text style={styles.cardText}>{text}</Text>
-                </View>
-                {notif && <View style={styles.topRight}><YellowNotif /></View>}
-                {inProgress && <View style={styles.topRight}><InProgressIcon /></View>}
-                {title === "Daily Challenge" && (
-                    <View style={styles.bottomRight}><CheckBoxIcon /></View>
-                )}
-            </>
-        );
-
-        return isBlurred ? (
-            <BlurView intensity={25} tint="light" style={[styles.card, { backgroundColor }]}>
-                {CardContent}
-                <View style={styles.errorBox}>
-                    <Text style={styles.errorText}>
-                        To access Collaborative Mode, you{'\n'}
-                        must have an <Text style={{ fontWeight: 'bold' }}>Online Account</Text>. You may{'\n'}
-                        update your account type in Settings.
-                    </Text>
-                </View>
-            </BlurView>
-        ) : (
-            <TouchableOpacity onPress={() => navigation.navigate('FreeWrite')}>
-                <View style={[styles.card, { backgroundColor }]}>
-                    {CardContent}
-                </View>
-            </TouchableOpacity>
-        );
-    };
 
     //skewed card constructor
-    const SkewedCard = ({ backgroundColor, position, icon, title, text, notif, inProgress, isBlurred }) => {
+    const SkewedCard = ({ backgroundColor, borderColor, position, icon, title, text, notif, inProgress, isBlurred }) => {
         const CardContent = (
             <>
-                <View style={styles.circle}>{icon}</View>
+                <View style={[styles.circle, {borderColor}]}>{icon}</View>
                 <View style={styles.textContainer}>
                     <Text style={styles.cardTitle}>{title}</Text>
                     <Text style={styles.cardText}>{text}</Text>
@@ -110,6 +74,7 @@ export default function OfflineHomepage() {
 
                 <SkewedCard
                     backgroundColor="#FFF1DC"
+                    borderColor="#F8E6C7"
                     icon={<CalendarIcon width={40} height={40} />}
                     title="Daily Challenge"
                     text="Get a fresh prompt to inspire you"
@@ -119,6 +84,7 @@ export default function OfflineHomepage() {
 
                 <SkewedCard
                     backgroundColor="#E4E4E4"
+                    borderColor="#DDDDDD"
                     icon={<SinglePage width={40} height={40} />}
                     title="Free Write"
                     text="Let your thoughts run wild on the page"
@@ -127,6 +93,7 @@ export default function OfflineHomepage() {
 
                 <SkewedCard
                     backgroundColor="#E9F0E6"
+                    borderColor="#DBE9D4"
                     icon={
                         <View style={{ transform: [{ translateX: -3 }, { translateY: -2 }] }}>
                             <Puzzle width={40} height={40} />
@@ -202,11 +169,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 16,
-        elevation: 4,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
+        borderWidth: 2,
+        borderStyle: 'solid',
+        borderColor: 'white'
+        //elevation: 4,
+        //shadowColor: '#000',
+        //shadowOffset: { width: 0, height: 2 },
+        //shadowOpacity: 0.2,
+        //shadowRadius: 4,
     },
     textContainer: {
         flex: 1,
