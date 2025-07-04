@@ -18,6 +18,9 @@ import {
 import GenericAlbumPage from './src/screens/GenericAlbumTest';
 import OnlineHomepage from './src/screens/OnlineHomepage';
 import OfflineHomepage from './src/screens/OfflineHomepage';
+import LoginScreen from './src/screens/login';
+import CreateOnline1 from './src/screens/CreateAccount1';
+import CreateAccount2 from './src/screens/CreateAccount2';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,7 +46,7 @@ export default function App() {
                 <Header />
                 <View style={styles.content}>
                     <Stack.Navigator
-                        initialRouteName="OnlineHomepage"
+                        initialRouteName="Login"
                         screenOptions={{ headerShown: false }}
                     >
                         <Stack.Screen name="OnlineHomepage" component={OnlineHomepage} />
@@ -53,6 +56,9 @@ export default function App() {
                         <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
                         <Stack.Screen name="Albums" component={GenericAlbumPage} />
                         <Stack.Screen name="Friends" component={FriendsScreen} />
+                        <Stack.Screen name="Login" component={LoginScreen} />
+                        <Stack.Screen name="CreateAccount1" component={CreateOnline1} />
+                        <Stack.Screen name="CreateAccount2" component={CreateAccount2} />
                     </Stack.Navigator>
                 </View>
                 <Footer />
