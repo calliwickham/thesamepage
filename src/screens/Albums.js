@@ -30,7 +30,7 @@ export default function Albums() {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.header}>My Albums</Text>
-            <SearchBox placeholder="Search for..." />
+            <SearchBox placeholder="Search for..." style={styles.search} />
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 {albumData.map((album, index) => (
                     <TouchableOpacity
@@ -83,11 +83,10 @@ const styles = StyleSheet.create({
         paddingLeft: '5%',
         paddingRight: '5%'
     },
-    searchBoxContainer: {
-        marginTop: 10,
-        marginBottom: 10,
-        paddingLeft: '5%',
-        paddingRight: '5%'
+    search: {
+        marginLeft: '5%',
+        marginRight: '5%',
+        borderColor: 'blue'
     },
     card: {
         width: '100%',
