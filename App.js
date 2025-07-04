@@ -9,7 +9,7 @@ import Header from './src/newcomps/Header';
 import Footer from './src/newcomps/Footer';
 
 import {
-    FreeWriteScreen,
+    DebugScreen,
     ChallengeScreen,
     CreateStoryScreen,
     FriendsScreen,
@@ -52,8 +52,9 @@ export default function App() {
                     >
                         <Stack.Screen name="OnlineHomepage" component={OnlineHomepage} />
                         <Stack.Screen name="OfflineHomepage" component={OfflineHomepage} />
-                        <Stack.Screen name="FreeWrite" component={FreeWriteScreen} />
+                        <Stack.Screen name="FreeWrite" component={OnlineHomepage} />
                         <Stack.Screen name="Challenge" component={ChallengeScreen} />
+                        <Stack.Screen name="CollaborativeLanding" component={OnlineHomepage} />
                         <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
                         <Stack.Screen name="Albums" component={Albums} />
                         <Stack.Screen name="GenericAlbumPage" component={GenericAlbumPage} />
@@ -61,6 +62,7 @@ export default function App() {
                         <Stack.Screen name="Login" component={LoginScreen} />
                         <Stack.Screen name="CreateAccount1" component={CreateOnline1} />
                         <Stack.Screen name="CreateAccount2" component={CreateAccount2} />
+                        <Stack.Screen name="Debug" component={DebugScreen} />
                     </Stack.Navigator>
                 </View>
                 <Footer />

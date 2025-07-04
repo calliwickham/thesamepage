@@ -24,7 +24,7 @@ import Hourglass from '../newcomps/Hourglass';
 import Add from '../newcomps/Add';
 import InfoIcon from '../newcomps/InfoIcon';
 
-export function FreeWriteScreen() {
+export function DebugScreen() {
     const [text, setText] = useState('');
     const [title, setTitle] = useState('');
     const [inspireVisible, setInspireVisible] = useState(false);

@@ -25,6 +25,11 @@ export default Button = ({ children, style, color, icon, onPress }) => {
         labelStyle = styles.errorLabel;
     }
 
+    //if button has no function
+    if (!onPress){
+        onPress = () => {}
+    }
+
     return (
         <TouchableOpacity style={[styles.button, buttonColorStyle, style]} onPress={() => onPress()}>
             {icon} 
@@ -77,6 +82,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 6
     },
     errorLabel: {
-        color: '#FF3D3D'
+        color: '#FF3D3D',
+        fontSize: 14,
     }
 })

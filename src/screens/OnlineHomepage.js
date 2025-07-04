@@ -17,10 +17,20 @@ export default function OfflineHomepage() {
             <ScrollView contentContainerStyle={styles.content}>
                 <Text style={styles.header}>Welcome, Anastasia</Text>
 
+                {/*DEBUG, REMOVE LATER - Buttons for vewing other screens not accessible rn*/}
+                <Button color='error' 
+                    style={{position: 'absolute', left: 10, top: 5, paddingVertical: 2}}
+                    onPress={() => navigation.navigate('Debug')}>Debug - components</Button>
+                <Button 
+                    color='error' 
+                    style={{position: 'absolute', right: 10, top: 5, paddingVertical: 2}}
+                    onPress={() => navigation.navigate('OfflineHomepage')}>Debug - offline homepage</Button>
+                
+
                 {/* Daily Challenge */}
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#FFF1DC' }, styles.right]}
-                    onPress={() => navigation.navigate('FreeWrite')}
+                    onPress={() => navigation.navigate('Challenge')}
                 >
                     <View style={[styles.circle, {borderColor: '#F8E6C7'}]}>
                         <CalendarIcon width={40} height={40} />
@@ -54,7 +64,7 @@ export default function OfflineHomepage() {
                 {/* Collaborative Mode */}
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#E9F0E6' }, styles.right]}
-                    onPress={() => navigation.navigate('FreeWrite')}
+                    onPress={() => navigation.navigate('CollaborativeLanding')}
                 >
                     <View style={[styles.circle, {borderColor: '#DBE9D4'} ]}>
                         <View style={{ transform: [{ translateX: -3 }, { translateY: -2 }] }}>
