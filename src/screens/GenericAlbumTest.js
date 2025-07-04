@@ -5,7 +5,7 @@ import TileWithFoldedCorner from '../newcomps/TileWithFoldedCorner.js';
 export default function GenericAlbumPage({navigation}) {
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 , backgroundColor: 'white'}}>
             <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
                 <TileWithFoldedCorner shrink='.8'>
                     <View style={{flex: 1, justifyContent: 'center'}}>
@@ -23,7 +23,7 @@ export default function GenericAlbumPage({navigation}) {
                         resizeMode="cover"
                     />
                 </TileWithFoldedCorner>
-                <TileWithFoldedCorner margin='12'>
+                <TileWithFoldedCorner margin='12' verticalStretch='0.7'>
                     <Text> Something here, notice it's not in a flexbox</Text>
                 </TileWithFoldedCorner>
                 <TileWithFoldedCorner verticalStretch='1.2' shrink='0.8' margin='12'>
@@ -32,6 +32,9 @@ export default function GenericAlbumPage({navigation}) {
                         to add padding, grids, etc.
                         But that makes it dynamic, so you could add a kitten, Hello World centered,
                         or even some text!</Text>
+                </TileWithFoldedCorner>
+                <TileWithFoldedCorner verticalStretch='1.1' shrink='0.8' margin='12'>
+                    <Text> Hopefully you can scroll and find this!</Text>
                 </TileWithFoldedCorner>
             </ScrollView>
         </SafeAreaView>
