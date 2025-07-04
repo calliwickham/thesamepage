@@ -86,7 +86,8 @@ const styles = StyleSheet.create({
     search: {
         marginLeft: '5%',
         marginRight: '5%',
-        borderColor: 'blue'
+        marginTop: 8,
+        marginBottom: 20
     },
     card: {
         width: '100%',
