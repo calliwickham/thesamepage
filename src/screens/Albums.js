@@ -56,7 +56,7 @@ export default function Albums() {
                                 </Text>
                             </View>
                             <View style={styles.rightPlaceholder}>
-                                <Button icon={<CheckBoxIcon/>} style={{marginLeft: 10, paddingVertical: 0}} onPress={() => navigation.navigate(album.route)}>View Files</Button>
+                                <Button style={{marginLeft: 10}} onPress={() => navigation.navigate(album.route)}>View Files</Button>
                             </View>
                         </View>
                     </TouchableOpacity>
