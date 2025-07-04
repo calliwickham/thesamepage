@@ -10,8 +10,6 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, FlatList, S
 import X from '../newcomps/X'; // adjust path if needed
 import SmallTextBox from '../newcomps/SmallTextBox';
 import SearchBox from '../newcomps/SearchBox';
-import YellowButton from '../newcomps/YellowButton';
-import GreenButton from '../newcomps/GreenButton';
 import WordCard from '../newcomps/WordCard';
 import ClearButton from '../newcomps/ClearButton';
 import SaveIcon from '../newcomps/SaveIcon';
@@ -34,7 +32,7 @@ export function FreeWriteScreen() {
     const inspireWords = ['remedy', 'technology', 'uniform'];
 
     return (
-        <ScrollView className="flex-1 bg-white px-4 pt-10">
+        <ScrollView contentContainerStyle={{ alignItems: 'flex-start', paddingHorizontal: 16 }}>
             {/* Title Input */}
             <View style={{ marginBottom: 10, marginTop: 10 }}>
                 <X placeholder="Insert Text Here" />
@@ -43,18 +41,12 @@ export function FreeWriteScreen() {
                 <SmallTextBox placeholder="Insert Text Here" />
             </View>
             <SearchBox placeholder="Search for..." style={styles.search} />
-            <YellowButton onPress={() => alert('Pressed!')}>
-                <Text style={{ position: 'absolute', fontWeight: 'bold' }}>Click Me</Text>
-            </YellowButton>
-            <GreenButton onPress={() => alert('Pressed!')}>
-                <Text style={{ position: 'absolute', fontWeight: 'bold' }}>Click Me</Text>
-            </GreenButton>
             <View style={{ marginBottom: 10, marginTop: 10 }}>
                 <WordCard placeholder="Word Card Example" />
             </View>
-            <View style={{ marginBottom: 10, marginTop: 10 }}>
-                <ClearButton />
-            </View>
+
+            <Button style={{ marginLeft: 10 }} onPress={() => navigation.navigate(album.route)}>View Files</Button>
+
             <SaveIcon />
             <FriendlyNotif />
             <RedNotif />

@@ -11,7 +11,7 @@ import Svg, { Rect, Circle } from 'react-native-svg';
 const SearchBox = ({ placeholder = 'Search...' , style}) => {
 
     return (
-        <View style={[styles.searchBox, style]}>
+        <View style={[styles.searchBox, styles.defaultPadding, style]}>
             <View style={styles.iconWrapper}>
                 <Svg width={32} height={32} viewBox="0 0 32 32" fill="none">
                     <Rect
@@ -58,6 +58,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.10,
         shadowRadius: 3,
         elevation: 3
+    },
+    defaultPadding: {
+        marginLeft: '5%',
+        marginRight: '5%',
+        marginTop: 8,
+        marginBottom: 20
     },
     iconWrapper: {
         paddingBottom: 8, // lowers the icon
