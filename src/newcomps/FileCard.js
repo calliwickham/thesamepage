@@ -1,66 +1,20 @@
 import { View, StyleSheet, Text } from "react-native";
+
 import TileWithFoldedCorner from "./TileWithFoldedCorner"
+import {ALBUMSTHEMES} from "../constants/AlbumsThemes.js"
 
-const albumThemes = {
-    collaborative: {
-        color: "#E3EBDD",
-        border: "#C9D2C3",
-        allowBookmarks: true,
-    },
-    daily: {
-        color: "#FFF4E2",
-        border: "#E7DBC8",
-        allowBookmarks: true,
-    },
-    freewrite: {
-        color: "#E4E4E4",
-        border: "#CFCFCF",
-        allowBookmarks: true,
-    },
-    favorites: {
-        color: "#FFFFFF",
-        border: "#E4E4E4",
-        allowBookmarks: true,
-    },
-    trash: {
-        color: "#F8D7DA",
-        border: "#eeb2b6",
-        allowBookmarks: true,
-        showInProgressFirst: true,
-    },
-};
-
+const albumThemes = ALBUMSTHEMES;
 
 export default function FileCard({ file }) {
 
-    let height, upperFlex, lowerFlex;
-
-    switch (file.album) {
-        case 'freewrite':
-            height = 160;
-            upperFlex = 0.4;
-            lowerFlex = 0.6;
-            break;
-        case 'daily':
-            height = 120;
-            upperFlex = 0.6;
-            lowerFlex = 0.4;
-            break;
-        default:
-            height = 140;
-            upperFlex = 0.5;
-            lowerFlex = 0.6;
-            break;
-    }
-
     return (
-        <TileWithFoldedCorner style={[{ height: height, marginVertical: 4 }]} fill={albumThemes[file.album].color} line={albumThemes[file.album].border}>
+        <TileWithFoldedCorner style={[{ height: albumThemes[file.album].cardHeight, marginVertical: 4 }]} fill={albumThemes[file.album].color} line={albumThemes[file.album].border}>
             {/*content of tile*/}
-            <View style={[styles.upperSection, { flex: upperFlex }]}>
+            <View style={[styles.upperSection, { flex: albumThemes[file.album].cardTitleFlex }]}>
                 <Text style={styles.title} adjustsFontSizeToFit={false} numberOfLines={2}>{file.title}</Text>
             </View>
             <View style={styles.divider} />
-            <View style={[styles.lowerSection, { flex: lowerFlex }]}>
+            <View style={[styles.lowerSection, { flex: 1 - albumThemes[file.album].cardTitleFlex }]}>
                 <Text style={styles.cardText}>
                     {file.album == 'collaborative' ? (
                         <>

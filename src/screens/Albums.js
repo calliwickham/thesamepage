@@ -11,22 +11,19 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import SearchBox from '../newcomps/SearchBox';
 import Button from '../newcomps/Button';
-import CheckBoxIcon from '../newcomps/CheckBoxIcon';
+import {ALBUMSTHEMES} from '../constants/AlbumsThemes.js'
 
-const albumRoute = 'GenericAlbum';
-
-const albumDisplayData = [
-    { key: "daily", name: 'Daily Challenge', borderColor: "#E4E4E4", color: '#FFF4E2', files: 25, edited: '10/03/2023' },
-    { key: "freewrite", name: 'Free Write', borderColor: "#D9D9D9", color: '#E4E4E4', files: 10, edited: '11/23/2024' },
-    { key: "collaborative", name: 'Collaborative Writing', borderColor: "#E4E4E4", color: '#E3EBDD', files: 12, edited: '8/03/2025' },
-    { key: "favorites", name: 'Favorites', borderColor: "#E4E4E4", color: '#FFFFFF', edited: null, files: 3 },
-    { key: "trash", name: 'Trash', borderColor: "#f5d0d3", color: '#F8D7DA', edited: null, files: 128 },
+const dummyAlbumsData = [
+    { key: "daily", files: 25, edited: '10/03/2023' },
+    { key: "freewrite", files: 10, edited: '11/23/2024' },
+    { key: "collaborative", files: 12, edited: '8/03/2025' },
+    { key: "favorites", files: 7, edited: null },
+    { key: "trash", files: 128, edited: null },
 ];
 
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
+const albumsThemes = ALBUMSTHEMES;
 
-const cardHeight = screenHeight / 6.5;
+const cardHeight = Dimensions.get('window').height / 6.5;
 
 export default function Albums() {
     const navigation = useNavigation();
@@ -36,15 +33,15 @@ export default function Albums() {
             <Text style={styles.header}>My Albums</Text>
             <SearchBox placeholder="Search for..." style={styles.search} />
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-                {albumDisplayData.map((album, index) => (
+                {dummyAlbumsData.map((album, index) => (
                     <View
                         key={index}
-                        style={[styles.card, { backgroundColor: album.color }, { borderColor: album.borderColor }]}
+                        style={[styles.card, { backgroundColor: albumsThemes[album.key].color }, { borderColor: albumsThemes[album.key].border }]}
                     >
                         {/* Upper Section */}
                         <View style={styles.upperSection}>
                             <Text style={styles.albumTitle}>
-                                {album.name}{album.key == 'favorites' || album.key == 'trash' ? "" : " Album"} 
+                                {albumsThemes[album.key].name}{album.key == 'favorites' || album.key == 'trash' ? "" : " Album"} 
                             </Text>
                         </View>
 
@@ -60,7 +57,7 @@ export default function Albums() {
                                 </Text>
                             </View>
                             <View style={styles.rightPlaceholder}>
-                                <Button style={{marginLeft: 10}} onPress={() => navigation.navigate(albumRoute, { albumKey: album.key })}>View Files</Button>
+                                <Button style={{marginLeft: 10}} onPress={() => navigation.navigate('GenericAlbum', { albumKey: album.key })}>View Files</Button>
                             </View>
                         </View>
                     </View>

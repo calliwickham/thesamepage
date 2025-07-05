@@ -1,7 +1,6 @@
 import { SafeAreaView, ScrollView, StyleSheet, View, Text, Image } from 'react-native';
 import { useRoute } from "@react-navigation/native";
 
-import TileWithFoldedCorner from '../newcomps/TileWithFoldedCorner.js';
 import FileCard from '../newcomps/FileCard.js';
 
 
