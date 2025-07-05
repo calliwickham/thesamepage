@@ -33,14 +33,34 @@ const albumThemes = {
 
 export default function FileCard({ file }) {
 
+    let height, upperFlex, lowerFlex;
+
+    switch (file.album) {
+        case 'freewrite':
+            height = 160;
+            upperFlex = 0.4;
+            lowerFlex = 0.6;
+            break;
+        case 'daily':
+            height = 120;
+            upperFlex = 0.6;
+            lowerFlex = 0.4;
+            break;
+        default:
+            height = 140;
+            upperFlex = 0.5;
+            lowerFlex = 0.6;
+            break;
+    }
+
     return (
-        <TileWithFoldedCorner style={{ height: 150, marginVertical: 4 }} fill={albumThemes[file.album].color} line={albumThemes[file.album].border}>
+        <TileWithFoldedCorner style={[{ height: height, marginVertical: 4 }]} fill={albumThemes[file.album].color} line={albumThemes[file.album].border}>
             {/*content of tile*/}
-            <View style={styles.upperSection}>
+            <View style={[styles.upperSection, { flex: upperFlex }]}>
                 <Text style={styles.title} adjustsFontSizeToFit={false} numberOfLines={2}>{file.title}</Text>
             </View>
             <View style={styles.divider} />
-            <View style={styles.lowerSection}>
+            <View style={[styles.lowerSection, { flex: lowerFlex }]}>
                 <Text style={styles.cardText}>
                     {file.album == 'collaborative' ? (
                         <>
