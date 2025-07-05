@@ -13,10 +13,10 @@ const TileWithFoldedCorner = ({ children, style, fill, line }) => {
     const viewBoxValue = `0 0 ${fullSvgWidth} ${fullSvgHeight}`;
 
     if (!fill){
-        fill = "#FFFFFF";
+        fill = "#ff0000";
     }
     if (!line){
-        line = "#E4E4E4"
+        line = "#8b0000"
     }
 
     return (

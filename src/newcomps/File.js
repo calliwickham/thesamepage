@@ -2,7 +2,7 @@ import { View, StyleSheet, Text } from "react-native";
 import TileWithFoldedCorner from "../newcomps/TileWithFoldedCorner"
 
 
-export default function File({album, data }) {
+export default function File({ album, data }) {
 
     const albumThemes = {
         collaborative: {
@@ -34,26 +34,56 @@ export default function File({album, data }) {
     };
 
     return (
-        <TileWithFoldedCorner fill={albumThemes[album]?.color ?? "#ff0000"} line={albumThemes[album]?.border ?? "#8b0000"}>
-            <Text> {data[0]}</Text>
-        </TileWithFoldedCorner>
+        <TileWithFoldedCorner style={{height: 130}} fill={albumThemes[album].color} line={albumThemes[album].border}>
+            {/*content of tile*/}
+            <View style={styles.upperSection}>
+                <Text style={styles.title}>The Ramen Noodle Shop</Text>
+            </View>
+            <View style={styles.divider} />
+            <View style={styles.lowerSection}>
+                <Text style={styles.text}>
+                    Authors: Anastasia, Connor, Friend101, Lizzie
+                    {'\n'}Date Created: 04/12/2025
+                    {'\n'}560 words
+                </Text>
+            </View>
+
+        </TileWithFoldedCorner >
     );
 
 }
 
 const styles = StyleSheet.create({
+    title: {
+        marginLeft: '5%',
+        marginRight: '5%',
+        fontSize: 20,
+        fontFamily: 'Crimson Text',
+    },
     upperSection: {
         flex: 0.4,
         justifyContent: 'center',
+        alignSelf: 'flex-start'
     },
     divider: {
         height: 1,
         backgroundColor: 'black',
         marginVertical: 4,
+        width: '94%',
+        marginRight: 3
     },
     lowerSection: {
         flex: 0.6,
-        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignSelf: 'flex-start',
         marginTop: 4,
+        marginLeft: '5%',
+        marginRight: '5%'
     },
+    text: {
+        fontSize: 14,
+        fontFamily: 'Crimson Text',
+        textAlign: 'left',
+        color: '#3F3F3F'
+    }
 });
