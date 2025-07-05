@@ -14,17 +14,17 @@ import Button from '../newcomps/Button';
 import CheckBoxIcon from '../newcomps/CheckBoxIcon';
 
 const albumData = [
-    { name: 'Collaborative Writing Album', borderColor: "#E4E4E4", color: '#E3EBDD', route: 'GenericAlbum' },
-    { name: 'Daily Challenge Album', borderColor: "#E4E4E4", color: '#FFF4E2', route: 'GenericAlbumDebug' },
-    { name: 'Free Writing Album', borderColor: "#D9D9D9", color: '#E4E4E4', route: 'GenericAlbumDebug' },
-    { name: 'Favorites', borderColor: "#E4E4E4", color: '#FFFFFF', route: 'GenericAlbumDebug' },
-    { name: 'Trash', borderColor: "#E4E4E4", color: '#F8D7DA', route: 'GenericAlbumDebug' },
+    { name: 'Daily Challenge Album', borderColor: "#E4E4E4", color: '#FFF4E2', route: 'GenericAlbum', files: 25, edited: '10/03/2023' },
+    { name: 'Free Writing Album', borderColor: "#D9D9D9", color: '#E4E4E4', route: 'GenericAlbumDebug', files: 10, edited: '11/23/2024' },
+    { name: 'Collaborative Writing Album', borderColor: "#E4E4E4", color: '#E3EBDD', route: 'GenericAlbumDebug', files: 12, edited: '8/03/2025' },
+    { name: 'Favorites', borderColor: "#E4E4E4", color: '#FFFFFF', route: 'GenericAlbumDebug', edited: null, files: 3 },
+    { name: 'Trash', borderColor: "#f5d0d3", color: '#F8D7DA', route: 'GenericAlbumDebug', edited: null, files: 128 },
 ];
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const cardHeight = screenHeight / 7;
+const cardHeight = screenHeight / 6.5;
 
 export default function Albums() {
     const navigation = useNavigation();
@@ -35,10 +35,9 @@ export default function Albums() {
             <SearchBox placeholder="Search for..." style={styles.search} />
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 {albumData.map((album, index) => (
-                    <TouchableOpacity
+                    <View
                         key={index}
                         style={[styles.card, { backgroundColor: album.color }, { borderColor: album.borderColor }]}
-                        activeOpacity={0.8}
                     >
                         {/* Upper Section */}
                         <View style={styles.upperSection}>
@@ -52,14 +51,15 @@ export default function Albums() {
                         <View style={styles.lowerSection}>
                             <View style={styles.leftTextContainer}>
                                 <Text style={styles.descriptionText}>
-                                    This is a short description of the album.
+                                    {album.edited ? "Last Edited: " + album.edited + "\n" : ""}
+                                    Number of Files: {album.files}
                                 </Text>
                             </View>
                             <View style={styles.rightPlaceholder}>
                                 <Button style={{marginLeft: 10}} onPress={() => navigation.navigate(album.route)}>View Files</Button>
                             </View>
                         </View>
-                    </TouchableOpacity>
+                    </View>
                 ))}
             </ScrollView>
         </SafeAreaView>

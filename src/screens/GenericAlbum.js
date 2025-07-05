@@ -9,11 +9,11 @@ export default function GenericAlbum({ navigation }) {
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
             <View style={{ borderWidth: 1, borderColor: 'blue', borderStyle: 'solid', width: '80%', alignItems: 'center'}}>
                 <Text> Meep </Text>
-                <View style={{ width: "80%", borderWidth: 1, borderColor: "red" }}>
+                <View style={{ width: "90%", borderWidth: 1, borderColor: "red" }}>
                     <TileWithFoldedCorner>
-                        <Text> Hello </Text>
+                        <Text> Hello, this is NOT a file </Text>
                     </TileWithFoldedCorner>
-                    <File data={["This is a File", "file"]}/>
+                    <File album="collaborative" data={["This is a File", "file"]}/>
                 </View>
             </View>
         </SafeAreaView>
