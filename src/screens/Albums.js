@@ -13,12 +13,14 @@ import SearchBox from '../newcomps/SearchBox';
 import Button from '../newcomps/Button';
 import CheckBoxIcon from '../newcomps/CheckBoxIcon';
 
-const albumData = [
-    { name: 'Daily Challenge Album', borderColor: "#E4E4E4", color: '#FFF4E2', route: 'GenericAlbum', files: 25, edited: '10/03/2023' },
-    { name: 'Free Writing Album', borderColor: "#D9D9D9", color: '#E4E4E4', route: 'GenericAlbumDebug', files: 10, edited: '11/23/2024' },
-    { name: 'Collaborative Writing Album', borderColor: "#E4E4E4", color: '#E3EBDD', route: 'GenericAlbumDebug', files: 12, edited: '8/03/2025' },
-    { name: 'Favorites', borderColor: "#E4E4E4", color: '#FFFFFF', route: 'GenericAlbumDebug', edited: null, files: 3 },
-    { name: 'Trash', borderColor: "#f5d0d3", color: '#F8D7DA', route: 'GenericAlbumDebug', edited: null, files: 128 },
+const albumRoute = 'GenericAlbum';
+
+const albumDisplayData = [
+    { key: "daily", name: 'Daily Challenge', borderColor: "#E4E4E4", color: '#FFF4E2', files: 25, edited: '10/03/2023' },
+    { key: "freewrite", name: 'Free Write', borderColor: "#D9D9D9", color: '#E4E4E4', files: 10, edited: '11/23/2024' },
+    { key: "collaborative", name: 'Collaborative Writing', borderColor: "#E4E4E4", color: '#E3EBDD', files: 12, edited: '8/03/2025' },
+    { key: "favorites", name: 'Favorites', borderColor: "#E4E4E4", color: '#FFFFFF', edited: null, files: 3 },
+    { key: "trash", name: 'Trash', borderColor: "#f5d0d3", color: '#F8D7DA', edited: null, files: 128 },
 ];
 
 const screenWidth = Dimensions.get('window').width;
@@ -34,14 +36,16 @@ export default function Albums() {
             <Text style={styles.header}>My Albums</Text>
             <SearchBox placeholder="Search for..." style={styles.search} />
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-                {albumData.map((album, index) => (
+                {albumDisplayData.map((album, index) => (
                     <View
                         key={index}
                         style={[styles.card, { backgroundColor: album.color }, { borderColor: album.borderColor }]}
                     >
                         {/* Upper Section */}
                         <View style={styles.upperSection}>
-                            <Text style={styles.albumTitle}>{album.name}</Text>
+                            <Text style={styles.albumTitle}>
+                                {album.name}{album.key == 'favorites' || album.key == 'trash' ? "" : " Album"} 
+                            </Text>
                         </View>
 
                         {/* Divider Line */}
@@ -56,7 +60,7 @@ export default function Albums() {
                                 </Text>
                             </View>
                             <View style={styles.rightPlaceholder}>
-                                <Button style={{marginLeft: 10}} onPress={() => navigation.navigate(album.route, { albumName: album.name })}>View Files</Button>
+                                <Button style={{marginLeft: 10}} onPress={() => navigation.navigate(albumRoute, { albumKey: album.key })}>View Files</Button>
                             </View>
                         </View>
                     </View>

@@ -5,7 +5,7 @@ import { View, StyleSheet } from "react-native";
 const TileWithFoldedCorner = ({ children, style, fill, line }) => {
     const svgWidth = 320;
     const svgHeight = 126;
-    const shadow2_X = 4;
+    const shadow2_X = 3;
     const shadow2_Y = 6;
 
     const fullSvgWidth = svgWidth + shadow2_X;
@@ -32,13 +32,13 @@ const TileWithFoldedCorner = ({ children, style, fill, line }) => {
                 preserveAspectRatio="none"
             >
                 <Path
-                    fill="rgba(0, 0, 0, 0.04)"
+                    fill="rgba(0, 0, 0, 0.03)"
                     transform="translate(2,3)"
                     d="M314 0a6 6 0 0 1 6 6v90.433L289.151 126H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6h308Z"
                 />
                 <Path
                     fill="rgba(0,0,0,0.02)"
-                    transform="translate(4,6)"
+                    transform="translate(3,6)"
                     d="M314 0a6 6 0 0 1 6 6v90.433L289.151 126H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6h308Z"
                 />
                 <Path
