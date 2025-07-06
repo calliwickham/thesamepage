@@ -1,0 +1,29 @@
+export const ALBUMTHEMES = {
+    daily: {
+        color: "#FFF4E2",
+        border: "#E7DBC8",
+        allowBookmarks: true,
+    },
+    freewrite: {
+        color: "#E4E4E4",
+        border: "#CFCFCF",
+        allowBookmarks: true,
+        showInProgressFirst: true,
+        inProgressBookmarks: false
+    },
+    collaborative: {
+        color: "#E3EBDD",
+        border: "#C9D2C3",
+        allowBookmarks: true,
+    },
+    favorites: {
+        color: "#FFFFFF",
+        border: "#E4E4E4",
+        allowBookmarks: true,
+    },
+    trash: {
+        color: "#F8D7DA",
+        border: "#eeb2b6",
+        allowBookmarks: false
+    },
+};

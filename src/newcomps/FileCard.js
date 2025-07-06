@@ -1,4 +1,5 @@
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 import TileWithFoldedCorner from "./TileWithFoldedCorner"
 import { ALBUMSTHEMES } from "../constants/AlbumsThemes.js"
@@ -7,43 +8,49 @@ const albumThemes = ALBUMSTHEMES;
 
 export default function FileCard({ file }) {
 
+    const navigation = useNavigation();
+
     return (
-        <TileWithFoldedCorner style={[{ height: albumThemes[file.album].cardHeight, marginVertical: 4 }]} fill={albumThemes[file.album].color} line={albumThemes[file.album].border}>
-            {/*content of tile*/}
-            <View style={[styles.upperSection, { flex: albumThemes[file.album].cardTitleFlex }]}>
-                <Text style={styles.title} adjustsFontSizeToFit={false} numberOfLines={2}>{file.title}</Text>
-            </View>
-            <View style={styles.divider} />
-            <View style={[styles.lowerSection, { flex: 1 - albumThemes[file.album].cardTitleFlex }]}>
-                {file.album === 'collaborative' && (
+        <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate('FileViewer', { file })}
+        >
+            <TileWithFoldedCorner style={[{ height: albumThemes[file.album].cardHeight, marginVertical: 4 }]} fill={albumThemes[file.album].color} line={albumThemes[file.album].border}>
+                {/*content of tile*/}
+                <View style={[styles.upperSection, { flex: albumThemes[file.album].cardTitleFlex }]}>
+                    <Text style={styles.title} adjustsFontSizeToFit={false} numberOfLines={2}>{file.title}</Text>
+                </View>
+                <View style={styles.divider} />
+                <View style={[styles.lowerSection, { flex: 1 - albumThemes[file.album].cardTitleFlex }]}>
+                    {file.album === 'collaborative' && (
+                        <Text style={styles.cardText}>
+                            Authors: <Text style={{ fontStyle: 'italic' }}>{file.authors}</Text>
+                        </Text>
+                    )}
+
                     <Text style={styles.cardText}>
-                        Authors: <Text style={{ fontStyle: 'italic' }}>{file.authors}</Text>
+                        Date Created: {file.date}
                     </Text>
-                )}
 
-                <Text style={styles.cardText}>
-                    Date Created: {file.date}
-                </Text>
+                    {file.album !== 'freewrite' && (
+                        <Text style={[styles.cardText, { fontStyle: 'italic' }]}>
+                            {file.wordcount} words
+                        </Text>
+                    )}
 
-                {file.album !== 'freewrite' && (
-                    <Text style={[styles.cardText, { fontStyle: 'italic' }]}>
-                        {file.wordcount} words
-                    </Text>
-                )}
-
-                {file.album === 'freewrite' && (
-                    <Text
-                        style={styles.cardText}
-                        numberOfLines={3}
-                        ellipsizeMode="tail"
-                        adjustsFontSizeToFit={false}
-                    >
-                        {file.text.replace(/\n/g, ' ')}
-                    </Text>
-                )}
-            </View>
-
-        </TileWithFoldedCorner >
+                    {file.album === 'freewrite' && (
+                        <Text
+                            style={styles.cardText}
+                            numberOfLines={3}
+                            ellipsizeMode="tail"
+                            adjustsFontSizeToFit={false}
+                        >
+                            {file.text.replace(/\n/g, ' ')}
+                        </Text>
+                    )}
+                </View>
+            </TileWithFoldedCorner >
+        </TouchableOpacity>
     );
 
 }

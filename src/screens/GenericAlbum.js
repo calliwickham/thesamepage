@@ -6,7 +6,7 @@ import SearchBox from '../newcomps/SearchBox.js'
 import { ALBUMSTHEMES } from "../constants/AlbumsThemes.js"
 
 
-export default function GenericAlbum({ navigation }) {
+export default function GenericAlbum() {
     const route = useRoute();
     //destructure params
     const { albumKey } = route.params;
@@ -19,8 +19,7 @@ export default function GenericAlbum({ navigation }) {
             title: 'just learned how babies are made',
             date: '8/12/2023',
             wordcount: 475,
-            text: `Dear Diary, \nIm traumatized. I’m having a little sister and I was sooooo curious how she was made so 
-            I lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque  faucibus ex sapien vitae pellentesque sem placerat.`
+            text: `Dear Diary, \nIm traumatized. I’m having a little sister and I was sooooo curious how she was made so I lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque  faucibus ex sapien vitae pellentesque sem placerat.`
         },
         {
             id: 1,

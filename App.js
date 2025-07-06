@@ -17,6 +17,7 @@ import {
 import GenericAlbumDebug from './src/screens/GenericAlbumTest';
 import GenericAlbum from './src/screens/GenericAlbum';
 import Albums from './src/screens/Albums.js'
+import FileViewer from './src/screens/FileViewer';
 import OnlineHomepage from './src/screens/OnlineHomepage';
 import OfflineHomepage from './src/screens/OfflineHomepage';
 import LoginScreen from './src/screens/login';
@@ -59,6 +60,7 @@ export default function App() {
                         <Stack.Screen name="CollaborativeLanding" component={OnlineHomepage} />
                         <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
                         <Stack.Screen name="Albums" component={Albums} />
+                        <Stack.Screen name="FileViewer" component={FileViewer} />
                         <Stack.Screen name="GenericAlbumDebug" component={GenericAlbumDebug} />
                         <Stack.Screen name="GenericAlbum" component={GenericAlbum} />
                         <Stack.Screen name="Friends" component={FriendsScreen} />
