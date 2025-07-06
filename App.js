@@ -4,6 +4,7 @@ import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import Header from './src/newcomps/Header';
 import Footer from './src/newcomps/Footer';
@@ -25,6 +26,9 @@ import CreateOnline1 from './src/screens/CreateAccount1';
 import CreateAccount2 from './src/screens/CreateAccount2';
 import GuestAccountPage from './src/screens/LocalAccount1.js';
 import PennameScreen from './src/screens/LocalAccount2.js';
+import OnlineSettingsPage from './src/screens/OnlineSettingsPage.js';
+import EditOnlineSettingsPage from './src/screens/EditOnlineSettingsPage.js';
+import ResetPassword from './src/screens/ResetPassword.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +51,7 @@ export default function App() {
     }
 
     return (
+      <GestureHandlerRootView style={styles.flex}>
         <NavigationContainer>
             <View style={styles.container}>
                 <Header />
@@ -55,6 +60,9 @@ export default function App() {
                         initialRouteName="Login"
                         screenOptions={{ headerShown: false }}
                     >
+                        <Stack.Screen name="ResetPassword" component={ResetPassword} />
+                        <Stack.Screen name="EditOnlineSettingsPage" component={EditOnlineSettingsPage} />
+                        <Stack.Screen name="OnlineSettingsPage" component={OnlineSettingsPage} />
                         <Stack.Screen name="PennameScreen" component={PennameScreen} />
                         <Stack.Screen name="LocalAccount1" component={GuestAccountPage} />
                         <Stack.Screen name="OnlineHomepage" component={OnlineHomepage} />
@@ -77,6 +85,7 @@ export default function App() {
                 <Footer />
             </View>
         </NavigationContainer>
+      </GestureHandlerRootView>
     );
 }
 
