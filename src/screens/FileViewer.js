@@ -14,6 +14,7 @@ export default function FileViewer(){
             <View style={{marginTop: 4}}>
                 <NavArrow/>
             </View>
+            <Text style={{color: 'blue', fontWeight: 'bold', margin: 10}}> In Development: Back arrow doesn't work yet </Text>
             <Text style={styles.header}> {file.title} </Text>
             <Text style={{color: 'red', fontWeight: 'bold', margin: 10}}> This page isn't ready yet! </Text>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
