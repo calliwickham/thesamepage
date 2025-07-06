@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
-const NavArrow = () => {
+const NavArrow = ({ style, onPress }) => {
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[{ flexDirection: 'row', alignItems: 'center' }, style]}
+    >
       <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
         <Path
           d="M16 4L8 12L16 20"
@@ -25,7 +28,7 @@ const NavArrow = () => {
       >
         Back
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
