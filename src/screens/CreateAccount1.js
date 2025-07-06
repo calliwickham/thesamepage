@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, TouchableOpacity, Linking, ScrollView, Modal } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
 
 import GuestModal from './GuestModal.js';
 import CheckBoxIcon from '../newcomps/CheckBoxIcon';
@@ -8,6 +9,7 @@ import NavArrow from '../newcomps/NavArrow';
 import { useNavigation } from '@react-navigation/native';
 
 export default function CreateOnline1() {
+
     const [isChecked, setIsChecked] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const navigation = useNavigation();
@@ -20,6 +22,15 @@ export default function CreateOnline1() {
         }
     };
 
+    const onSubmit = (formData) => {
+        console.log('Form data:', formData);
+        navigation.navigate('OnlineHomepage');
+        // Example: navigation.navigate('NextScreen');
+    };
+
+    //form stuff
+    const { control, handleSubmit, formState: { errors }, clearErrors } = useForm();
+
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             <NavArrow style={{ marginVertical: 8 }} onPress={() => navigation.goBack()}> </NavArrow>
@@ -27,16 +38,46 @@ export default function CreateOnline1() {
                 <Text style={styles.title}>Create An Account</Text>
                 <View style={styles.divider} />
 
-                <TextInput
-                    style={styles.input}
-                    placeholder="Username"
-                    placeholderTextColor="#CCC"
+                <Controller
+                    control={control}
+                    name="username"
+                    rules={{ required: true }}
+                    render={({ field: { onChange, value } }) => (
+                        <TextInput
+                            value={value}
+                            onChangeText={(text) => {
+                                onChange(text);
+                                if (errors.username) clearErrors('username');
+                            }}
+                            placeholder="Username"
+                            placeholderTextColor="#CCC"
+                            style={[
+                                styles.input,
+                                errors.username && { borderColor: 'red', borderWidth: 2 }
+                            ]}
+                        />
+                    )}
                 />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Password"
-                    secureTextEntry
-                    placeholderTextColor="#CCC"
+                <Controller
+                    control={control}
+                    name="password"
+                    rules={{ required: true }}
+                    render={({ field: { onChange, value } }) => (
+                        <TextInput
+                            value={value}
+                            onChangeText={(text) => {
+                                onChange(text);
+                                if (errors.password) clearErrors('password');
+                            }}
+                            secureTextEntry
+                            placeholder="Password"
+                            placeholderTextColor="#CCC"
+                            style={[
+                                styles.input,
+                                errors.password && { borderColor: 'red', borderWidth: 2 }
+                            ]}
+                        />
+                    )}
                 />
 
                 <View style={styles.checkboxContainer}>
@@ -62,7 +103,9 @@ export default function CreateOnline1() {
                     If you do not consent to an online account, DO NOT check the above box
                 </Text>
 
-                <Button textStyle={styles.buttonText} onPress={handleCreateAccount}>Sign Up</Button>
+                <Button textStyle={styles.buttonText} onPress={handleSubmit(onSubmit)}>
+                    Sign Up
+                </Button>
 
                 <TouchableOpacity onPress={() => setShowModal(true)}>
                     <Text style={[styles.linkText]}>
