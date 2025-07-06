@@ -23,6 +23,8 @@ import OfflineHomepage from './src/screens/OfflineHomepage';
 import LoginScreen from './src/screens/login';
 import CreateOnline1 from './src/screens/CreateAccount1';
 import CreateAccount2 from './src/screens/CreateAccount2';
+import GuestAccountPage from './src/screens/LocalAccount1.js';
+import PennameScreen from './src/screens/LocalAccount2.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +55,8 @@ export default function App() {
                         initialRouteName="Login"
                         screenOptions={{ headerShown: false }}
                     >
+                        <Stack.Screen name="PennameScreen" component={PennameScreen} />
+                        <Stack.Screen name="LocalAccount1" component={GuestAccountPage} />
                         <Stack.Screen name="OnlineHomepage" component={OnlineHomepage} />
                         <Stack.Screen name="OfflineHomepage" component={OfflineHomepage} />
                         <Stack.Screen name="FreeWrite" component={OnlineHomepage} />

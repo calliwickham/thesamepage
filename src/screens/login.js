@@ -47,7 +47,7 @@ export default function LoginScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity>
-          <Text style={styles.localAccountText}>
+          <Text style={styles.localAccountText} onPress={() => navigation.navigate('LocalAccount1')}>
             No Thanks, Create Local Account
           </Text>
         </TouchableOpacity>
