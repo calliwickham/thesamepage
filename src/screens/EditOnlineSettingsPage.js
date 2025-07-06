@@ -6,6 +6,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 export default function EditOnlineSettingsPage() {
   const navigation = useNavigation();
   const [selectedDeleteOption, setSelectedDeleteOption] = useState('1 Year'); // default selected
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
 
   const handleRedirect = () => {
     navigation.navigate('Login');
@@ -69,9 +71,35 @@ export default function EditOnlineSettingsPage() {
           <Text style={styles.saveText}>Save Your Changes</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.deleteButton} onPress={handleRedirect}>
+        <TouchableOpacity style={styles.deleteButton} onPress={() => setShowDeleteModal(true)}>
           <Text style={styles.deleteText}>Delete My Account</Text>
         </TouchableOpacity>
+        {showDeleteModal && (
+  <View style={styles.modalOverlay}>
+    <View style={styles.modalBox}>
+      <Text style={styles.modalTitle}>Are You Sure?</Text>
+      <Text style={styles.modalMessage}>
+        Proceeding with account deletion will{' '}
+        <Text style={{ fontStyle: 'italic' }}>permanently</Text> delete your account.
+      </Text>
+      <View style={styles.modalButtons}>
+        <TouchableOpacity
+          style={styles.goBackButton}
+          onPress={() => setShowDeleteModal(false)}
+        >
+          <Text style={styles.goBackText}>Go Back</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.deleteConfirmButton}
+          onPress={handleRedirect} // or replace with delete logic
+        >
+          <Text style={styles.deleteText}>Delete</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </View>
+)}
+
       </View>
     </ScrollView>
   );
@@ -194,5 +222,81 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
+  },
+    modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+
+  modalBox: {
+    backgroundColor: '#fff',
+    padding: 24,
+    borderRadius: 12,
+    width: '85%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
+    alignItems: 'center',
+  },
+
+  modalTitle: {
+    fontSize: 22,
+    fontFamily: 'Crimson Text',
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+
+  modalMessage: {
+    fontSize: 18,
+    fontFamily: 'Crimson Text',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+
+  goBackButton: {
+    backgroundColor: '#FFD12D',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 40,
+    marginRight: 12,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
+
+  goBackText: {
+    fontSize: 18,
+    fontFamily: 'Crimson Text',
+    fontWeight: 'bold',
+    color: '#000',
+  },
+
+  deleteConfirmButton: {
+    backgroundColor: '#D60000',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 40,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
 });
