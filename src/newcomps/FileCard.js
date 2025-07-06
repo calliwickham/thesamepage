@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text } from "react-native";
 
 import TileWithFoldedCorner from "./TileWithFoldedCorner"
-import {ALBUMSTHEMES} from "../constants/AlbumsThemes.js"
+import { ALBUMSTHEMES } from "../constants/AlbumsThemes.js"
 
 const albumThemes = ALBUMSTHEMES;
 
@@ -15,16 +15,32 @@ export default function FileCard({ file }) {
             </View>
             <View style={styles.divider} />
             <View style={[styles.lowerSection, { flex: 1 - albumThemes[file.album].cardTitleFlex }]}>
+                {file.album === 'collaborative' && (
+                    <Text style={styles.cardText}>
+                        Authors: <Text style={{ fontStyle: 'italic' }}>{file.authors}</Text>
+                    </Text>
+                )}
+
                 <Text style={styles.cardText}>
-                    {file.album == 'collaborative' ? (
-                        <>
-                            Authors: <Text style={{ fontStyle: 'italic' }}>{file.authors}</Text>{'\n'}
-                        </>
-                    ) : ""}
-                    Date Created: {file.date}{'\n'}
-                    {file.album != 'freewrite' ? <Text style={{ fontStyle: 'italic' }}>{file.wordcount} words {'\n'}</Text> : null}
-                    {file.album == 'freewrite' ? <Text>{file.text}</Text> : null}
+                    Date Created: {file.date}
                 </Text>
+
+                {file.album !== 'freewrite' && (
+                    <Text style={[styles.cardText, { fontStyle: 'italic' }]}>
+                        {file.wordcount} words
+                    </Text>
+                )}
+
+                {file.album === 'freewrite' && (
+                    <Text
+                        style={styles.cardText}
+                        numberOfLines={3}
+                        ellipsizeMode="tail"
+                        adjustsFontSizeToFit={false}
+                    >
+                        {file.text.replace(/\n/g, ' ')}
+                    </Text>
+                )}
             </View>
 
         </TileWithFoldedCorner >
@@ -42,7 +58,7 @@ const styles = StyleSheet.create({
         textVerticalAlign: 'center'
     },
     upperSection: {
-        width: '98%',
+        width: '90%',
         //borderColor: 'red',
         //borderStyle: 'dotted',
         //borderWidth: 1,
@@ -53,7 +69,6 @@ const styles = StyleSheet.create({
     divider: {
         height: 1,
         backgroundColor: 'black',
-        marginBottom: 6,
         width: '94%',
         marginRight: 3
     },
@@ -63,7 +78,10 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         marginLeft: '5%',
         marginRight: '10%',
-        marginBottom: 4,
+        marginBottom: 6,
+        //borderColor: 'limegreen',
+        //borderStyle: 'dotted',
+        //borderWidth: 1
     },
     cardText: {
         fontSize: 14,

@@ -46,7 +46,15 @@ export default function GenericAlbum({ navigation }) {
             date: '6/3/2025',
             text: `An ostrich sped across the pavement, alarming the neighbors.`,
             wordcount: 123
-        }
+        },
+        {
+            id: 3,
+            album: 'freewrite',
+            title: 'thoughts on leaves',
+            date: '8/12/2023',
+            wordcount: 475,
+            text: `leaves can be crunchy or soft depending on the season. The color changes, too. I wonder if the color influenes the softness?`
+        },
     ]
 
     return (
