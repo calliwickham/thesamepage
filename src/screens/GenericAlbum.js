@@ -35,7 +35,7 @@ export default function GenericAlbum() {
             authors: 'Anatasia, Connor',
             title: 'The Ramen Noodle Shop',
             date: '7/2/2025',
-            text: `The sun rose over the hill...`,
+            text: `The sun rose over the hill... \nSpot the dog wagged his tail.`,
             wordcount: 12,
         },
         {
@@ -43,7 +43,7 @@ export default function GenericAlbum() {
             album: 'daily',
             title: 'ostrich, speed, pavement',
             date: '6/3/2025',
-            text: `An ostrich sped across the pavement, alarming the neighbors.`,
+            text: `An ostrich sped across the neighborhood, alarming the neighbors. No one knew why an Ostrich would run so far away from the zoo. It even ran across the paved roads, faster than the cars around it, until it got to my house.`,
             wordcount: 123
         },
         {
