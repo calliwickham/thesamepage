@@ -3,7 +3,7 @@ import { useRoute } from "@react-navigation/native";
 
 import FileCard from '../newcomps/FileCard.js';
 import SearchBox from '../newcomps/SearchBox.js'
-import {ALBUMSTHEMES} from "../constants/AlbumsThemes.js"
+import { ALBUMSTHEMES } from "../constants/AlbumsThemes.js"
 
 
 export default function GenericAlbum({ navigation }) {
@@ -53,7 +53,11 @@ export default function GenericAlbum({ navigation }) {
         <SafeAreaView style={styles.container}>
             <Text style={styles.header}> {albumThemes[albumKey].shortName} Files</Text>
             <SearchBox placeholder="Search for..." style={styles.search} />
-
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+                {dummyFiles.map((file, i) => (
+                    <FileCard key={i} file={file} />
+                ))}
+            </ScrollView>
         </SafeAreaView>
     );
 }
@@ -72,8 +76,8 @@ const styles = StyleSheet.create({
         marginBottom: 0
     },
     scrollContainer: {
-        paddingBottom: 0,
+        paddingBottom: 6,
         paddingLeft: '5%',
-        paddingRight: '5%'
+        paddingRight: '5%',
     },
 });
