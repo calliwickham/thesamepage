@@ -45,8 +45,8 @@ export default function CreateAccount2({ navigation }) {
                 />
 
                 <Button style={styles.button} textStyle={styles.buttonText} onPress={handleSubmit}>Continue</Button>
-                <TouchableOpacity>
-                    <Text style={styles.localAccountText} onPress={() => setShowModal(true)}>
+                <TouchableOpacity onPress={() => setShowModal(true)}>
+                    <Text style={styles.localAccountText}>
                         Nevermind, Create Local Account
                     </Text>
                 </TouchableOpacity>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, TouchableOpacity, Linking, ScrollView, Modal } from 'react-native';
 
+import GuestModal from './GuestModal.js';
 import CheckBoxIcon from '../newcomps/CheckBoxIcon';
 import Button from '../newcomps/Button';
 import NavArrow from '../newcomps/NavArrow';
@@ -21,14 +22,14 @@ export default function CreateOnline1() {
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <NavArrow style={{marginVertical: 8}} onPress={() => navigation.goBack()}> </NavArrow>
-            <View style={[styles.container, {marginVertical: 0}]}>
+            <NavArrow style={{ marginVertical: 8 }} onPress={() => navigation.goBack()}> </NavArrow>
+            <View style={[styles.container, { marginVertical: 0 }]}>
                 <Text style={styles.title}>Create An Account</Text>
                 <View style={styles.divider} />
 
                 <TextInput
                     style={styles.input}
-                    placeholder="Email"
+                    placeholder="Username"
                     placeholderTextColor="#CCC"
                 />
                 <TextInput
@@ -40,12 +41,15 @@ export default function CreateOnline1() {
 
                 <View style={styles.checkboxContainer}>
                     <Pressable onPress={() => setIsChecked(!isChecked)}>
-                        {isChecked ? <CheckBoxIcon /> : <View style={styles.uncheckedBox} />}
+                        <View style={{}}>
+                            <View style={!isChecked ? styles.checkBox : [styles.checkBox, styles.checkBoxFill]} />
+                            {isChecked ? <View style={{ position: 'absolute' }}><CheckBoxIcon /></View> : null}
+                        </View>
                     </Pressable>
                     <Text style={styles.checkboxText}>
                         By checking this box, you acknowledge that your account will be online, allowing you to collaborate, connect, and communicate with other users. You also agree to follow our{' '}
                         <Text
-                            style={[styles.link, {fontFamily: 'Crimson Text', fontWeight: '500'}]}
+                            style={[styles.link, { fontFamily: 'Crimson Text', fontWeight: '500' }]}
                             onPress={() => Linking.openURL('https://example.com/community-guidelines')}
                         >
                             Community Guidelines
@@ -54,51 +58,29 @@ export default function CreateOnline1() {
                     </Text>
                 </View>
 
-                <Text style={[styles.warning, {display: 'none'}]}>
+                <Text style={[styles.warning, { display: 'none' }]}>
                     If you do not consent to an online account, DO NOT check the above box
                 </Text>
+
                 <Button textStyle={styles.buttonText} onPress={handleCreateAccount}>Sign Up</Button>
 
-                <TouchableOpacity>
-                    <Text style={[styles.linkText]} onPress={() => /*navigation.navigate('LocalAccount1')*/ setShowModal(true)}>
+                <TouchableOpacity onPress={() => setShowModal(true)}>
+                    <Text style={[styles.linkText]}>
                         Continue without Email
                     </Text>
                 </TouchableOpacity>
             </View>
 
             {/* Modal Popup */}
-            <Modal
-                animationType="fade"
-                transparent={true}
+            <GuestModal
                 visible={showModal}
-                onRequestClose={() => setShowModal(false)}
-            >
-                <Pressable style={styles.modalOverlay} onPress={() => setShowModal(false)}>
-                    <View style={styles.popupBox}>
-                        <TouchableOpacity
-                            style={styles.closeButton}
-                            onPress={() => setShowModal(false)}
-                        >
-                            <Text style={styles.closeButtonText}>✕</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.popupTitle}>Are you sure?</Text>
-                        <Text style={styles.popupMessage}>
-                            Without an online account, your progress will be saved to this device only.
-                            {'\n\n'}
-                            If the app is uninstalled or the device is reset, your data may be lost.
-                        </Text>
-                        <View style={styles.modalButtons}>
-                            <Button textStyle={[styles.modalConfirmText]} onPress={() => {
-                                    navigation.navigate('OfflineHomepage');
-                                    setShowModal(false);
-                                }}>
-                                Use Offline Account
-                            </Button>
-                        </View>
-                        <Text style={styles.popupFooter}>(You may change this later)</Text>
-                    </View>
-                </Pressable>
-            </Modal>
+                onClose={() => setShowModal(false)}
+                onConfirm={() => {
+                    navigation.navigate('OfflineHomepage');
+                    setShowModal(false);
+                }}
+                styles={styles}
+            />
         </ScrollView>
     );
 }
@@ -148,7 +130,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         marginBottom: 16,
     },
-    uncheckedBox: {
+    checkBox: {
         width: 24,
         height: 24,
         borderWidth: 2,
@@ -156,6 +138,10 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         marginRight: 10,
         marginTop: 4,
+    },
+    checkBoxFill: {
+        backgroundColor: '#e6e6e6',
+        borderColor: 'grey'
     },
     checkboxText: {
         flex: 1,
@@ -179,93 +165,6 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: '700',
         fontFamily: 'Crimson Text',
-    },
-
-    // Popup styles
-    modalOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    popupBox: {
-        width: '95%',
-        marginTop: 150,
-        backgroundColor: 'white',
-        borderRadius: 10,
-        padding: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 6,
-    },
-    closeButton: {
-        position: 'absolute',
-        top: 5,
-        right: 5,
-    },
-    closeButtonText: {
-        padding: 10,
-        fontSize: 22,
-        fontWeight: '600',
-    },
-    popupTitle: {
-        fontSize: 26,
-        fontWeight: 'bold',
-        fontFamily: 'Crimson Text',
-        marginBottom: 16,
-    },
-    popupMessage: {
-        fontSize: 16,
-        fontFamily: 'Crimson Text',
-        marginVertical: 12,
-    },
-    modalButtons: {
-        alignSelf: 'center',
-        width: '80%',
-        marginTop: 20,
-    },
-    modalCloseButton: {
-        backgroundColor: '#0B3D0B',
-        paddingVertical: 10,
-        paddingHorizontal: 24,
-        borderRadius: 30,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    modalCloseText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: '600',
-        fontFamily: 'Crimson Text',
-    },
-    modalConfirmButton: {
-        backgroundColor: '#FFD12D',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 30,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    modalConfirmText: {
-        color: '#000',
-        fontSize: 18,
-        fontWeight: '700',
-        fontFamily: 'Crimson Text',
-    },
-    popupFooter: {
-        fontSize: 14,
-        fontFamily: 'Crimson Text',
-        textAlign: 'center',
-        marginTop: 12,
-        color: '#555',
     },
     linkText: {
         marginTop: 12,
