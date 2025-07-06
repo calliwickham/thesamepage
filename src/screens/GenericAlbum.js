@@ -2,13 +2,15 @@ import { SafeAreaView, ScrollView, StyleSheet, View, Text, Image } from 'react-n
 import { useRoute } from "@react-navigation/native";
 
 import FileCard from '../newcomps/FileCard.js';
+import SearchBox from '../newcomps/SearchBox.js'
+import {ALBUMSTHEMES} from "../constants/AlbumsThemes.js"
 
 
 export default function GenericAlbum({ navigation }) {
     const route = useRoute();
     //destructure params
     const { albumKey } = route.params;
-    //const albumRules = albumThemes;
+    const albumThemes = ALBUMSTHEMES;
 
     const dummyFiles = [
         {
@@ -48,17 +50,30 @@ export default function GenericAlbum({ navigation }) {
     ]
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
-            <View style={{ borderWidth: 1, borderColor: 'blue', borderStyle: 'solid', width: '90%', alignItems: 'center' }}>
-                <Text> Meep </Text>
-                <View style={{ width: "90%", borderWidth: 1, borderColor: "red" }}>
-                    <FileCard file={dummyFiles[0]} />
-                    <FileCard file={dummyFiles[1]} />
-                    <FileCard file={dummyFiles[2]} />
-                    <FileCard file={dummyFiles[3]} />
-                </View>
-            </View>
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.header}> {albumThemes[albumKey].shortName} Files</Text>
+            <SearchBox placeholder="Search for..." style={styles.search} />
+
         </SafeAreaView>
     );
 }
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
+    },
+    header: {
+        fontSize: 32,
+        fontFamily: 'CrimsonText-BoldItalic',
+        textAlign: 'center',
+        marginVertical: 16,
+        fontWeight: 'bold',
+        marginBottom: 0
+    },
+    scrollContainer: {
+        paddingBottom: 0,
+        paddingLeft: '5%',
+        paddingRight: '5%'
+    },
+});

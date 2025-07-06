@@ -31,7 +31,7 @@ export default function Albums() {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.header}>My Albums</Text>
-            <SearchBox placeholder="Search for..." style={styles.search} />
+            {/*<SearchBox placeholder="Search for..." style={styles.search} />*/}
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 {dummyAlbumsData.map((album, index) => (
                     <View
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         marginVertical: 16,
         fontWeight: 'bold',
         paddingLeft: '5%',
-        marginBottom: 0
+        marginBottom: 10,
     },
     scrollContainer: {
         paddingBottom: 0,

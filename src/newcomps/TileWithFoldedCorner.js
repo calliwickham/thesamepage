@@ -6,7 +6,7 @@ const TileWithFoldedCorner = ({ children, style, fill, line }) => {
     const svgWidth = 320;
     const svgHeight = 126;
     const shadow2_X = 3;
-    const shadow2_Y = 6;
+    const shadow2_Y = 5;
 
     const fullSvgWidth = svgWidth + shadow2_X;
     const fullSvgHeight = svgHeight + shadow2_Y;
@@ -31,16 +31,28 @@ const TileWithFoldedCorner = ({ children, style, fill, line }) => {
                 fill="none"
                 preserveAspectRatio="none"
             >
+                {/* drawn shadows */}
                 <Path
-                    fill="rgba(0, 0, 0, 0.03)"
+                    fill="rgba(0, 0, 0, 0.1)"
+                    transform="translate(1,2)"
+                    d="M314 0a6 6 0 0 1 6 6v90.433L289.151 126H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6h308Z"
+                />
+                <Path
+                    fill="rgba(0,0,0,0.07)"
                     transform="translate(2,3)"
                     d="M314 0a6 6 0 0 1 6 6v90.433L289.151 126H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6h308Z"
                 />
                 <Path
-                    fill="rgba(0,0,0,0.02)"
-                    transform="translate(3,6)"
+                    fill="rgba(0,0,0,0.05)"
+                    transform="translate(3,4)"
                     d="M314 0a6 6 0 0 1 6 6v90.433L289.151 126H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6h308Z"
                 />
+                <Path
+                    fill="rgba(0,0,0,0.02)"
+                    transform="translate(3,5)"
+                    d="M314 0a6 6 0 0 1 6 6v90.433L289.151 126H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6h308Z"
+                />
+                {/* The file */}
                 <Path
                     fill={fill}
                     d="M314 0a6 6 0 0 1 6 6v90.433L289.151 126H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6h308Z"
