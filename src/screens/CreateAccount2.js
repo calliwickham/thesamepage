@@ -11,9 +11,11 @@ import {
 } from 'react-native';
 
 import Button from '../newcomps/Button';
+import GuestModal from './GuestModal.js';
 
 export default function CreateAccount2({ navigation }) {
     const [email, setEmail] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
     const handleSubmit = () => {
         Alert.alert('Account successfully created');
@@ -44,12 +46,21 @@ export default function CreateAccount2({ navigation }) {
 
                 <Button style={styles.button} textStyle={styles.buttonText} onPress={handleSubmit}>Continue</Button>
                 <TouchableOpacity>
-                    <Text style={styles.localAccountText} onPress={() => navigation.navigate('LocalAccount1')}>
+                    <Text style={styles.localAccountText} onPress={() => setShowModal(true)}>
                         Nevermind, Create Local Account
                     </Text>
                 </TouchableOpacity>
             </View>
 
+            <GuestModal
+                visible={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={() => {
+                    navigation.navigate('OfflineHomepage');
+                    setShowModal(false);
+                }}
+                styles={styles}
+            />
         </KeyboardAvoidingView>
     );
 }
@@ -122,11 +133,11 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     localAccountText: {
-    marginTop: 15,
-    color: '#0056A3',
-    fontSize: 16,
-    textAlign: 'center',
-    fontFamily: 'CrimsonText-Regular',
-    textDecorationLine: 'underline',
-  },
+        marginTop: 15,
+        color: '#0056A3',
+        fontSize: 16,
+        textAlign: 'center',
+        fontFamily: 'CrimsonText-Regular',
+        textDecorationLine: 'underline',
+    },
 });
