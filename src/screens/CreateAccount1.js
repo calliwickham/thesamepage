@@ -45,7 +45,7 @@ export default function CreateOnline1() {
                     <Text style={styles.checkboxText}>
                         By checking this box, you acknowledge that your account will be online, allowing you to collaborate, connect, and communicate with other users. You also agree to follow our{' '}
                         <Text
-                            style={styles.link}
+                            style={[styles.link, {fontFamily: 'Crimson Text', fontWeight: '500'}]}
                             onPress={() => Linking.openURL('https://example.com/community-guidelines')}
                         >
                             Community Guidelines
@@ -57,10 +57,10 @@ export default function CreateOnline1() {
                 <Text style={[styles.warning, {display: 'none'}]}>
                     If you do not consent to an online account, DO NOT check the above box
                 </Text>
-                <Button textStyle={styles.buttonText} onPress={handleCreateAccount}>Create Account</Button>
+                <Button textStyle={styles.buttonText} onPress={handleCreateAccount}>Sign Up</Button>
 
                 <TouchableOpacity>
-                    <Text style={styles.linkText} onPress={() => navigation.navigate('LocalAccount1')}>
+                    <Text style={[styles.linkText]} onPress={() => /*navigation.navigate('LocalAccount1')*/ setShowModal(true)}>
                         Continue without Email
                     </Text>
                 </TouchableOpacity>
