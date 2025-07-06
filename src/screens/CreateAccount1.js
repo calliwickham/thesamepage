@@ -10,26 +10,17 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function CreateOnline1() {
 
-    const [isChecked, setIsChecked] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const navigation = useNavigation();
 
-    const handleCreateAccount = () => {
-        if (!isChecked) {
-            setShowModal(true);
-        } else {
-            navigation.navigate('CreateAccount2');
-        }
-    };
-
+    //what happens when you submit the page
     const onSubmit = (formData) => {
         console.log('Form data:', formData);
         navigation.navigate('OnlineHomepage');
-        // Example: navigation.navigate('NextScreen');
     };
 
     //form stuff
-    const { control, handleSubmit, formState: { errors }, clearErrors } = useForm();
+    const { control, handleSubmit, formState: { errors }, clearErrors } = useForm({mode: 'onSubmit', reValidateMode: 'onSubmit'});
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -40,7 +31,7 @@ export default function CreateOnline1() {
 
                 <Controller
                     control={control}
-                    name="username"
+                    name="Email Address"
                     rules={{ required: true }}
                     render={({ field: { onChange, value } }) => (
                         <TextInput
@@ -53,7 +44,7 @@ export default function CreateOnline1() {
                             placeholderTextColor="#CCC"
                             style={[
                                 styles.input,
-                                errors.username && { borderColor: 'red', borderWidth: 2 }
+                                errors.username && styles.inputError
                             ]}
                         />
                     )}
@@ -74,19 +65,42 @@ export default function CreateOnline1() {
                             placeholderTextColor="#CCC"
                             style={[
                                 styles.input,
-                                errors.password && { borderColor: 'red', borderWidth: 2 }
+                                errors.password && styles.inputError
                             ]}
                         />
                     )}
                 />
 
                 <View style={styles.checkboxContainer}>
-                    <Pressable onPress={() => setIsChecked(!isChecked)}>
-                        <View style={{}}>
-                            <View style={!isChecked ? styles.checkBox : [styles.checkBox, styles.checkBoxFill]} />
-                            {isChecked ? <View style={{ position: 'absolute' }}><CheckBoxIcon /></View> : null}
-                        </View>
-                    </Pressable>
+                    <Controller
+                        control={control}
+                        name="isChecked"
+                        rules={{ validate: value => value || 'Required' }}
+                        render={({ field: { value, onChange } }) => (
+                            <Pressable
+                                onPress={() => {
+                                    const newValue = !value;
+                                    onChange(newValue); // updates RHF form value
+                                    if (errors.isChecked && newValue) clearErrors('isChecked');
+                                }}
+                            >
+                                <View>
+                                    <View
+                                        style={[
+                                            styles.checkBox,
+                                            value && styles.checkBoxFill,
+                                            errors.isChecked && [ styles.inputError, {borderWidth: 2 }]
+                                        ]}
+                                    />
+                                    {value && (
+                                        <View style={{ position: 'absolute' }}>
+                                            <CheckBoxIcon />
+                                        </View>
+                                    )}
+                                </View>
+                            </Pressable>
+                        )}
+                    />
                     <Text style={styles.checkboxText}>
                         By checking this box, you acknowledge that your account will be online, allowing you to collaborate, connect, and communicate with other users. You also agree to follow our{' '}
                         <Text
@@ -217,4 +231,9 @@ const styles = StyleSheet.create({
         fontFamily: 'CrimsonText-Regular',
         textDecorationLine: 'underline',
     },
+    inputError: {
+        borderColor: 'red',
+        borderStyle: 'solid',
+        borderWidth: 1
+    }
 });
