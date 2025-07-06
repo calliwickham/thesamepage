@@ -12,14 +12,11 @@ export default function FileViewer() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                activeOpacity={0.4}
-                style={{marginTop: 4}}
-            >
+            <TouchableOpacity onPress={() => navigation.goBack()} activeOpacity={0.4} style={{marginTop: 4}}>
                 <NavArrow />
             </TouchableOpacity>
             <Text style={styles.header}> {file.title} </Text>
+            <View style={styles.divider} />
             <Text style={{ color: 'red', fontWeight: 'bold', margin: 10 }}> Still in development: This page isn't complete! </Text>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <Text style={styles.text}> {file.text} </Text>
@@ -43,7 +40,7 @@ const styles = StyleSheet.create({
         marginBottom: 0
     },
     scrollContainer: {
-        paddingBottom: 6,
+        marginBottom: 6,
         paddingLeft: '5%',
         paddingRight: '5%',
     },
@@ -51,5 +48,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'Crimson Text',
         textAlign: 'left',
-    }
+    },
+    divider: {
+        height: 1,
+        backgroundColor: 'black',
+        width: '100%',
+    },
 });
