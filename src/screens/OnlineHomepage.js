@@ -47,7 +47,7 @@ export default function OnlineHomepage() {
                 {/* Daily Challenge */}
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#FFF1DC' }, styles.right]}
-                    onPress={() => navigation.navigate('Challenge')}
+                    onPress={() => navigation.navigate('DailyChallengeScreen')}
                 >
                     <View style={[styles.circle, { borderColor: '#F8E6C7' }]}>
                         <CalendarIcon width={40} height={40} />
@@ -67,7 +67,7 @@ export default function OnlineHomepage() {
                 {/* Free Write */}
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#E4E4E4' }, styles.left]}
-                    onPress={() => navigation.navigate('FreeWrite')}
+                    onPress={() => navigation.navigate('FreeWriteScreen1')}
                 >
                     <View style={[styles.circle, { borderColor: '#DDDDDD' }]}>
                         <SinglePage width={40} height={40} />
@@ -81,7 +81,7 @@ export default function OnlineHomepage() {
                 {/* Collaborative Mode */}
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#E9F0E6' }, styles.right]}
-                    onPress={() => navigation.navigate('CollaborativeLanding')}
+                    onPress={() => navigation.navigate('CollabWIP')}
                 >
                     <View style={[styles.circle, { borderColor: '#DBE9D4' }]}>
                         <View style={{ transform: [{ translateX: -3 }, { translateY: -2 }] }}>
@@ -91,9 +91,6 @@ export default function OnlineHomepage() {
                     <View style={styles.textContainer}>
                         <Text style={styles.cardTitle}>Collaborative Mode</Text>
                         <Text style={styles.cardText}>Weave a story together with new friends</Text>
-                    </View>
-                    <View style={styles.topRight}>
-                        <InProgressIcon />
                     </View>
                 </TouchableOpacity>
             </ScrollView>

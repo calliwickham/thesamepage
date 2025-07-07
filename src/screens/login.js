@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         paddingHorizontal: 24,
         paddingTop: 24,
-        paddingBottom: 80,
+        paddingBottom: 100,
         alignItems: 'center',
     },
     welcome: {

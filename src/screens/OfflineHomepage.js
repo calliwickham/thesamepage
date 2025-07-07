@@ -58,9 +58,24 @@ export default function OfflineHomepage() {
                 </View>
             </View>
         ) : (
-            <TouchableOpacity onPress={() => navigation.navigate('FreeWrite')}>
-                <View style={[styles.card, { backgroundColor }, position === "left" && styles.left, position === "right" && styles.right]}>
-                    {CardContent}
+            <TouchableOpacity
+                onPress={() => {
+                if (title === "Free Write") {
+                    navigation.navigate('FreeWriteScreen1');
+                } else if (title === "Daily Challenge") {
+                    navigation.navigate('DailyChallengeScreen'); // placeholder
+                }
+                }}
+            >
+                <View
+                style={[
+                    styles.card,
+                    { backgroundColor },
+                    position === "left" && styles.left,
+                    position === "right" && styles.right,
+                ]}
+                >
+                {CardContent}
                 </View>
             </TouchableOpacity>
         );

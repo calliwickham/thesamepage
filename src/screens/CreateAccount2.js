@@ -8,6 +8,10 @@ import {
     Alert,
     Platform,
 } from 'react-native';
+import { useUser } from '../contexts/UserContext';
+
+
+
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm, Controller } from 'react-hook-form';
@@ -18,7 +22,7 @@ import NavArrow from '../newcomps/NavArrow';
 import GuestModal from './GuestModal.js';
 
 export default function CreateAccount2({ navigation }) {
-
+    const { setUserType } = useUser();
     const [showModal, setShowModal] = useState(false);
 
     const { control, handleSubmit, formState: { errors }, clearErrors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
@@ -73,7 +77,10 @@ export default function CreateAccount2({ navigation }) {
                     )}
                 />
 
-                <Button style={styles.button} textStyle={styles.buttonText} onPress={handleSubmit(onSubmit)}>Continue</Button>
+                <Button style={styles.button} textStyle={styles.buttonText} onPress={() => {
+    setUserType('online');
+    handleSubmit(onSubmit)();
+  }}>Continue</Button>
             </View>
 
             <GuestModal

@@ -4,23 +4,19 @@ import { useNavigation } from '@react-navigation/native';
 
 import HomeIcon from './HomeIcon';
 import AlbumIcon from './AlbumIcon';
-import FriendsIcon from './FriendsIcon';
 import SettingsIcon from './SettingsIcon';
 
 const Footer = () => {
     const navigation = useNavigation();
     return (
         <View style={styles.footer}>
-            <TouchableOpacity onPress={() => navigation.navigate('OnlineHomepage')}>
+            <TouchableOpacity onPress={() => navigation.navigate('OfflineHomepage')}>
                 <HomeIcon width={36} height={34} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Albums')}>
                 <AlbumIcon width={41} height={36} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('MyFriends')}>
-                <FriendsIcon width={41} height={42} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('OnlineSettingsPage')}>
+            <TouchableOpacity onPress={() => navigation.navigate('OfflineSettingsPage')}>
                 <SettingsIcon width={39} height={39} />
             </TouchableOpacity>
         </View>

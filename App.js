@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -8,15 +7,19 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import Header from './src/newcomps/Header';
 import Footer from './src/newcomps/Footer';
+import OfflineFooter from './src/newcomps/OfflineFooter';
+import { UserProvider, useUser } from './src/contexts/UserContext';
+
 import {
-    DebugScreen,
-    ChallengeScreen,
-    CreateStoryScreen,
-    FriendsScreen,
+  DebugScreen,
+  ChallengeScreen,
+  CreateStoryScreen,
+  FriendsScreen,
 } from './src/screens/initialscreens';
+
 import GenericAlbumDebug from './src/screens/GenericAlbumTest';
 import GenericAlbum from './src/screens/GenericAlbum';
-import Albums from './src/screens/Albums.js'
+import Albums from './src/screens/Albums.js';
 import FileViewer from './src/screens/FileViewer';
 import OnlineHomepage from './src/screens/OnlineHomepage';
 import OfflineHomepage from './src/screens/OfflineHomepage';
@@ -28,6 +31,15 @@ import EditOnlineSettingsPage from './src/screens/EditOnlineSettingsPage.js';
 import ResetPassword from './src/screens/ResetPassword.js';
 import OfflineSettingsPage from './src/screens/OfflineSettingsPage.js';
 import EditOfflineSettingsPage from './src/screens/EditOfflineSettingsPage.js';
+import FreeWriteScreen1 from './src/screens/FreeWriteScreen1.js';
+import FreeWriteScreen2 from './src/screens/FreeWriteScreen2.js';
+import FreeWriteInspireMe from './src/screens/FreeWriteInspireMe.js';
+import DailyChallengeScreen from './src/screens/DailyChallengeScreen.js';
+import MyFriends from './src/screens/MyFriends.js';
+import EditFriends from './src/screens/EditFriends.js';
+import AddFriends from './src/screens/AddFriends.js';
+import FriendRequests from './src/screens/FriendRequests.js';
+import CollaborativeWritingWIP from './src/newcomps/CollaborativeWritingWIP.js';
 import AuthGate from './src/screens/AuthGate.js'
 
 import { onAuthStateChanged } from "firebase/auth";
@@ -35,15 +47,15 @@ import { auth } from './src/constants/firebaseConfig.js'
 
 const Stack = createNativeStackNavigator();
 
-export default function App() {
-    const [fontsLoaded] = useFonts({
-        Italianno: require('./assets/fonts/Italianno-Regular.ttf'),
-        'CrimsonText-Regular': require('./assets/fonts/CrimsonText-Regular.ttf'),
-        'CrimsonText-SemiBold': require('./assets/fonts/CrimsonText-SemiBold.ttf'),
-        'CrimsonText-Bold': require('./assets/fonts/CrimsonText-Bold.ttf'),
-        'CrimsonText-Italic': require('./assets/fonts/CrimsonText-Italic.ttf'),
-        'CrimsonText-BoldItalic': require('./assets/fonts/CrimsonText-BoldItalic.ttf'),
-    });
+function AppContent() {
+  const [fontsLoaded] = useFonts({
+    Italianno: require('./assets/fonts/Italianno-Regular.ttf'),
+    'CrimsonText-Regular': require('./assets/fonts/CrimsonText-Regular.ttf'),
+    'CrimsonText-SemiBold': require('./assets/fonts/CrimsonText-SemiBold.ttf'),
+    'CrimsonText-Bold': require('./assets/fonts/CrimsonText-Bold.ttf'),
+    'CrimsonText-Italic': require('./assets/fonts/CrimsonText-Italic.ttf'),
+    'CrimsonText-BoldItalic': require('./assets/fonts/CrimsonText-BoldItalic.ttf'),
+  });
 
     const navigationRef = useNavigationContainerRef();
     const [currentRoute, setCurrentRoute] = React.useState(null);
@@ -67,16 +79,16 @@ export default function App() {
         return unsubscribe;
     }, []);
 
-    const hideFooterRoutes = ['CreateAccount1', 'CreateAccount2', 'Login'];
-    const shouldShowFooter = !hideFooterRoutes.includes(currentRoute);
+  const hideFooterRoutes = ['CreateAccount1', 'CreateAccount2', 'Login'];
+  const shouldShowFooter = !hideFooterRoutes.includes(currentRoute);
 
-    if (!fontsLoaded) {
-        return (
-            <View style={styles.loading}>
-                <ActivityIndicator size="large" color="#BB77FF" />
-            </View>
-        );
-    }
+  if (!fontsLoaded) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color="#BB77FF" />
+      </View>
+    );
+  }
 
     return (
         <GestureHandlerRootView style={styles.flex}>
@@ -127,34 +139,17 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#FFFDF9',
-    },
-    loading: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    content: {
-        flex: 1,
-        marginBottom: 72, // Reserve space for the footer height
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFDF9',
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  content: {
+    flex: 1,
+    marginBottom: 72, // Reserve space for the footer
+  },
 });
-
-
-
-//App.js test file, use to view Generic Album Page Component
-/*
-import { View } from 'react-native';
-
-import GenericAlbumPage from './src/screens/GenericAlbumTest.js'
-
-
-export default function App() {
-  return (
-    <View style={{ flex: 1 , backgroundColor: 'white'}}>
-        <GenericAlbumPage/>
-    </View>
-  );
-}*/

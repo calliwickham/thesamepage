@@ -40,10 +40,7 @@ export default function EditOfflineSettingsPage() {
     <ScrollView keyboardShouldPersistTaps="handled">
       <View style={styles.container}>
         <Text style={styles.header}>Your Account</Text>
-
-        <Text style={styles.label}>Username</Text>
-        <TextInput style={[styles.input, styles.disabledInput]} value="supercoolwriter69" editable={false} />
-
+        
         <Text style={styles.label}>Date Joined</Text>
         <TextInput style={[styles.input, styles.disabledInput]} value="06/21/2025" editable={false} />
 
