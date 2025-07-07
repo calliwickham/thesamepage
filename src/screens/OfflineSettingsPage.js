@@ -28,9 +28,6 @@ export default function OfflineSettingsPage() {
     <View style={styles.container}>
       <Text style={styles.title}>Your Account</Text>
 
-      <Text style={styles.label}>Username</Text>
-      <Text style={styles.value}>supercoolwriter69</Text>
-
       <Text style={styles.label}>Date Joined</Text>
       <Text style={styles.value}>06/21/2025</Text>
 

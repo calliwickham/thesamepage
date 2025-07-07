@@ -7,12 +7,13 @@ import CheckBoxIcon from '../newcomps/CheckBoxIcon';
 import Button from '../newcomps/Button';
 import NavArrow from '../newcomps/NavArrow';
 import { useNavigation } from '@react-navigation/native';
+import { useUser } from '../contexts/UserContext';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import isEmail from 'validator/lib/isEmail';
 
 export default function CreateOnline1() {
-
+    const { setUserType } = useUser();
     const [showModal, setShowModal] = useState(false);
     const navigation = useNavigation();
 
@@ -162,7 +163,10 @@ export default function CreateOnline1() {
                     If you do not consent to an online account, DO NOT check the above box
                 </Text>
 
-                <Button textStyle={styles.buttonText} onPress={handleSubmit(onSubmit)}>
+                <Button textStyle={styles.buttonText} onPress={() => {
+                        setUserType('online');
+                        handleSubmit(onSubmit)();
+                    }}>
                     Sign Up
                 </Button>
 
@@ -180,6 +184,7 @@ export default function CreateOnline1() {
                 onConfirm={() => {
                     navigation.navigate('OfflineHomepage');
                     setShowModal(false);
+                    setUserType('offline');
                 }}
                 styles={styles}
             />
