@@ -28,10 +28,13 @@ export default function LoginScreen() {
             await signInWithEmailAndPassword(auth, email, password);
             navigation.navigate('OnlineHomepage');
         } catch (error) {
-            if (error.code === 'auth/user-not-found') {
-                setAuthError('email');
-            } else if (error.code === 'auth/wrong-password') {
-                setAuthError('password');
+            console.log('Login error code:', error.code); // Debug log
+            if (
+                error.code === 'auth/user-not-found' ||
+                error.code === 'auth/wrong-password' ||
+                error.code === 'auth/invalid-credential'
+            ) {
+                setAuthError('credentials');
             } else {
                 console.log('Unhandled error:', error);
             }
@@ -62,8 +65,8 @@ export default function LoginScreen() {
                             {errors.email && (
                                 <Text style={styles.warning}>{errors.email.message}</Text>
                             )}
-                            {authError === 'email' && (
-                                <Text style={styles.warning}>Email not found</Text>
+                            {authError === 'credentials' && (
+                                <Text style={[styles.warning, {color: 'red'}]}>Incorrect email or password</Text>
                             )}
                             <TextInput
                                 value={value}
@@ -92,6 +95,9 @@ export default function LoginScreen() {
                             {authError === 'password' && (
                                 <Text style={styles.warning}>Incorrect password</Text>
                             )}
+                            {errors.password && (
+                                <Text style={styles.warning}>{errors.password.message}</Text>
+                            )}
                             <TextInput
                                 value={value}
                                 onChangeText={(text) => {
@@ -103,7 +109,7 @@ export default function LoginScreen() {
                                 placeholderTextColor="#CCC"
                                 style={[
                                     styles.input,
-                                    authError === 'password' && styles.inputError
+                                    (errors.password || authError === 'password') && styles.inputError
                                 ]}
                             />
                         </>
@@ -236,5 +242,12 @@ const styles = StyleSheet.create({
         borderColor: 'red',
         borderStyle: 'solid',
         borderWidth: 1
-    }
+    },
+    warning: {
+        color: '#B00000',
+        fontFamily: 'Crimson Text',
+        fontSize: 16,
+        fontWeight: '600',
+        textAlign: 'left',
+    },
 });
