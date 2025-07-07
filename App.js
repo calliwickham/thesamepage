@@ -47,7 +47,7 @@ import { auth } from './src/constants/firebaseConfig.js'
 
 const Stack = createNativeStackNavigator();
 
-function AppContent() {
+export default function App() {
     const [fontsLoaded] = useFonts({
         Italianno: require('./assets/fonts/Italianno-Regular.ttf'),
         'CrimsonText-Regular': require('./assets/fonts/CrimsonText-Regular.ttf'),
