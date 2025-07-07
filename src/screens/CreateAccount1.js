@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, TouchableOpacity, Linking, ScrollView, Modal } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import isEmail from 'validator/lib/isEmail';
 
 import GuestModal from './GuestModal.js';
 import CheckBoxIcon from '../newcomps/CheckBoxIcon';
@@ -8,18 +10,43 @@ import Button from '../newcomps/Button';
 import NavArrow from '../newcomps/NavArrow';
 import { useNavigation } from '@react-navigation/native';
 
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import isEmail from 'validator/lib/isEmail';
+
+
+//firebase imports
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, firestore } from '../constants/firebaseConfig.js'
+import { doc, setDoc } from "firebase/firestore";
+
 
 export default function CreateOnline1() {
 
     const [showModal, setShowModal] = useState(false);
     const navigation = useNavigation();
 
-    //what happens when you submit the page
-    const onSubmit = (formData) => {
-        console.log('Form data:', formData);
+    //what happens when you submit the form
+    const onSubmit = (form) => {
+        console.log('Form data:', form);
         navigation.navigate('OnlineHomepage');
+
+        createUserWithEmailAndPassword(auth, form.email, form.password)
+            .then(async (userCredential) => {
+                // Signed up 
+                const user = userCredential.user.uid;
+                await setDoc(doc(firestore, "Users", user), {
+                    penname: form.username,
+                    email: form.email,
+                    joined: new Date(),
+                    emailVerified: false,
+                });
+                alert(form.username + " logged in.")
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                alert(errorMessage);
+                // ..
+            });
     };
 
     //form stuff
