@@ -8,21 +8,21 @@ import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Platform } from '
  * @param style - optional styling for the button if you want to overwrite button defaults
  * @param onPress - function for what to do when button is pressed, button is touchable opacity.
  */
-export default Button = ({ children, style, color, icon, onPress }) => {
+export default Button = ({ children, style, textStyle, color, icon, onPress }) => {
 
     let buttonColorStyle = styles.yellow;
-    let labelStyle = styles.label;
+    let lableStyle = styles.label;
 
     if (color == 'green') {
         buttonColorStyle = styles.green;
-        labelStyle = styles.greenLabel;
+        lableStyle = styles.greenLabel;
     }
     else if (color == 'red') {
         buttonColorStyle = styles.red;
     }
     else if (color == 'error') {
         buttonColorStyle = styles.error;
-        labelStyle = styles.errorLabel;
+        lableStyle = styles.errorLabel;
     }
 
     //if button has no function
@@ -33,7 +33,7 @@ export default Button = ({ children, style, color, icon, onPress }) => {
     return (
         <TouchableOpacity style={[styles.button, buttonColorStyle, style]} onPress={() => onPress()}>
             {icon} 
-            <Text style={[styles.label, labelStyle]}> {children} </Text>
+            <Text style={[styles.label, lableStyle, textStyle]}> {children} </Text>
         </TouchableOpacity>
     )
 

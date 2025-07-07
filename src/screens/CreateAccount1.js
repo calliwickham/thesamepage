@@ -1,280 +1,283 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, TouchableOpacity, Linking, ScrollView, Modal } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+
+import GuestModal from './GuestModal.js';
 import CheckBoxIcon from '../newcomps/CheckBoxIcon';
+import Button from '../newcomps/Button';
+import NavArrow from '../newcomps/NavArrow';
 import { useNavigation } from '@react-navigation/native';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import isEmail from 'validator/lib/isEmail';
+
 export default function CreateOnline1() {
-  const [isChecked, setIsChecked] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const navigation = useNavigation();
 
-  const handleCreateAccount = () => {
-    if (!isChecked) {
-      setShowModal(true);
-    } else {
-      navigation.navigate('CreateAccount2');
-    }
-  };
+    const [showModal, setShowModal] = useState(false);
+    const navigation = useNavigation();
 
-  return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Create An Account</Text>
-        <View style={styles.divider} />
+    //what happens when you submit the page
+    const onSubmit = (formData) => {
+        console.log('Form data:', formData);
+        navigation.navigate('OnlineHomepage');
+    };
 
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          placeholderTextColor="#CCC"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-          placeholderTextColor="#CCC"
-        />
+    //form stuff
+    const { control, handleSubmit, formState: { errors }, clearErrors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
 
-        <View style={styles.checkboxContainer}>
-          <Pressable onPress={() => setIsChecked(!isChecked)}>
-            {isChecked ? <CheckBoxIcon /> : <View style={styles.uncheckedBox} />}
-          </Pressable>
-          <Text style={styles.checkboxText}>
-            By checking this box, you acknowledge that your account will be online, allowing you to collaborate, connect, and communicate with other users. You also agree to follow our{' '}
-            <Text
-              style={styles.link}
-              onPress={() => Linking.openURL('https://example.com/community-guidelines')}
-            >
-              Community Guidelines
-            </Text>{' '}
-            and to interact respectfully, avoiding any behavior that could make others feel uncomfortable.
-          </Text>
-        </View>
+    return (
+        <KeyboardAwareScrollView contentContainerStyle={styles.scrollContainer}>
+            <NavArrow style={{ marginVertical: 8 }} onPress={() => navigation.goBack()}> </NavArrow>
+            <View style={[styles.container, { marginVertical: 0 }]}>
+                <Text style={styles.title}>Create An Account</Text>
+                <View style={styles.divider} />
 
-        <Text style={styles.warning}>
-          If you do not consent to an online account, DO NOT check the above box
-        </Text>
+                <Controller
+                    control={control}
+                    name="email"
+                    rules={{
+                        required: true,
+                        validate: value => isEmail(value) || 'Please enter a valid email address'
+                    }}
+                    render={({ field: { onChange, value } }) => (
+                        <>
+                            {errors.email && (
+                                <Text style={styles.warning}>{errors.email.message}</Text>
+                            )}
+                            <TextInput
+                                value={value}
+                                onChangeText={(text) => {
+                                    onChange(text);
+                                    //if (errors.email) clearErrors('email');
+                                }}
+                                placeholder="Email Address"
+                                placeholderTextColor="#CCC"
+                                keyboardType="email-address"
+                                style={[
+                                    styles.input,
+                                    errors.email && styles.inputError
+                                ]}
+                            />
+                        </>
+                    )}
+                />
 
-        <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
-          <Text style={styles.buttonText}>Create Account</Text>
-        </TouchableOpacity>
-      </View>
+                <Controller
+                    control={control}
+                    name="username"
+                    rules={{ required: true }}
+                    render={({ field: { onChange, value } }) => (
+                        <TextInput
+                            value={value}
+                            onChangeText={(text) => {
+                                onChange(text);
+                                if (errors.username) clearErrors('username');
+                            }}
+                            placeholder="Username"
+                            placeholderTextColor="#CCC"
+                            style={[
+                                styles.input,
+                                errors.username && styles.inputError
+                            ]}
+                        />
+                    )}
+                />
 
-      {/* Modal Popup */}
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={showModal}
-        onRequestClose={() => setShowModal(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.popupBox}>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setShowModal(false)}
-            >
-              <Text style={styles.closeButtonText}>✕</Text>
-            </TouchableOpacity>
-            <Text style={styles.popupTitle}>Are you sure?</Text>
-            <Text style={styles.popupMessage}>
-              Without an online account, your progress will be saved to this device only.
-            </Text>
-            <Text style={styles.popupMessage}>
-              If the app is uninstalled or the device is reset, your data may be lost.
-            </Text>
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                style={styles.modalCloseButton}
-                onPress={() => setShowModal(false)}
-              >
-                <Text style={styles.modalCloseText}>Close</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.modalConfirmButton}
-                onPress={() => {
-                  setShowModal(false);
-                  navigation.navigate('LocalAccount1');
-                }}
-              >
-                <Text style={styles.modalConfirmText}>Make Offline Account</Text>
-              </TouchableOpacity>
+                <Controller
+                    control={control}
+                    name="password"
+                    rules={{
+                        required: true,
+                        minLength: {
+                            value: 8,
+                            message: 'Password must be at least 8 characters',
+                        },
+                    }}
+                    render={({ field: { onChange, value } }) => (
+                        <>
+                            {errors.password && (
+                                <Text style={styles.warning}>{errors.password.message}</Text>
+                            )}
+                            <TextInput
+                                value={value}
+                                onChangeText={(text) => {
+                                    onChange(text);
+                                    //if (errors.password) clearErrors('password');
+                                }}
+                                secureTextEntry
+                                placeholder="Password"
+                                placeholderTextColor="#CCC"
+                                style={[
+                                    styles.input,
+                                    errors.password && styles.inputError
+                                ]}
+                            />
+                        </>
+                    )}
+                />
+
+                <View style={styles.checkboxContainer}>
+                    <Controller
+                        control={control}
+                        name="isChecked"
+                        rules={{ validate: value => value || 'Required' }}
+                        render={({ field: { value, onChange } }) => (
+                            <Pressable
+                                onPress={() => {
+                                    const newValue = !value;
+                                    onChange(newValue); // updates RHF form value
+                                    if (errors.isChecked && newValue) clearErrors('isChecked');
+                                }}
+                            >
+                                <View>
+                                    <View
+                                        style={[
+                                            styles.checkBox,
+                                            value && styles.checkBoxFill,
+                                            errors.isChecked && [styles.inputError, { borderWidth: 2 }]
+                                        ]}
+                                    />
+                                    {value && (
+                                        <View style={{ position: 'absolute' }}>
+                                            <CheckBoxIcon />
+                                        </View>
+                                    )}
+                                </View>
+                            </Pressable>
+                        )}
+                    />
+                    <Text style={styles.checkboxText}>
+                        By checking this box, you acknowledge that your account will be online, allowing you to collaborate, connect, and communicate with other users. You also agree to follow our{' '}
+                        <Text
+                            style={[styles.link, { fontFamily: 'Crimson Text', fontWeight: '500' }]}
+                            onPress={() => Linking.openURL('https://example.com/community-guidelines')}
+                        >
+                            Community Guidelines
+                        </Text>{' '}
+                        and to interact respectfully, avoiding any behavior that could make others feel uncomfortable.
+                    </Text>
+                </View>
+
+                <Text style={[styles.warning, { display: 'none' }]}>
+                    If you do not consent to an online account, DO NOT check the above box
+                </Text>
+
+                <Button textStyle={styles.buttonText} onPress={handleSubmit(onSubmit)}>
+                    Sign Up
+                </Button>
+
+                <TouchableOpacity onPress={() => setShowModal(true)}>
+                    <Text style={[styles.linkText]}>
+                        Continue without Email
+                    </Text>
+                </TouchableOpacity>
             </View>
-            <Text style={styles.popupFooter}>(You may change this later)</Text>
-          </View>
-        </View>
-      </Modal>
-    </ScrollView>
-  );
+
+            {/* Modal Popup */}
+            <GuestModal
+                visible={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={() => {
+                    navigation.navigate('OfflineHomepage');
+                    setShowModal(false);
+                }}
+                styles={styles}
+            />
+        </KeyboardAwareScrollView>
+    );
 }
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    paddingBottom: 40,
-  },
-  container: {
-    margin: 20,
-    padding: 20,
-    backgroundColor: 'white',
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    fontFamily: 'Crimson Text',
-    marginBottom: 8,
-  },
-  divider: {
-    height: 2,
-    backgroundColor: '#000',
-    marginBottom: 20,
-  },
-  input: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 14,
-    fontSize: 24,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
-    elevation: 3,
-    fontFamily: 'CrimsonText-Regular',
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 16,
-  },
-  uncheckedBox: {
-    width: 24,
-    height: 24,
-    borderWidth: 2,
-    borderColor: '#000',
-    borderRadius: 4,
-    marginRight: 10,
-    marginTop: 4,
-  },
-  checkboxText: {
-    flex: 1,
-    fontSize: 16,
-    fontFamily: 'Crimson Text',
-    color: '#000',
-  },
-  link: {
-    color: '#0056B3',
-    textDecorationLine: 'underline',
-  },
-  warning: {
-    color: '#B00000',
-    fontFamily: 'Crimson Text',
-    fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: '#FFD12D',
-    borderRadius: 30,
-    paddingVertical: 14,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  buttonText: {
-    fontFamily: 'Crimson Text',
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#000',
-  },
-
-  // Popup styles
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  popupBox: {
-    width: 320,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 6,
-  },
-  closeButton: {
-    alignSelf: 'flex-end',
-  },
-  closeButtonText: {
-    fontSize: 22,
-    fontWeight: '600',
-  },
-  popupTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    fontFamily: 'Crimson Text',
-    marginBottom: 10,
-  },
-  popupMessage: {
-    fontSize: 16,
-    fontFamily: 'Crimson Text',
-    marginBottom: 8,
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-  },
-  modalCloseButton: {
-    backgroundColor: '#0B3D0B',
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    borderRadius: 30,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  modalCloseText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
-    fontFamily: 'Crimson Text',
-  },
-  modalConfirmButton: {
-    backgroundColor: '#FFD12D',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 30,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  modalConfirmText: {
-    color: '#000',
-    fontSize: 18,
-    fontWeight: '700',
-    fontFamily: 'Crimson Text',
-  },
-  popupFooter: {
-    fontSize: 14,
-    fontFamily: 'Crimson Text',
-    textAlign: 'center',
-    marginTop: 12,
-    color: '#555',
-  },
+    scrollContainer: {
+        paddingBottom: 40,
+    },
+    container: {
+        margin: 20,
+        padding: 20,
+        paddingBottom: 15,
+        backgroundColor: 'white',
+        borderRadius: 12,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    title: {
+        fontSize: 32,
+        fontWeight: 'bold',
+        fontFamily: 'Crimson Text',
+        marginBottom: 8,
+    },
+    divider: {
+        height: 2,
+        backgroundColor: '#000',
+        marginBottom: 20,
+    },
+    input: {
+        backgroundColor: '#fff',
+        borderRadius: 12,
+        padding: 12,
+        fontSize: 20,
+        marginBottom: 18,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.15,
+        shadowRadius: 3,
+        elevation: 3,
+        fontFamily: 'CrimsonText-Regular',
+    },
+    checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        marginBottom: 16,
+    },
+    checkBox: {
+        width: 24,
+        height: 24,
+        borderWidth: 2,
+        borderColor: '#000',
+        borderRadius: 4,
+        marginRight: 10,
+        marginTop: 4,
+    },
+    checkBoxFill: {
+        backgroundColor: '#e6e6e6',
+        borderColor: 'grey'
+    },
+    checkboxText: {
+        flex: 1,
+        fontSize: 16,
+        fontFamily: 'Crimson Text',
+        color: '#000',
+    },
+    link: {
+        color: '#0056B3',
+        textDecorationLine: 'underline',
+    },
+    warning: {
+        color: '#B00000',
+        fontFamily: 'Crimson Text',
+        fontSize: 16,
+        fontWeight: '600',
+        textAlign: 'left',
+    },
+    buttonText: {
+        fontSize: 22,
+        fontWeight: '700',
+        fontFamily: 'Crimson Text',
+    },
+    linkText: {
+        marginTop: 12,
+        color: '#0056A3',
+        fontSize: 16,
+        textAlign: 'center',
+        fontFamily: 'CrimsonText-Regular',
+        textDecorationLine: 'underline',
+    },
+    inputError: {
+        borderColor: 'red',
+        borderStyle: 'solid',
+        borderWidth: 1
+    }
 });

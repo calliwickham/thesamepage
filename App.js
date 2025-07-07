@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -24,8 +24,6 @@ import OfflineHomepage from './src/screens/OfflineHomepage';
 import LoginScreen from './src/screens/login';
 import CreateOnline1 from './src/screens/CreateAccount1';
 import CreateAccount2 from './src/screens/CreateAccount2';
-import GuestAccountPage from './src/screens/LocalAccount1.js';
-import PennameScreen from './src/screens/LocalAccount2.js';
 import OnlineSettingsPage from './src/screens/OnlineSettingsPage.js';
 import EditOnlineSettingsPage from './src/screens/EditOnlineSettingsPage.js';
 import ResetPassword from './src/screens/ResetPassword.js';
@@ -38,14 +36,20 @@ import FreeWriteInspireMe from './src/screens/FreeWriteInspireMe.js';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    Italianno: require('./assets/fonts/Italianno-Regular.ttf'),
-    'CrimsonText-Regular': require('./assets/fonts/CrimsonText-Regular.ttf'),
-    'CrimsonText-SemiBold': require('./assets/fonts/CrimsonText-SemiBold.ttf'),
-    'CrimsonText-Bold': require('./assets/fonts/CrimsonText-Bold.ttf'),
-    'CrimsonText-Italic': require('./assets/fonts/CrimsonText-Italic.ttf'),
-    'CrimsonText-BoldItalic': require('./assets/fonts/CrimsonText-BoldItalic.ttf'),
-  });
+    const [fontsLoaded] = useFonts({
+        Italianno: require('./assets/fonts/Italianno-Regular.ttf'),
+        'CrimsonText-Regular': require('./assets/fonts/CrimsonText-Regular.ttf'),
+        'CrimsonText-SemiBold': require('./assets/fonts/CrimsonText-SemiBold.ttf'),
+        'CrimsonText-Bold': require('./assets/fonts/CrimsonText-Bold.ttf'),
+        'CrimsonText-Italic': require('./assets/fonts/CrimsonText-Italic.ttf'),
+        'CrimsonText-BoldItalic': require('./assets/fonts/CrimsonText-BoldItalic.ttf'),
+    });
+
+    const navigationRef = useNavigationContainerRef();
+    const [currentRoute, setCurrentRoute] = React.useState(null);
+
+    const hideFooterRoutes = ['CreateAccount1', 'CreateAccount2', 'Login'];
+    const shouldShowFooter = !hideFooterRoutes.includes(currentRoute);
 
     if (!fontsLoaded) {
         return (
@@ -57,10 +61,18 @@ export default function App() {
 
     return (
       <GestureHandlerRootView style={styles.flex}>
-        <NavigationContainer>
+        <NavigationContainer
+            ref={navigationRef}
+            onReady={() => {
+                setCurrentRoute(navigationRef.getCurrentRoute()?.name);
+            }}
+            onStateChange={() => {
+                setCurrentRoute(navigationRef.getCurrentRoute()?.name);
+            }}
+        >
             <View style={styles.container}>
                 <Header />
-                <View style={styles.content}>
+                <View style={[styles.content, !shouldShowFooter && { marginBottom: 0 }]}>
                     <Stack.Navigator
                         initialRouteName="Login"
                         screenOptions={{ headerShown: false }}
@@ -73,8 +85,6 @@ export default function App() {
                         <Stack.Screen name="ResetPassword" component={ResetPassword} />
                         <Stack.Screen name="EditOnlineSettingsPage" component={EditOnlineSettingsPage} />
                         <Stack.Screen name="OnlineSettingsPage" component={OnlineSettingsPage} />
-                        <Stack.Screen name="PennameScreen" component={PennameScreen} />
-                        <Stack.Screen name="LocalAccount1" component={GuestAccountPage} />
                         <Stack.Screen name="OnlineHomepage" component={OnlineHomepage} />
                         <Stack.Screen name="OfflineHomepage" component={OfflineHomepage} />
                         <Stack.Screen name="FreeWrite" component={OnlineHomepage} />
@@ -92,7 +102,7 @@ export default function App() {
                         <Stack.Screen name="Debug" component={DebugScreen} />
                     </Stack.Navigator>
                 </View>
-                <Footer />
+                {currentRoute !== 'CreateAccount1' && currentRoute !== 'CreateAccount2' && currentRoute !== 'Login' && <Footer />}
             </View>
         </NavigationContainer>
       </GestureHandlerRootView>
