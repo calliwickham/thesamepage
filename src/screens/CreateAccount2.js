@@ -10,16 +10,20 @@ import {
 } from 'react-native';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useForm, Controller } from 'react-hook-form';
+import isEmail from 'validator/lib/isEmail';
 
 import Button from '../newcomps/Button';
 import NavArrow from '../newcomps/NavArrow';
 import GuestModal from './GuestModal.js';
 
 export default function CreateAccount2({ navigation }) {
-    const [email, setEmail] = useState('');
+
     const [showModal, setShowModal] = useState(false);
 
-    const handleSubmit = () => {
+    const { control, handleSubmit, formState: { errors }, clearErrors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
+
+    const onSubmit = (formData) => {
         Alert.alert('Account successfully created');
         navigation.navigate('OnlineHomepage');
     };
@@ -30,7 +34,7 @@ export default function CreateAccount2({ navigation }) {
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
             <NavArrow style={{ marginVertical: 10 }} onPress={() => navigation.goBack()}> </NavArrow>
-            
+
             <View style={styles.container}>
                 <Text style={styles.title}>Add Email</Text>
                 <View style={styles.divider} />
@@ -39,16 +43,37 @@ export default function CreateAccount2({ navigation }) {
                     You need an email for an online account.
                 </Text>
 
-                <TextInput
-                    style={styles.input}
-                    value={email}
-                    onChangeText={setEmail}
-                    placeholder="example@mail.com"
-                    placeholderTextColor="#CCC"
-                    keyboardType="email-address"
+                <Controller
+                    control={control}
+                    name="email"
+                    rules={{
+                        required: true,
+                        validate: value => isEmail(value) || 'Please enter a valid email address'
+                    }}
+                    render={({ field: { onChange, value } }) => (
+                        <>
+                            {errors.email && (
+                                <Text style={styles.warning}>{errors.email.message}</Text>
+                            )}
+                            <TextInput
+                                value={value}
+                                onChangeText={(text) => {
+                                    onChange(text);
+                                    //if (errors.email) clearErrors('email');
+                                }}
+                                placeholder="Email Address"
+                                placeholderTextColor="#CCC"
+                                keyboardType="email-address"
+                                style={[
+                                    styles.input,
+                                    errors.email && styles.inputError
+                                ]}
+                            />
+                        </>
+                    )}
                 />
 
-                <Button style={styles.button} textStyle={styles.buttonText} onPress={handleSubmit}>Continue</Button>
+                <Button style={styles.button} textStyle={styles.buttonText} onPress={handleSubmit(onSubmit)}>Continue</Button>
             </View>
 
             <GuestModal
@@ -140,5 +165,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'CrimsonText-Regular',
         textDecorationLine: 'underline',
+    },
+    warning: {
+        color: '#B00000',
+        fontFamily: 'Crimson Text',
+        fontSize: 16,
+        fontWeight: '600',
+        textAlign: 'left',
     },
 });

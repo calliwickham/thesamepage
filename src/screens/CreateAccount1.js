@@ -52,6 +52,7 @@ export default function CreateOnline1() {
                                 }}
                                 placeholder="Email Address"
                                 placeholderTextColor="#CCC"
+                                keyboardType="email-address"
                                 style={[
                                     styles.input,
                                     errors.email && styles.inputError
