@@ -1,5 +1,7 @@
-import React from 'react';
+import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import isEmail from 'validator/lib/isEmail';
+import { useForm, Controller } from 'react-hook-form';
 import {
     View,
     Text,
@@ -9,11 +11,37 @@ import {
     ScrollView,
 } from 'react-native';
 
+//firebase imports
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, firestore } from '../constants/firebaseConfig.js'
+
 export default function LoginScreen() {
+
     const navigation = useNavigation();
+    const [authError, setAuthError] = useState(null);
+
+    //form stuff
+    const { control, handleSubmit, formState: { errors }, clearErrors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
+
+    const onSubmit = async ({ email, password }) => {
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            navigation.navigate('OnlineHomepage');
+        } catch (error) {
+            if (error.code === 'auth/user-not-found') {
+                setAuthError('email');
+            } else if (error.code === 'auth/wrong-password') {
+                setAuthError('password');
+            } else {
+                console.log('Unhandled error:', error);
+            }
+        }
+    };
+
     const handleReset = () => {
-    navigation.navigate('ResetPassword');
-  };
+        navigation.navigate('ResetPassword');
+    };
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.welcome}>Welcome To</Text>
@@ -22,24 +50,71 @@ export default function LoginScreen() {
             <View style={styles.loginBox}>
                 <Text style={styles.loginHeader}>Login</Text>
 
-                <TextInput
-                    placeholder="Email"
-                    placeholderTextColor="#CCC"
-                    style={styles.input}
+                <Controller
+                    control={control}
+                    name="email"
+                    rules={{
+                        required: 'Email is required',
+                        validate: value => isEmail(value) || 'Please enter a valid email address'
+                    }}
+                    render={({ field: { onChange, value } }) => (
+                        <>
+                            {errors.email && (
+                                <Text style={styles.warning}>{errors.email.message}</Text>
+                            )}
+                            {authError === 'email' && (
+                                <Text style={styles.warning}>Email not found</Text>
+                            )}
+                            <TextInput
+                                value={value}
+                                onChangeText={(text) => {
+                                    onChange(text);
+                                    if (authError) setAuthError(null);
+                                }}
+                                placeholder="Email"
+                                placeholderTextColor="#CCC"
+                                keyboardType="email-address"
+                                style={[
+                                    styles.input,
+                                    (errors.email || authError === 'email') && styles.inputError
+                                ]}
+                            />
+                        </>
+                    )}
                 />
 
-                <TextInput
-                    placeholder="Password"
-                    placeholderTextColor="#CCC"
-                    secureTextEntry
-                    style={styles.input}
+                <Controller
+                    control={control}
+                    name="password"
+                    rules={{ required: 'Password is required' }}
+                    render={({ field: { onChange, value } }) => (
+                        <>
+                            {authError === 'password' && (
+                                <Text style={styles.warning}>Incorrect password</Text>
+                            )}
+                            <TextInput
+                                value={value}
+                                onChangeText={(text) => {
+                                    onChange(text);
+                                    if (authError) setAuthError(null);
+                                }}
+                                secureTextEntry
+                                placeholder="Password"
+                                placeholderTextColor="#CCC"
+                                style={[
+                                    styles.input,
+                                    authError === 'password' && styles.inputError
+                                ]}
+                            />
+                        </>
+                    )}
                 />
 
-        <TouchableOpacity onPress={handleReset}>
-          <Text style={styles.forgotPassword}>Forgot Password?</Text>
-        </TouchableOpacity>
+                <TouchableOpacity onPress={handleReset}>
+                    <Text style={styles.forgotPassword}>Forgot Password?</Text>
+                </TouchableOpacity>
 
-                <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('OnlineHomepage')}>
+                <TouchableOpacity style={styles.loginButton} onPress={handleSubmit(onSubmit)}>
                     <Text style={styles.loginButtonText}>Login</Text>
                 </TouchableOpacity>
 
@@ -157,4 +232,9 @@ const styles = StyleSheet.create({
         color: '#444',
         marginTop: 24,
     },
+    inputError: {
+        borderColor: 'red',
+        borderStyle: 'solid',
+        borderWidth: 1
+    }
 });

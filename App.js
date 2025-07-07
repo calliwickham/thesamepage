@@ -28,23 +28,10 @@ import EditOnlineSettingsPage from './src/screens/EditOnlineSettingsPage.js';
 import ResetPassword from './src/screens/ResetPassword.js';
 import OfflineSettingsPage from './src/screens/OfflineSettingsPage.js';
 import EditOfflineSettingsPage from './src/screens/EditOfflineSettingsPage.js';
+import AuthGate from './src/screens/AuthGate.js'
 
-import { onAuthStateChanged} from "firebase/auth";
-import {auth} from './src/constants/firebaseConfig.js'
-
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/auth.user
-        const uid = user.uid;
-        console.log("User is logged in.")
-        // ...
-    } else {
-        // User is signed out
-        console.log("User is not logged in.")
-        // ...
-    }
-});
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from './src/constants/firebaseConfig.js'
 
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +47,25 @@ export default function App() {
 
     const navigationRef = useNavigationContainerRef();
     const [currentRoute, setCurrentRoute] = React.useState(null);
+    const [isAuthenticated, setIsAuthenticated] = React.useState(null);
+
+    React.useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/auth.user
+                const uid = user.uid;
+                console.log("User is logged in.")
+                // ...
+            } else {
+                // User is signed out
+                console.log("User is not logged in.")
+                // ...
+                setIsAuthenticated(false);
+            }
+        });
+        return unsubscribe;
+    }, []);
 
     const hideFooterRoutes = ['CreateAccount1', 'CreateAccount2', 'Login'];
     const shouldShowFooter = !hideFooterRoutes.includes(currentRoute);
@@ -87,9 +93,10 @@ export default function App() {
                     <Header />
                     <View style={[styles.content, !shouldShowFooter && { marginBottom: 0 }]}>
                         <Stack.Navigator
-                            initialRouteName="Login"
+                            initialRouteName="AuthGate"
                             screenOptions={{ headerShown: false }}
                         >
+                            <Stack.Screen name="AuthGate" component={AuthGate} />
                             <Stack.Screen name="EditOfflineSettingsPage" component={EditOfflineSettingsPage} />
                             <Stack.Screen name="OfflineSettingsPage" component={OfflineSettingsPage} />
                             <Stack.Screen name="ResetPassword" component={ResetPassword} />

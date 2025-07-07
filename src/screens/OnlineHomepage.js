@@ -9,8 +9,22 @@ import CalendarIcon from '../newcomps/CalendarIcon';
 import SinglePage from '../newcomps/SinglePage';
 import Puzzle from '../newcomps/Puzzle';
 
-export default function OfflineHomepage() {
+//firebase imports
+import { signOut } from 'firebase/auth';
+import { auth } from '../constants/firebaseConfig';
+
+export default function OnlineHomepage() {
     const navigation = useNavigation();
+
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            navigation.replace('Login'); // or navigate('Login') if you want back navigation
+            console.log('User signed out');
+        } catch (error) {
+            console.error('Sign out error:', error);
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -18,21 +32,24 @@ export default function OfflineHomepage() {
                 <Text style={styles.header}>Welcome, Anastasia</Text>
 
                 {/*DEBUG, REMOVE LATER - Buttons for vewing other screens not accessible rn*/}
-                <Button color='error' 
-                    style={{position: 'absolute', left: 10, top: 5, paddingVertical: 2}}
+                <Button color='error'
+                    style={{ position: 'absolute', left: 10, top: 5, paddingVertical: 2 }}
                     onPress={() => navigation.navigate('Debug')}>Debug - components</Button>
-                <Button 
-                    color='error' 
-                    style={{position: 'absolute', right: 10, top: 5, paddingVertical: 2}}
+                <Button
+                    color='error'
+                    style={{ position: 'absolute', right: 10, top: 5, paddingVertical: 2 }}
                     onPress={() => navigation.navigate('OfflineHomepage')}>Debug - offline homepage</Button>
-                
+
+                <Button color='error'
+                    style={{ position: 'absolute', right: 10, bottom: 80, paddingVertical: 2 }}
+                    onPress={handleLogout}>Debug - LOGOUT</Button>
 
                 {/* Daily Challenge */}
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#FFF1DC' }, styles.right]}
                     onPress={() => navigation.navigate('Challenge')}
                 >
-                    <View style={[styles.circle, {borderColor: '#F8E6C7'}]}>
+                    <View style={[styles.circle, { borderColor: '#F8E6C7' }]}>
                         <CalendarIcon width={40} height={40} />
                     </View>
                     <View style={styles.textContainer}>
@@ -52,7 +69,7 @@ export default function OfflineHomepage() {
                     style={[styles.card, { backgroundColor: '#E4E4E4' }, styles.left]}
                     onPress={() => navigation.navigate('FreeWrite')}
                 >
-                    <View style={[styles.circle, {borderColor: '#DDDDDD'}]}>
+                    <View style={[styles.circle, { borderColor: '#DDDDDD' }]}>
                         <SinglePage width={40} height={40} />
                     </View>
                     <View style={styles.textContainer}>
@@ -66,7 +83,7 @@ export default function OfflineHomepage() {
                     style={[styles.card, { backgroundColor: '#E9F0E6' }, styles.right]}
                     onPress={() => navigation.navigate('CollaborativeLanding')}
                 >
-                    <View style={[styles.circle, {borderColor: '#DBE9D4'} ]}>
+                    <View style={[styles.circle, { borderColor: '#DBE9D4' }]}>
                         <View style={{ transform: [{ translateX: -3 }, { translateY: -2 }] }}>
                             <Puzzle width={40} height={40} />
                         </View>
