@@ -64,7 +64,7 @@ export default function OfflineHomepage() {
                 {/* Collaborative Mode */}
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#E9F0E6' }, styles.right]}
-                    onPress={() => navigation.navigate('CollaborativeLanding')}
+                    onPress={() => navigation.navigate('CollabWIP')}
                 >
                     <View style={[styles.circle, {borderColor: '#DBE9D4'} ]}>
                         <View style={{ transform: [{ translateX: -3 }, { translateY: -2 }] }}>

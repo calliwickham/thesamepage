@@ -37,6 +37,7 @@ import MyFriends from './src/screens/MyFriends.js';
 import EditFriends from './src/screens/EditFriends.js';
 import AddFriends from './src/screens/AddFriends.js';
 import FriendRequests from './src/screens/FriendRequests.js';
+import CollaborativeWritingWIP from './src/newcomps/CollaborativeWritingWIP.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -82,6 +83,7 @@ export default function App() {
                         initialRouteName="Login"
                         screenOptions={{ headerShown: false }}
                     >
+                        <Stack.Screen name="CollabWIP" component={CollaborativeWritingWIP} />
                         <Stack.Screen name="FriendRequests" component={FriendRequests} />
                         <Stack.Screen name="AddFriends" component={AddFriends} />
                         <Stack.Screen name="EditFriends" component={EditFriends} />
