@@ -18,13 +18,13 @@ export default function OfflineHomepage() {
                 <Text style={styles.header}>Welcome, Anastasia</Text>
 
                 {/*DEBUG, REMOVE LATER - Buttons for vewing other screens not accessible rn*/}
-                <Button color='error' 
+                {/* <Button color='error' 
                     style={{position: 'absolute', left: 10, top: 5, paddingVertical: 2}}
                     onPress={() => navigation.navigate('Debug')}>Debug - components</Button>
                 <Button 
                     color='error' 
                     style={{position: 'absolute', right: 10, top: 5, paddingVertical: 2}}
-                    onPress={() => navigation.navigate('OfflineHomepage')}>Debug - offline homepage</Button>
+                    onPress={() => navigation.navigate('OfflineHomepage')}>Debug - offline homepage</Button> */}
                 
 
                 {/* Daily Challenge */}
@@ -74,9 +74,6 @@ export default function OfflineHomepage() {
                     <View style={styles.textContainer}>
                         <Text style={styles.cardTitle}>Collaborative Mode</Text>
                         <Text style={styles.cardText}>Weave a story together with new friends</Text>
-                    </View>
-                    <View style={styles.topRight}>
-                        <InProgressIcon />
                     </View>
                 </TouchableOpacity>
             </ScrollView>
