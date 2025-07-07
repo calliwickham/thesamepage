@@ -32,6 +32,7 @@ import EditOfflineSettingsPage from './src/screens/EditOfflineSettingsPage.js';
 import FreeWriteScreen1 from './src/screens/FreeWriteScreen1.js';
 import FreeWriteScreen2 from './src/screens/FreeWriteScreen2.js';
 import FreeWriteInspireMe from './src/screens/FreeWriteInspireMe.js';
+import DailyChallengeScreen from './src/screens/DailyChallengeScreen.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -77,6 +78,7 @@ export default function App() {
                         initialRouteName="Login"
                         screenOptions={{ headerShown: false }}
                     >
+                        <Stack.Screen name="DailyChallengeScreen" component={DailyChallengeScreen} />
                         <Stack.Screen name="FreeWriteInspireMe" component={FreeWriteInspireMe} />
                         <Stack.Screen name="FreeWriteScreen2" component={FreeWriteScreen2} />
                         <Stack.Screen name="FreeWriteScreen1" component={FreeWriteScreen1} />
@@ -88,7 +90,6 @@ export default function App() {
                         <Stack.Screen name="OnlineHomepage" component={OnlineHomepage} />
                         <Stack.Screen name="OfflineHomepage" component={OfflineHomepage} />
                         <Stack.Screen name="FreeWrite" component={OnlineHomepage} />
-                        <Stack.Screen name="Challenge" component={ChallengeScreen} />
                         <Stack.Screen name="CollaborativeLanding" component={OnlineHomepage} />
                         <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
                         <Stack.Screen name="Albums" component={Albums} />

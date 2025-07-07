@@ -63,7 +63,7 @@ export default function OfflineHomepage() {
                 if (title === "Free Write") {
                     navigation.navigate('FreeWriteScreen1');
                 } else if (title === "Daily Challenge") {
-                    navigation.navigate('OnlineSettingsPage'); // placeholder
+                    navigation.navigate('DailyChallengeScreen'); // placeholder
                 }
                 }}
             >

@@ -30,7 +30,7 @@ export default function OfflineHomepage() {
                 {/* Daily Challenge */}
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#FFF1DC' }, styles.right]}
-                    onPress={() => navigation.navigate('Challenge')}
+                    onPress={() => navigation.navigate('DailyChallengeScreen')}
                 >
                     <View style={[styles.circle, {borderColor: '#F8E6C7'}]}>
                         <CalendarIcon width={40} height={40} />
