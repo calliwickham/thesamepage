@@ -6,11 +6,13 @@ import {
     TextInput,
     TouchableOpacity,
     Alert,
-    KeyboardAvoidingView,
     Platform,
 } from 'react-native';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 import Button from '../newcomps/Button';
+import NavArrow from '../newcomps/NavArrow';
 import GuestModal from './GuestModal.js';
 
 export default function CreateAccount2({ navigation }) {
@@ -23,10 +25,12 @@ export default function CreateAccount2({ navigation }) {
     };
 
     return (
-        <KeyboardAvoidingView
+        <KeyboardAwareScrollView
             style={styles.wrapper}
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
+            <NavArrow style={{ marginVertical: 10 }} onPress={() => navigation.goBack()}> </NavArrow>
+            
             <View style={styles.container}>
                 <Text style={styles.title}>Add Email</Text>
                 <View style={styles.divider} />
@@ -45,11 +49,6 @@ export default function CreateAccount2({ navigation }) {
                 />
 
                 <Button style={styles.button} textStyle={styles.buttonText} onPress={handleSubmit}>Continue</Button>
-                <TouchableOpacity onPress={() => setShowModal(true)}>
-                    <Text style={styles.localAccountText}>
-                        Nevermind, Create Local Account
-                    </Text>
-                </TouchableOpacity>
             </View>
 
             <GuestModal
@@ -61,7 +60,7 @@ export default function CreateAccount2({ navigation }) {
                 }}
                 styles={styles}
             />
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
     );
 }
 
@@ -70,7 +69,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         padding: 20,
-        justifyContent: 'space-between',
+        paddingTop: 0,
+        borderColor: 'red',
+        borderWidth: 1,
     },
     container: {
         padding: 20,

@@ -16,7 +16,7 @@ export default function CreateOnline1() {
     //what happens when you submit the page
     const onSubmit = (formData) => {
         console.log('Form data:', formData);
-        navigation.navigate('OnlineHomepage');
+        navigation.navigate('CreateAccount2');
     };
 
     //form stuff
@@ -31,7 +31,28 @@ export default function CreateOnline1() {
 
                 <Controller
                     control={control}
-                    name="Email Address"
+                    name="email"
+                    rules={{ required: true }}
+                    render={({ field: { onChange, value } }) => (
+                        <TextInput
+                            value={value}
+                            onChangeText={(text) => {
+                                onChange(text);
+                                if (errors.email) clearErrors('email');
+                            }}
+                            placeholder="Email Address"
+                            placeholderTextColor="#CCC"
+                            style={[
+                                styles.input,
+                                errors.email && styles.inputError
+                            ]}
+                        />
+                    )}
+                />
+
+                <Controller
+                    control={control}
+                    name="username"
                     rules={{ required: true }}
                     render={({ field: { onChange, value } }) => (
                         <TextInput
