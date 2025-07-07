@@ -31,6 +31,9 @@ import EditOnlineSettingsPage from './src/screens/EditOnlineSettingsPage.js';
 import ResetPassword from './src/screens/ResetPassword.js';
 import OfflineSettingsPage from './src/screens/OfflineSettingsPage.js';
 import EditOfflineSettingsPage from './src/screens/EditOfflineSettingsPage.js';
+import FreeWriteScreen1 from './src/screens/FreeWriteScreen1.js';
+import FreeWriteScreen2 from './src/screens/FreeWriteScreen2.js';
+import FreeWriteInspireMe from './src/screens/FreeWriteInspireMe.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +65,9 @@ export default function App() {
                         initialRouteName="Login"
                         screenOptions={{ headerShown: false }}
                     >
+                        <Stack.Screen name="FreeWriteInspireMe" component={FreeWriteInspireMe} />
+                        <Stack.Screen name="FreeWriteScreen2" component={FreeWriteScreen2} />
+                        <Stack.Screen name="FreeWriteScreen1" component={FreeWriteScreen1} />
                         <Stack.Screen name="EditOfflineSettingsPage" component={EditOfflineSettingsPage} />
                         <Stack.Screen name="OfflineSettingsPage" component={OfflineSettingsPage} />
                         <Stack.Screen name="ResetPassword" component={ResetPassword} />

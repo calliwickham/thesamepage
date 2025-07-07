@@ -50,7 +50,7 @@ export default function OfflineHomepage() {
                 {/* Free Write */}
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#E4E4E4' }, styles.left]}
-                    onPress={() => navigation.navigate('FreeWrite')}
+                    onPress={() => navigation.navigate('FreeWriteScreen1')}
                 >
                     <View style={[styles.circle, {borderColor: '#DDDDDD'}]}>
                         <SinglePage width={40} height={40} />
