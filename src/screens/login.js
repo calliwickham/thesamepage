@@ -11,6 +11,9 @@ import {
 
 export default function LoginScreen() {
     const navigation = useNavigation();
+    const handleReset = () => {
+    navigation.navigate('ResetPassword');
+  };
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.welcome}>Welcome To</Text>
@@ -32,9 +35,9 @@ export default function LoginScreen() {
                     style={styles.input}
                 />
 
-                <TouchableOpacity>
-                    <Text style={styles.forgotPassword}>Forgot Password?</Text>
-                </TouchableOpacity>
+        <TouchableOpacity onPress={handleReset}>
+          <Text style={styles.forgotPassword}>Forgot Password?</Text>
+        </TouchableOpacity>
 
                 <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('OnlineHomepage')}>
                     <Text style={styles.loginButtonText}>Login</Text>

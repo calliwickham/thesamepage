@@ -4,6 +4,7 @@ import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import Header from './src/newcomps/Header';
 import Footer from './src/newcomps/Footer';
@@ -23,6 +24,11 @@ import OfflineHomepage from './src/screens/OfflineHomepage';
 import LoginScreen from './src/screens/login';
 import CreateOnline1 from './src/screens/CreateAccount1';
 import CreateAccount2 from './src/screens/CreateAccount2';
+import OnlineSettingsPage from './src/screens/OnlineSettingsPage.js';
+import EditOnlineSettingsPage from './src/screens/EditOnlineSettingsPage.js';
+import ResetPassword from './src/screens/ResetPassword.js';
+import OfflineSettingsPage from './src/screens/OfflineSettingsPage.js';
+import EditOfflineSettingsPage from './src/screens/EditOfflineSettingsPage.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +57,7 @@ export default function App() {
     }
 
     return (
+      <GestureHandlerRootView style={styles.flex}>
         <NavigationContainer
             ref={navigationRef}
             onReady={() => {
@@ -67,6 +74,11 @@ export default function App() {
                         initialRouteName="Login"
                         screenOptions={{ headerShown: false }}
                     >
+                        <Stack.Screen name="EditOfflineSettingsPage" component={EditOfflineSettingsPage} />
+                        <Stack.Screen name="OfflineSettingsPage" component={OfflineSettingsPage} />
+                        <Stack.Screen name="ResetPassword" component={ResetPassword} />
+                        <Stack.Screen name="EditOnlineSettingsPage" component={EditOnlineSettingsPage} />
+                        <Stack.Screen name="OnlineSettingsPage" component={OnlineSettingsPage} />
                         <Stack.Screen name="OnlineHomepage" component={OnlineHomepage} />
                         <Stack.Screen name="OfflineHomepage" component={OfflineHomepage} />
                         <Stack.Screen name="FreeWrite" component={OnlineHomepage} />
@@ -87,6 +99,7 @@ export default function App() {
                 {currentRoute !== 'CreateAccount1' && currentRoute !== 'CreateAccount2' && currentRoute !== 'Login' && <Footer />}
             </View>
         </NavigationContainer>
+      </GestureHandlerRootView>
     );
 }
 
