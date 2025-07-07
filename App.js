@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 
@@ -27,14 +27,14 @@ import CreateAccount2 from './src/screens/CreateAccount2';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    Italianno: require('./assets/fonts/Italianno-Regular.ttf'),
-    'CrimsonText-Regular': require('./assets/fonts/CrimsonText-Regular.ttf'),
-    'CrimsonText-SemiBold': require('./assets/fonts/CrimsonText-SemiBold.ttf'),
-    'CrimsonText-Bold': require('./assets/fonts/CrimsonText-Bold.ttf'),
-    'CrimsonText-Italic': require('./assets/fonts/CrimsonText-Italic.ttf'),
-    'CrimsonText-BoldItalic': require('./assets/fonts/CrimsonText-BoldItalic.ttf'),
-  });
+    const [fontsLoaded] = useFonts({
+        Italianno: require('./assets/fonts/Italianno-Regular.ttf'),
+        'CrimsonText-Regular': require('./assets/fonts/CrimsonText-Regular.ttf'),
+        'CrimsonText-SemiBold': require('./assets/fonts/CrimsonText-SemiBold.ttf'),
+        'CrimsonText-Bold': require('./assets/fonts/CrimsonText-Bold.ttf'),
+        'CrimsonText-Italic': require('./assets/fonts/CrimsonText-Italic.ttf'),
+        'CrimsonText-BoldItalic': require('./assets/fonts/CrimsonText-BoldItalic.ttf'),
+    });
 
     if (!fontsLoaded) {
         return (
@@ -44,11 +44,25 @@ export default function App() {
         );
     }
 
+    const navigationRef = useNavigationContainerRef();
+    const [currentRoute, setCurrentRoute] = React.useState(null);
+
+    const hideFooterRoutes = ['CreateAccount1', 'CreateAccount2', 'Login'];
+    const shouldShowFooter = !hideFooterRoutes.includes(currentRoute);
+
     return (
-        <NavigationContainer>
+        <NavigationContainer
+            ref={navigationRef}
+            onReady={() => {
+                setCurrentRoute(navigationRef.getCurrentRoute()?.name);
+            }}
+            onStateChange={() => {
+                setCurrentRoute(navigationRef.getCurrentRoute()?.name);
+            }}
+        >
             <View style={styles.container}>
                 <Header />
-                <View style={styles.content}>
+                <View style={[styles.content, !shouldShowFooter && { marginBottom: 0 }]}>
                     <Stack.Navigator
                         initialRouteName="Login"
                         screenOptions={{ headerShown: false }}
@@ -70,7 +84,7 @@ export default function App() {
                         <Stack.Screen name="Debug" component={DebugScreen} />
                     </Stack.Navigator>
                 </View>
-                <Footer />
+                {currentRoute !== 'CreateAccount1' && currentRoute !== 'CreateAccount2' && currentRoute !== 'Login' && <Footer />}
             </View>
         </NavigationContainer>
     );

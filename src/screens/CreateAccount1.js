@@ -8,6 +8,8 @@ import Button from '../newcomps/Button';
 import NavArrow from '../newcomps/NavArrow';
 import { useNavigation } from '@react-navigation/native';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 export default function CreateOnline1() {
 
     const [showModal, setShowModal] = useState(false);
@@ -20,10 +22,10 @@ export default function CreateOnline1() {
     };
 
     //form stuff
-    const { control, handleSubmit, formState: { errors }, clearErrors } = useForm({mode: 'onSubmit', reValidateMode: 'onSubmit'});
+    const { control, handleSubmit, formState: { errors }, clearErrors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
 
     return (
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <KeyboardAwareScrollView contentContainerStyle={styles.scrollContainer}>
             <NavArrow style={{ marginVertical: 8 }} onPress={() => navigation.goBack()}> </NavArrow>
             <View style={[styles.container, { marginVertical: 0 }]}>
                 <Text style={styles.title}>Create An Account</Text>
@@ -70,25 +72,37 @@ export default function CreateOnline1() {
                         />
                     )}
                 />
+
                 <Controller
                     control={control}
                     name="password"
-                    rules={{ required: true }}
+                    rules={{
+                        required: true,
+                        minLength: {
+                            value: 8,
+                            message: 'Password must be at least 8 characters',
+                        },
+                    }}
                     render={({ field: { onChange, value } }) => (
-                        <TextInput
-                            value={value}
-                            onChangeText={(text) => {
-                                onChange(text);
-                                if (errors.password) clearErrors('password');
-                            }}
-                            secureTextEntry
-                            placeholder="Password"
-                            placeholderTextColor="#CCC"
-                            style={[
-                                styles.input,
-                                errors.password && styles.inputError
-                            ]}
-                        />
+                        <>
+                            {errors.password && (
+                                <Text style={styles.warning}>{errors.password.message}</Text>
+                            )}
+                            <TextInput
+                                value={value}
+                                onChangeText={(text) => {
+                                    onChange(text);
+                                    if (errors.password) clearErrors('password');
+                                }}
+                                secureTextEntry
+                                placeholder="Password"
+                                placeholderTextColor="#CCC"
+                                style={[
+                                    styles.input,
+                                    errors.password && styles.inputError
+                                ]}
+                            />
+                        </>
                     )}
                 />
 
@@ -110,7 +124,7 @@ export default function CreateOnline1() {
                                         style={[
                                             styles.checkBox,
                                             value && styles.checkBoxFill,
-                                            errors.isChecked && [ styles.inputError, {borderWidth: 2 }]
+                                            errors.isChecked && [styles.inputError, { borderWidth: 2 }]
                                         ]}
                                     />
                                     {value && (
@@ -159,7 +173,7 @@ export default function CreateOnline1() {
                 }}
                 styles={styles}
             />
-        </ScrollView>
+        </KeyboardAwareScrollView>
     );
 }
 
@@ -236,8 +250,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Crimson Text',
         fontSize: 16,
         fontWeight: '600',
-        textAlign: 'center',
-        marginBottom: 20,
+        textAlign: 'left',
     },
     buttonText: {
         fontSize: 22,
