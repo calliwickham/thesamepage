@@ -34,7 +34,6 @@ import firebaseConfig from './src/constants/firebaseConfig.js'
 //firebase imports
 import { initializeApp } from "firebase/app";
 import { 
-    getAuth, 
     createUserWithEmailAndPassword, 
     onAuthStateChanged,
     initializeAuth,
