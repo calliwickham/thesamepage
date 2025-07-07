@@ -9,6 +9,7 @@ import NavArrow from '../newcomps/NavArrow';
 import { useNavigation } from '@react-navigation/native';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import isEmail from 'validator/lib/isEmail';
 
 export default function CreateOnline1() {
 
@@ -18,7 +19,7 @@ export default function CreateOnline1() {
     //what happens when you submit the page
     const onSubmit = (formData) => {
         console.log('Form data:', formData);
-        navigation.navigate('CreateAccount2');
+        navigation.navigate('OnlineHomepage');
     };
 
     //form stuff
@@ -34,21 +35,29 @@ export default function CreateOnline1() {
                 <Controller
                     control={control}
                     name="email"
-                    rules={{ required: true }}
+                    rules={{
+                        required: true,
+                        validate: value => isEmail(value) || 'Please enter a valid email address'
+                    }}
                     render={({ field: { onChange, value } }) => (
-                        <TextInput
-                            value={value}
-                            onChangeText={(text) => {
-                                onChange(text);
-                                if (errors.email) clearErrors('email');
-                            }}
-                            placeholder="Email Address"
-                            placeholderTextColor="#CCC"
-                            style={[
-                                styles.input,
-                                errors.email && styles.inputError
-                            ]}
-                        />
+                        <>
+                            {errors.email && (
+                                <Text style={styles.warning}>{errors.email.message}</Text>
+                            )}
+                            <TextInput
+                                value={value}
+                                onChangeText={(text) => {
+                                    onChange(text);
+                                    //if (errors.email) clearErrors('email');
+                                }}
+                                placeholder="Email Address"
+                                placeholderTextColor="#CCC"
+                                style={[
+                                    styles.input,
+                                    errors.email && styles.inputError
+                                ]}
+                            />
+                        </>
                     )}
                 />
 
@@ -92,7 +101,7 @@ export default function CreateOnline1() {
                                 value={value}
                                 onChangeText={(text) => {
                                     onChange(text);
-                                    if (errors.password) clearErrors('password');
+                                    //if (errors.password) clearErrors('password');
                                 }}
                                 secureTextEntry
                                 placeholder="Password"
