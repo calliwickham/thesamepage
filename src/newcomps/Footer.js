@@ -17,7 +17,7 @@ const Footer = () => {
             <TouchableOpacity onPress={() => navigation.navigate('Albums')}>
                 <AlbumIcon width={41} height={36} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
+            <TouchableOpacity onPress={() => navigation.navigate('MyFriends')}>
                 <FriendsIcon width={41} height={42} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('OfflineSettingsPage')}>

@@ -1,0 +1,216 @@
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Modal,
+  Alert,
+  ScrollView,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+export default function EditFriends() {
+  const navigation = useNavigation();
+  const [friends, setFriends] = useState([
+    { name: 'Anastasia', description: 'Lorem ipsum dolor sit amet...', id: 1 },
+    { name: 'Connor', description: 'Lorem ipsum dolor sit amet...', id: 2 },
+    { name: 'Fiona', description: 'Lorem ipsum dolor sit amet...', id: 3 },
+    { name: 'Jonathan', description: 'Lorem ipsum dolor sit amet...', id: 4 },
+  ]);
+  const [selectedFriend, setSelectedFriend] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const handleDeletePress = (friend) => {
+    setSelectedFriend(friend);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    setFriends((prev) => prev.filter(f => f.id !== selectedFriend.id));
+    setShowDeleteModal(false);
+  };
+
+  const handleSave = () => {
+    Alert.alert('Success', 'Changes saved.');
+    navigation.navigate('MyFriends');
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Edit My Friends</Text>
+      <ScrollView style={{ flex: 1 }}>
+        {friends.map((friend) => (
+          <View key={friend.id} style={styles.card}>
+            <View style={styles.cardRow}>
+              <Text style={styles.name}>{friend.name}</Text>
+              <TouchableOpacity onPress={() => handleDeletePress(friend)}>
+                <Text style={styles.deleteX}>✕</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.description}>{friend.description}</Text>
+          </View>
+        ))}
+      </ScrollView>
+
+      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+        <Text style={styles.saveText}>Save Changes</Text>
+      </TouchableOpacity>
+
+      {showDeleteModal && selectedFriend && (
+        <Modal transparent animationType="fade" visible={showDeleteModal}>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalBox}>
+              <Text style={styles.modalTitle}>Are You Sure?</Text>
+              <Text style={styles.modalText}>
+                Proceeding with friend removal will{' '}
+                <Text style={{ fontStyle: 'italic' }}>permanently</Text> remove {selectedFriend.name} from your account.
+              </Text>
+              <Text style={styles.modalText}>
+                You’ll need to add them again if you want to re-friend them.
+              </Text>
+              <View style={styles.modalButtons}>
+                <TouchableOpacity
+                  style={styles.goBackButton}
+                  onPress={() => setShowDeleteModal(false)}
+                >
+                  <Text style={styles.goBackText}>Go Back</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.deleteButton} onPress={confirmDelete}>
+                  <Text style={styles.deleteText}>Delete</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#fff',
+    flex: 1,
+    paddingTop: 24,
+    paddingHorizontal: 16,
+  },
+  header: {
+    fontSize: 32,
+    fontFamily: 'Crimson Text',
+    fontWeight: '700',
+    marginBottom: 16,
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+  cardRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  name: {
+    fontSize: 20,
+    fontFamily: 'Crimson Text',
+    fontWeight: '700',
+  },
+  deleteX: {
+    fontSize: 26,
+    color: 'red',
+    fontWeight: 'bold',
+  },
+  description: {
+    fontFamily: 'Crimson Text',
+    fontSize: 16,
+    marginTop: 4,
+    color: '#333',
+  },
+  saveButton: {
+    backgroundColor: '#FFD12D',
+    paddingVertical: 14,
+    borderRadius: 30,
+    marginTop: 12,
+    marginBottom: 20,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    alignItems: 'center',
+  },
+  saveText: {
+    fontSize: 20,
+    fontFamily: 'Crimson Text',
+    fontWeight: '700',
+    color: '#000',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalBox: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    padding: 24,
+    width: 320,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontFamily: 'Crimson Text',
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  modalText: {
+    fontFamily: 'Crimson Text',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  goBackButton: {
+    backgroundColor: '#FFD12D',
+    paddingVertical: 12,
+    paddingHorizontal: 22,
+    borderRadius: 30,
+    elevation: 3,
+  },
+  goBackText: {
+    fontFamily: 'Crimson Text',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  deleteButton: {
+    backgroundColor: '#F02828',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 30,
+    elevation: 3,
+  },
+  deleteText: {
+    fontFamily: 'Crimson Text',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+});

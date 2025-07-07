@@ -33,6 +33,10 @@ import FreeWriteScreen1 from './src/screens/FreeWriteScreen1.js';
 import FreeWriteScreen2 from './src/screens/FreeWriteScreen2.js';
 import FreeWriteInspireMe from './src/screens/FreeWriteInspireMe.js';
 import DailyChallengeScreen from './src/screens/DailyChallengeScreen.js';
+import MyFriends from './src/screens/MyFriends.js';
+import EditFriends from './src/screens/EditFriends.js';
+import AddFriends from './src/screens/AddFriends.js';
+import FriendRequests from './src/screens/FriendRequests.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -78,6 +82,10 @@ export default function App() {
                         initialRouteName="Login"
                         screenOptions={{ headerShown: false }}
                     >
+                        <Stack.Screen name="FriendRequests" component={FriendRequests} />
+                        <Stack.Screen name="AddFriends" component={AddFriends} />
+                        <Stack.Screen name="EditFriends" component={EditFriends} />
+                        <Stack.Screen name="MyFriends" component={MyFriends} />
                         <Stack.Screen name="DailyChallengeScreen" component={DailyChallengeScreen} />
                         <Stack.Screen name="FreeWriteInspireMe" component={FreeWriteInspireMe} />
                         <Stack.Screen name="FreeWriteScreen2" component={FreeWriteScreen2} />
