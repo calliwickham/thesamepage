@@ -20,7 +20,7 @@ export default function LoginScreen() {
                 <Text style={styles.loginHeader}>Login</Text>
 
                 <TextInput
-                    placeholder="Username or Email"
+                    placeholder="Email"
                     placeholderTextColor="#CCC"
                     style={styles.input}
                 />
