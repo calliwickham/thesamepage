@@ -11,10 +11,10 @@ import OfflineFooter from './src/newcomps/OfflineFooter';
 import { UserProvider, useUser } from './src/contexts/UserContext';
 
 import {
-  DebugScreen,
-  ChallengeScreen,
-  CreateStoryScreen,
-  FriendsScreen,
+    DebugScreen,
+    ChallengeScreen,
+    CreateStoryScreen,
+    FriendsScreen,
 } from './src/screens/initialscreens';
 
 import GenericAlbumDebug from './src/screens/GenericAlbumTest';
@@ -48,14 +48,14 @@ import { auth } from './src/constants/firebaseConfig.js'
 const Stack = createNativeStackNavigator();
 
 function AppContent() {
-  const [fontsLoaded] = useFonts({
-    Italianno: require('./assets/fonts/Italianno-Regular.ttf'),
-    'CrimsonText-Regular': require('./assets/fonts/CrimsonText-Regular.ttf'),
-    'CrimsonText-SemiBold': require('./assets/fonts/CrimsonText-SemiBold.ttf'),
-    'CrimsonText-Bold': require('./assets/fonts/CrimsonText-Bold.ttf'),
-    'CrimsonText-Italic': require('./assets/fonts/CrimsonText-Italic.ttf'),
-    'CrimsonText-BoldItalic': require('./assets/fonts/CrimsonText-BoldItalic.ttf'),
-  });
+    const [fontsLoaded] = useFonts({
+        Italianno: require('./assets/fonts/Italianno-Regular.ttf'),
+        'CrimsonText-Regular': require('./assets/fonts/CrimsonText-Regular.ttf'),
+        'CrimsonText-SemiBold': require('./assets/fonts/CrimsonText-SemiBold.ttf'),
+        'CrimsonText-Bold': require('./assets/fonts/CrimsonText-Bold.ttf'),
+        'CrimsonText-Italic': require('./assets/fonts/CrimsonText-Italic.ttf'),
+        'CrimsonText-BoldItalic': require('./assets/fonts/CrimsonText-BoldItalic.ttf'),
+    });
 
     const navigationRef = useNavigationContainerRef();
     const [currentRoute, setCurrentRoute] = React.useState(null);
@@ -79,16 +79,16 @@ function AppContent() {
         return unsubscribe;
     }, []);
 
-  const hideFooterRoutes = ['CreateAccount1', 'CreateAccount2', 'Login'];
-  const shouldShowFooter = !hideFooterRoutes.includes(currentRoute);
+    const hideFooterRoutes = ['CreateAccount1', 'CreateAccount2', 'Login'];
+    const shouldShowFooter = !hideFooterRoutes.includes(currentRoute);
 
-  if (!fontsLoaded) {
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator size="large" color="#BB77FF" />
-      </View>
-    );
-  }
+    if (!fontsLoaded) {
+        return (
+            <View style={styles.loading}>
+                <ActivityIndicator size="large" color="#BB77FF" />
+            </View>
+        );
+    }
 
     return (
         <GestureHandlerRootView style={styles.flex}>
@@ -108,6 +108,15 @@ function AppContent() {
                             initialRouteName="AuthGate"
                             screenOptions={{ headerShown: false }}
                         >
+                            <Stack.Screen name="CollabWIP" component={CollaborativeWritingWIP} />
+                            <Stack.Screen name="FriendRequests" component={FriendRequests} />
+                            <Stack.Screen name="AddFriends" component={AddFriends} />
+                            <Stack.Screen name="EditFriends" component={EditFriends} />
+                            <Stack.Screen name="MyFriends" component={MyFriends} />
+                            <Stack.Screen name="DailyChallengeScreen" component={DailyChallengeScreen} />
+                            <Stack.Screen name="FreeWriteInspireMe" component={FreeWriteInspireMe} />
+                            <Stack.Screen name="FreeWriteScreen2" component={FreeWriteScreen2} />
+                            <Stack.Screen name="FreeWriteScreen1" component={FreeWriteScreen1} />
                             <Stack.Screen name="AuthGate" component={AuthGate} />
                             <Stack.Screen name="EditOfflineSettingsPage" component={EditOfflineSettingsPage} />
                             <Stack.Screen name="OfflineSettingsPage" component={OfflineSettingsPage} />
@@ -139,17 +148,17 @@ function AppContent() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFDF9',
-  },
-  loading: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  content: {
-    flex: 1,
-    marginBottom: 72, // Reserve space for the footer
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#FFFDF9',
+    },
+    loading: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    content: {
+        flex: 1,
+        marginBottom: 72, // Reserve space for the footer
+    },
 });
