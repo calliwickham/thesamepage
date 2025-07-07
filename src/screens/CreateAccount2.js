@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 20,
         paddingTop: 0,
-        borderColor: 'red',
-        borderWidth: 1,
+        //borderColor: 'red',
+        //borderWidth: 1,
     },
     container: {
         padding: 20,
