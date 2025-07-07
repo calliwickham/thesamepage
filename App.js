@@ -8,7 +8,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import Header from './src/newcomps/Header';
 import Footer from './src/newcomps/Footer';
-
 import {
     DebugScreen,
     ChallengeScreen,
@@ -29,6 +28,40 @@ import EditOnlineSettingsPage from './src/screens/EditOnlineSettingsPage.js';
 import ResetPassword from './src/screens/ResetPassword.js';
 import OfflineSettingsPage from './src/screens/OfflineSettingsPage.js';
 import EditOfflineSettingsPage from './src/screens/EditOfflineSettingsPage.js';
+
+
+import firebaseConfig from './src/constants/firebaseConfig.js'
+//firebase imports
+import { initializeApp } from "firebase/app";
+import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    onAuthStateChanged,
+    initializeAuth,
+    getReactNativePersistence,
+} from "firebase/auth";
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage'
+import { getDatabase, ref, set, onValue } from "firebase/database";
+
+const firebaseApp = initializeApp(firebaseConfig);
+const database = getDatabase(firebaseApp);
+const auth = initializeAuth(firebaseApp, {
+    persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+});
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        const uid = user.uid;
+        console.log("User is logged in.")
+        // ...
+    } else {
+        // User is signed out
+        console.log("User is not logged in.")
+        // ...
+    }
+});
 
 const Stack = createNativeStackNavigator();
 
@@ -57,49 +90,49 @@ export default function App() {
     }
 
     return (
-      <GestureHandlerRootView style={styles.flex}>
-        <NavigationContainer
-            ref={navigationRef}
-            onReady={() => {
-                setCurrentRoute(navigationRef.getCurrentRoute()?.name);
-            }}
-            onStateChange={() => {
-                setCurrentRoute(navigationRef.getCurrentRoute()?.name);
-            }}
-        >
-            <View style={styles.container}>
-                <Header />
-                <View style={[styles.content, !shouldShowFooter && { marginBottom: 0 }]}>
-                    <Stack.Navigator
-                        initialRouteName="Login"
-                        screenOptions={{ headerShown: false }}
-                    >
-                        <Stack.Screen name="EditOfflineSettingsPage" component={EditOfflineSettingsPage} />
-                        <Stack.Screen name="OfflineSettingsPage" component={OfflineSettingsPage} />
-                        <Stack.Screen name="ResetPassword" component={ResetPassword} />
-                        <Stack.Screen name="EditOnlineSettingsPage" component={EditOnlineSettingsPage} />
-                        <Stack.Screen name="OnlineSettingsPage" component={OnlineSettingsPage} />
-                        <Stack.Screen name="OnlineHomepage" component={OnlineHomepage} />
-                        <Stack.Screen name="OfflineHomepage" component={OfflineHomepage} />
-                        <Stack.Screen name="FreeWrite" component={OnlineHomepage} />
-                        <Stack.Screen name="Challenge" component={ChallengeScreen} />
-                        <Stack.Screen name="CollaborativeLanding" component={OnlineHomepage} />
-                        <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
-                        <Stack.Screen name="Albums" component={Albums} />
-                        <Stack.Screen name="FileViewer" component={FileViewer} />
-                        <Stack.Screen name="GenericAlbumDebug" component={GenericAlbumDebug} />
-                        <Stack.Screen name="GenericAlbum" component={GenericAlbum} />
-                        <Stack.Screen name="Friends" component={FriendsScreen} />
-                        <Stack.Screen name="Login" component={LoginScreen} />
-                        <Stack.Screen name="CreateAccount1" component={CreateOnline1} />
-                        <Stack.Screen name="CreateAccount2" component={CreateAccount2} />
-                        <Stack.Screen name="Debug" component={DebugScreen} />
-                    </Stack.Navigator>
+        <GestureHandlerRootView style={styles.flex}>
+            <NavigationContainer
+                ref={navigationRef}
+                onReady={() => {
+                    setCurrentRoute(navigationRef.getCurrentRoute()?.name);
+                }}
+                onStateChange={() => {
+                    setCurrentRoute(navigationRef.getCurrentRoute()?.name);
+                }}
+            >
+                <View style={styles.container}>
+                    <Header />
+                    <View style={[styles.content, !shouldShowFooter && { marginBottom: 0 }]}>
+                        <Stack.Navigator
+                            initialRouteName="Login"
+                            screenOptions={{ headerShown: false }}
+                        >
+                            <Stack.Screen name="EditOfflineSettingsPage" component={EditOfflineSettingsPage} />
+                            <Stack.Screen name="OfflineSettingsPage" component={OfflineSettingsPage} />
+                            <Stack.Screen name="ResetPassword" component={ResetPassword} />
+                            <Stack.Screen name="EditOnlineSettingsPage" component={EditOnlineSettingsPage} />
+                            <Stack.Screen name="OnlineSettingsPage" component={OnlineSettingsPage} />
+                            <Stack.Screen name="OnlineHomepage" component={OnlineHomepage} />
+                            <Stack.Screen name="OfflineHomepage" component={OfflineHomepage} />
+                            <Stack.Screen name="FreeWrite" component={OnlineHomepage} />
+                            <Stack.Screen name="Challenge" component={ChallengeScreen} />
+                            <Stack.Screen name="CollaborativeLanding" component={OnlineHomepage} />
+                            <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
+                            <Stack.Screen name="Albums" component={Albums} />
+                            <Stack.Screen name="FileViewer" component={FileViewer} />
+                            <Stack.Screen name="GenericAlbumDebug" component={GenericAlbumDebug} />
+                            <Stack.Screen name="GenericAlbum" component={GenericAlbum} />
+                            <Stack.Screen name="Friends" component={FriendsScreen} />
+                            <Stack.Screen name="Login" component={LoginScreen} />
+                            <Stack.Screen name="CreateAccount1" component={CreateOnline1} />
+                            <Stack.Screen name="CreateAccount2" component={CreateAccount2} />
+                            <Stack.Screen name="Debug" component={DebugScreen} />
+                        </Stack.Navigator>
+                    </View>
+                    {currentRoute !== 'CreateAccount1' && currentRoute !== 'CreateAccount2' && currentRoute !== 'Login' && <Footer />}
                 </View>
-                {currentRoute !== 'CreateAccount1' && currentRoute !== 'CreateAccount2' && currentRoute !== 'Login' && <Footer />}
-            </View>
-        </NavigationContainer>
-      </GestureHandlerRootView>
+            </NavigationContainer>
+        </GestureHandlerRootView>
     );
 }
 
