@@ -29,24 +29,8 @@ import ResetPassword from './src/screens/ResetPassword.js';
 import OfflineSettingsPage from './src/screens/OfflineSettingsPage.js';
 import EditOfflineSettingsPage from './src/screens/EditOfflineSettingsPage.js';
 
-
-import firebaseConfig from './src/constants/firebaseConfig.js'
-//firebase imports
-import { initializeApp } from "firebase/app";
-import { 
-    createUserWithEmailAndPassword, 
-    onAuthStateChanged,
-    initializeAuth,
-    getReactNativePersistence,
-} from "firebase/auth";
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage'
-import { getDatabase, ref, set, onValue } from "firebase/database";
-
-const firebaseApp = initializeApp(firebaseConfig);
-const database = getDatabase(firebaseApp);
-const auth = initializeAuth(firebaseApp, {
-    persistence: getReactNativePersistence(ReactNativeAsyncStorage)
-});
+import { onAuthStateChanged} from "firebase/auth";
+import {auth} from './src/constants/firebaseConfig.js'
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
