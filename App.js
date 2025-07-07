@@ -36,6 +36,12 @@ export default function App() {
         'CrimsonText-BoldItalic': require('./assets/fonts/CrimsonText-BoldItalic.ttf'),
     });
 
+    const navigationRef = useNavigationContainerRef();
+    const [currentRoute, setCurrentRoute] = React.useState(null);
+
+    const hideFooterRoutes = ['CreateAccount1', 'CreateAccount2', 'Login'];
+    const shouldShowFooter = !hideFooterRoutes.includes(currentRoute);
+
     if (!fontsLoaded) {
         return (
             <View style={styles.loading}>
@@ -43,12 +49,6 @@ export default function App() {
             </View>
         );
     }
-
-    const navigationRef = useNavigationContainerRef();
-    const [currentRoute, setCurrentRoute] = React.useState(null);
-
-    const hideFooterRoutes = ['CreateAccount1', 'CreateAccount2', 'Login'];
-    const shouldShowFooter = !hideFooterRoutes.includes(currentRoute);
 
     return (
         <NavigationContainer
