@@ -20,7 +20,7 @@ const Footer = () => {
             <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
                 <FriendsIcon width={41} height={42} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('OnlineSettingsPage')}>
+            <TouchableOpacity onPress={() => navigation.navigate('OfflineSettingsPage')}>
                 <SettingsIcon width={39} height={39} />
             </TouchableOpacity>
         </View>

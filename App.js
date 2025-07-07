@@ -29,6 +29,8 @@ import PennameScreen from './src/screens/LocalAccount2.js';
 import OnlineSettingsPage from './src/screens/OnlineSettingsPage.js';
 import EditOnlineSettingsPage from './src/screens/EditOnlineSettingsPage.js';
 import ResetPassword from './src/screens/ResetPassword.js';
+import OfflineSettingsPage from './src/screens/OfflineSettingsPage.js';
+import EditOfflineSettingsPage from './src/screens/EditOfflineSettingsPage.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +62,8 @@ export default function App() {
                         initialRouteName="Login"
                         screenOptions={{ headerShown: false }}
                     >
+                        <Stack.Screen name="EditOfflineSettingsPage" component={EditOfflineSettingsPage} />
+                        <Stack.Screen name="OfflineSettingsPage" component={OfflineSettingsPage} />
                         <Stack.Screen name="ResetPassword" component={ResetPassword} />
                         <Stack.Screen name="EditOnlineSettingsPage" component={EditOnlineSettingsPage} />
                         <Stack.Screen name="OnlineSettingsPage" component={OnlineSettingsPage} />
