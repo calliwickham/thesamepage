@@ -1,31 +1,54 @@
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  StyleSheet,
+  View, Text, TextInput, TouchableOpacity,
+  ScrollView, StyleSheet
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { collection, getDocs, query, where, doc, setDoc } from 'firebase/firestore';
+import { auth, firestore } from '../constants/firebaseConfig';
 
 export default function AddFriends() {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
-  const [results, setResults] = useState([
-    {
-      name: 'Jonathan',
-      description: 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis...',
-    },
-    {
-      name: 'Fiona',
-      description: 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis...',
-    },
-  ]);
+  const [results, setResults] = useState([]);
+  const currentUser = auth.currentUser;
 
-  const handleSearch = () => {
-    // Placeholder: no actual search logic
-    console.log('Searching for:', searchQuery);
+  const handleSearch = async () => {
+    try {
+      const q = query(
+        collection(firestore, 'Users'),
+        where('penname', '>=', searchQuery),
+        where('penname', '<=', searchQuery + '\uf8ff')
+      );
+      const snapshot = await getDocs(q);
+      const foundUsers = [];
+      snapshot.forEach(docSnap => {
+        if (docSnap.id !== currentUser.uid) {
+          foundUsers.push({
+            id: docSnap.id,
+            name: docSnap.data().penname,
+            description: 'User on TheSamePage.', // Placeholder
+          });
+        }
+      });
+      setResults(foundUsers);
+    } catch (err) {
+      console.error('Search error:', err);
+    }
+  };
+
+  const sendFriendRequest = async (targetId) => {
+    try {
+      const requestRef = doc(firestore, 'Users', targetId, 'FriendRequests', currentUser.uid);
+      await setDoc(requestRef, {
+        from: currentUser.uid,
+        timestamp: new Date(),
+      });
+      alert('Friend request sent!');
+    } catch (error) {
+      console.error('Send request error:', error);
+      alert('Could not send request.');
+    }
   };
 
   return (
@@ -53,7 +76,7 @@ export default function AddFriends() {
           <View key={index} style={styles.card}>
             <View style={styles.row}>
               <Text style={styles.name}>{friend.name}</Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => sendFriendRequest(friend.id)}>
                 <Text style={styles.plus}>＋</Text>
               </TouchableOpacity>
             </View>
@@ -68,7 +91,7 @@ export default function AddFriends() {
           </Text>
           <TouchableOpacity
             style={styles.viewButton}
-            onPress={() => navigation.navigate('FriendRequests')} // update to 'FriendRequests' when it exists
+            onPress={() => navigation.navigate('FriendRequests')}
           >
             <Text style={styles.viewText}>View Requests</Text>
           </TouchableOpacity>
@@ -77,7 +100,6 @@ export default function AddFriends() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
