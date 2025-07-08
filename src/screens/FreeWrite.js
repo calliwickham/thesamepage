@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -10,7 +10,7 @@ import {
     TouchableWithoutFeedback,
     Alert
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import SaveIcon from '../newcomps/SaveIcon';
 import UndoIcon from '../newcomps/Undo';
 
@@ -25,14 +25,26 @@ const getWordCount = (text) => {
 export default function FreeWrite() {
 
     const navigation = useNavigation();
+    const route = useRoute();
+    const file = route.params?.file;
+
     const [title, setTitle] = useState('');
     const [story, setStory] = useState('');
     const [prevTitle, setPrevTitle] = useState('');
     const [prevStory, setPrevStory] = useState('');
-
     const [freeWriteId, setFreeWriteId] = useState(null);
 
-    const onSaveOrPublish = async (buttonType,title, text) => {
+    useEffect(() => {
+        if (file) {
+            setTitle(file.title || '');
+            setStory(file.text || '');
+            setPrevTitle(file.title || '');
+            setPrevStory(file.text || '');
+            setFreeWriteId(file.id || null);
+        }
+    }, [file]);
+
+    const onSaveOrPublish = async (buttonType, title, text) => {
 
         const published = buttonType == 'save' ? false : true;
 
@@ -140,12 +152,12 @@ export default function FreeWrite() {
                 </View>
 
                 <View style={styles.buttonRow}>
-                    <TouchableOpacity onPress={() => onSaveOrPublish('save',title, story)}>
+                    <TouchableOpacity onPress={() => onSaveOrPublish('save', title, story)}>
                         <SaveIcon />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.publishButton} onPress={()=> {
-                        onSaveOrPublish('publish',title, story);
+                    <TouchableOpacity style={styles.publishButton} onPress={() => {
+                        onSaveOrPublish('publish', title, story);
                         navigation.navigate('Albums');
                         Alert.alert('Published', 'You can find it in the Free Write album.');
                     }}>

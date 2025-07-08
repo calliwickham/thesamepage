@@ -10,8 +10,12 @@ const albumThemes = ALBUMSTHEMES;
 export default function FileCard({ file }) {
 
     function onPress() {
-        if ('published' in file && file.published === false){
-            alert('Functionality incoming! Please wait.');
+
+        console.log(file);
+
+        if (file.album === 'freewrite' && 'published' in file && file.published === false){
+            navigation.navigate("FreeWriteScreen2", {file})
+            //alert('Functionality incoming! Please wait.');
         }
         else {
             navigation.navigate('FileViewer', { file });

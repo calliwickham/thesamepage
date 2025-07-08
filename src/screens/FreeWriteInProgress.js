@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Animated } from 'react-native';
 import {
     View,
     Text,
@@ -22,6 +23,7 @@ export default function FreeWriteScreen1() {
 
     const albumKey = 'freewrite';
     const albumThemes = ALBUMSTHEMES;
+    const [hasFetched, setHasFetched] = useState(false);
     const [files, setFiles] = useState([]); useEffect(() => {
         const fetchData = async () => {
             const userId = auth.currentUser?.uid;
@@ -32,7 +34,7 @@ export default function FreeWriteScreen1() {
                 .map(doc => {
                     const data = doc.data();
                     return {
-                        id: doc.id, 
+                        id: doc.id,
                         album: albumKey,
                         title: data.title || '[Untitled]',
                         date: data.date?.toDate?.().toLocaleDateString() || '',
@@ -43,10 +45,22 @@ export default function FreeWriteScreen1() {
                 })
                 .filter(entry => entry.published === false);
             setFiles(docs);
+            setHasFetched(true);
         };
 
         fetchData();
     }, []);
+
+    //navigate straight to freewriting if there's no existing files
+    useEffect(() => {
+        if (hasFetched && files.length === 0) {
+            navigation.navigate('FreeWriteScreen2'); // or whichever screen makes sense
+        }
+    }, [hasFetched, files]);
+    if (!hasFetched) return <View style={styles.loadingView}><Text style={styles.loadingText}>Loading...</Text></View>;
+    if (files.length === 0) {
+        return null; // prevent flicker before redirect
+    }
 
     return (
         <View style={styles.container}>
@@ -54,14 +68,14 @@ export default function FreeWriteScreen1() {
                 <Text style={styles.header}>Your Open Free Writes</Text>
 
                 {files.map((file, i) => (
-                        <TouchableOpacity
-                            key={i}
-                            onPress={() => navigation.navigate('FileViewer', { file })}
-                            activeOpacity={0.7}
-                        >
-                            <FileCard file={file} />
-                        </TouchableOpacity>
-                    ))}
+                    <TouchableOpacity
+                        key={i}
+                        onPress={() => navigation.navigate('FileViewer', { file })}
+                        activeOpacity={0.7}
+                    >
+                        <FileCard file={file} />
+                    </TouchableOpacity>
+                ))}
 
                 <TouchableOpacity
                     style={styles.newButton}
@@ -70,7 +84,7 @@ export default function FreeWriteScreen1() {
                     <Text style={styles.newButtonText}>Start New Free Write</Text>
                 </TouchableOpacity>
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
-                    
+
                 </ScrollView>
             </ScrollView>
         </View>
@@ -159,5 +173,11 @@ const styles = StyleSheet.create({
         fontFamily: 'Crimson Text',
         fontWeight: '700',
         color: '#000',
+    },
+    loadingView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column'
     },
 });
