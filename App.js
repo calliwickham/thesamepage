@@ -17,7 +17,6 @@ import {
     FriendsScreen,
 } from './src/screens/initialscreens';
 
-import GenericAlbumDebug from './src/screens/GenericAlbumTest';
 import GenericAlbum from './src/screens/GenericAlbum';
 import Albums from './src/screens/Albums.js';
 import FileViewer from './src/screens/FileViewer';
@@ -133,7 +132,6 @@ export default function App() {
                             <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
                             <Stack.Screen name="Albums" component={Albums} />
                             <Stack.Screen name="FileViewer" component={FileViewer} />
-                            <Stack.Screen name="GenericAlbumDebug" component={GenericAlbumDebug} />
                             <Stack.Screen name="GenericAlbum" component={GenericAlbum} />
                             <Stack.Screen name="Friends" component={FriendsScreen} />
                             <Stack.Screen name="Login" component={LoginScreen} />
