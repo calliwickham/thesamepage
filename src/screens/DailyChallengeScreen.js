@@ -12,6 +12,8 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 import SaveIcon from '../newcomps/SaveIcon';
 import UndoIcon from '../newcomps/Undo';
@@ -31,11 +33,14 @@ export default function DailyChallengeScreen() {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      >
+    
+      
+<KeyboardAwareScrollView
+  contentContainerStyle={styles.container}
+  enableOnAndroid={true}
+  extraScrollHeight={20}
+  keyboardShouldPersistTaps="handled"
+>
         <Text style={styles.header}>
           Write a short story inspired by{'\n'}these three words...
         </Text>
@@ -123,8 +128,8 @@ export default function DailyChallengeScreen() {
             </View>
           </Modal>
         )}
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+      </KeyboardAwareScrollView>
+    
   );
 }
 
