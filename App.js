@@ -126,9 +126,7 @@ export default function App() {
                             <Stack.Screen name="OnlineSettingsPage" component={OnlineSettingsPage} />
                             <Stack.Screen name="OnlineHomepage" component={OnlineHomepage} />
                             <Stack.Screen name="OfflineHomepage" component={OfflineHomepage} />
-                            <Stack.Screen name="FreeWrite" component={OnlineHomepage} />
                             <Stack.Screen name="Challenge" component={ChallengeScreen} />
-                            <Stack.Screen name="CollaborativeLanding" component={OnlineHomepage} />
                             <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
                             <Stack.Screen name="Albums" component={Albums} />
                             <Stack.Screen name="FileViewer" component={FileViewer} />

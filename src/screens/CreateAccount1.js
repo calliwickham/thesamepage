@@ -11,8 +11,6 @@ import NavArrow from '../newcomps/NavArrow';
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '../contexts/UserContext';
 
-
-
 //firebase imports
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore } from '../constants/firebaseConfig.js'
