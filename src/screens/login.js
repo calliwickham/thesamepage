@@ -16,6 +16,9 @@ import { useUser } from '../contexts/UserContext';
 //firebase imports
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore } from '../constants/firebaseConfig.js'
+import { getDoc, doc } from 'firebase/firestore';
+import { storeLocal } from '../constants/storeLocal.js'
+
 
 export default function LoginScreen() {
     const { setUserType } = useUser(); // ⬅️ Add this
@@ -28,8 +31,16 @@ export default function LoginScreen() {
 
     const onSubmit = async ({ email, password }) => {
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            //fetch user from firestore
+            const userDoc = await getDoc(doc(firestore, 'Users', user.uid));
+            const penname = userDoc.exists() ? userDoc.data().penname : 'Unknown';
+
+            await storeLocal("penname", penname);
             setUserType('online');
+
             navigation.navigate('OnlineHomepage');
         } catch (error) {
             console.log('Login error code:', error.code); // Debug log
