@@ -32,7 +32,7 @@ export default function OnlineHomepage() {
                 <Text style={styles.header}>Welcome, Anastasia</Text>
 
                 {/*DEBUG, REMOVE LATER - Buttons for vewing other screens not accessible rn*/}
-                <Button color='error'
+                {/* <Button color='error'
                     style={{ position: 'absolute', left: 10, top: 5, paddingVertical: 2 }}
                     onPress={() => navigation.navigate('Debug')}>Debug - components</Button>
                 <Button
@@ -42,7 +42,7 @@ export default function OnlineHomepage() {
 
                 <Button color='error'
                     style={{ position: 'absolute', right: 10, bottom: 80, paddingVertical: 2 }}
-                    onPress={handleLogout}>Debug - LOGOUT</Button>
+                    onPress={handleLogout}>Debug - LOGOUT</Button> */}
 
                 {/* Daily Challenge */}
                 <TouchableOpacity

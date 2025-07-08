@@ -10,12 +10,15 @@ import {
     StyleSheet,
     ScrollView,
 } from 'react-native';
+import { useUser } from '../contexts/UserContext';
+
 
 //firebase imports
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore } from '../constants/firebaseConfig.js'
 
 export default function LoginScreen() {
+    const { setUserType } = useUser(); // ⬅️ Add this
 
     const navigation = useNavigation();
     const [authError, setAuthError] = useState(null);
@@ -26,6 +29,7 @@ export default function LoginScreen() {
     const onSubmit = async ({ email, password }) => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
+            setUserType('online');
             navigation.navigate('OnlineHomepage');
         } catch (error) {
             console.log('Login error code:', error.code); // Debug log

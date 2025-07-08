@@ -60,6 +60,8 @@ export default function App() {
     const navigationRef = useNavigationContainerRef();
     const [currentRoute, setCurrentRoute] = React.useState(null);
     const [isAuthenticated, setIsAuthenticated] = React.useState(null);
+    const { userType, setUserType } = useUser();
+
 
     React.useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -140,7 +142,9 @@ export default function App() {
                             <Stack.Screen name="Debug" component={DebugScreen} />
                         </Stack.Navigator>
                     </View>
-                    {currentRoute !== 'CreateAccount1' && currentRoute !== 'CreateAccount2' && currentRoute !== 'Login' && <Footer />}
+                    {currentRoute !== 'CreateAccount1' && currentRoute !== 'CreateAccount2' && currentRoute !== 'Login' && (
+                      userType === 'online' ? <Footer /> : <OfflineFooter />
+                    )}
                 </View>
             </NavigationContainer>
         </GestureHandlerRootView>
