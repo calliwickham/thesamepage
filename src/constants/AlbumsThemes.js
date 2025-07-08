@@ -2,6 +2,7 @@ export const ALBUMSTHEMES = {
     daily: {
         name: 'Daily Challenge',
         shortName: 'Daily Challenge',
+        firestoreName: 'DailyChallenges',
         color: "#FFF4E2",
         border: "#E7DBC8",
         cardHeight: 120,
@@ -11,6 +12,7 @@ export const ALBUMSTHEMES = {
     freewrite: {
         name: 'Free Write',
         shortName: 'Free Write',
+        firestoreName: 'FreeWrites',
         color: "#E4E4E4",
         border: "#CFCFCF",
         allowBookmarks: true,
@@ -22,6 +24,7 @@ export const ALBUMSTHEMES = {
     collaborative: {
         name: 'Collaborative Writing',
         shortName: 'Collaborative',
+        firestoreName: 'Collaborations',
         color: "#E3EBDD",
         border: "#C9D2C3",
         cardHeight: 140,

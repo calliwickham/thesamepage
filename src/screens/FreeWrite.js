@@ -7,21 +7,77 @@ import {
     StyleSheet,
     ScrollView,
     Keyboard,
-    Platform,
-    KeyboardAvoidingView,
     TouchableWithoutFeedback,
+    Alert
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SaveIcon from '../newcomps/SaveIcon';
 import UndoIcon from '../newcomps/Undo';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+//firebase imports
+import { doc, collection, addDoc, updateDoc } from 'firebase/firestore';
+import { auth, firestore } from '../constants/firebaseConfig.js'
+
+const getWordCount = (text) => {
+    return text.trim().split(/\s+/).filter(Boolean).length;
+};
 
 export default function FreeWriteScreen2() {
+
     const navigation = useNavigation();
     const [title, setTitle] = useState('');
     const [story, setStory] = useState('');
     const [prevTitle, setPrevTitle] = useState('');
     const [prevStory, setPrevStory] = useState('');
+
+    const [freeWriteId, setFreeWriteId] = useState(null);
+
+    const onSaveOrPublish = async (buttonType,title, text) => {
+
+        const published = buttonType == 'save' ? false : true;
+
+        if (!title.trim() || !text.trim()) {
+            alert('Please fill out both the title and the content before saving.');
+            return;
+        }
+
+        const userId = auth.currentUser?.uid;
+        if (!userId) {
+            alert('User not authenticated.');
+            return;
+        }
+
+        try {
+            const userId = auth.currentUser?.uid;
+
+            const wordCount = getWordCount(text);
+
+            if (freeWriteId) {
+                const docRef = doc(firestore, 'Users', userId, 'FreeWrites', freeWriteId);
+                await updateDoc(docRef, {
+                    title: title,
+                    text: text,
+                    wordcount: wordCount,
+                    date: new Date(),
+                    published: published,
+                });
+            } else {
+                const freeWritesRef = collection(firestore, 'Users', userId, 'FreeWrites');
+                const docRef = await addDoc(freeWritesRef, {
+                    title: title,
+                    text: text,
+                    wordcount: wordCount,
+                    date: new Date(),
+                    published: published,
+                });
+                setFreeWriteId(docRef.id);
+            }
+            console.log('FreeWrite saved successfully!');
+        } catch (error) {
+            console.log('Error saving FreeWrite:', error);
+        }
+
+    };
 
     const handleTitleChange = (text) => {
         setPrevTitle(title);
@@ -84,11 +140,15 @@ export default function FreeWriteScreen2() {
                 </View>
 
                 <View style={styles.buttonRow}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => onSaveOrPublish('save',title, story)}>
                         <SaveIcon />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.publishButton} onPress={handlePublish}>
+                    <TouchableOpacity style={styles.publishButton} onPress={()=> {
+                        onSaveOrPublish('publish',title, story);
+                        navigation.navigate('Albums');
+                        Alert.alert('Published', 'You can find it in the Free Write album.');
+                    }}>
                         <Text style={styles.publishText}>Publish</Text>
                     </TouchableOpacity>
 

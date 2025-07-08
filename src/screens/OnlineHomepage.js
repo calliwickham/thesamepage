@@ -1,6 +1,7 @@
-import React from 'react';
+import {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import InProgressIcon from '../newcomps/InProgressIcon';
 import CheckBoxIcon from '../newcomps/CheckBoxIcon';
@@ -16,20 +17,27 @@ import { auth } from '../constants/firebaseConfig';
 export default function OnlineHomepage() {
     const navigation = useNavigation();
 
-    const handleLogout = async () => {
-        try {
-            await signOut(auth);
-            navigation.replace('Login'); // or navigate('Login') if you want back navigation
-            console.log('User signed out');
-        } catch (error) {
-            console.error('Sign out error:', error);
-        }
-    };
+    const [penname, setPenname] = useState(null);
+
+    useEffect(() => {
+        const fetchPenname = async () => {
+            try {
+                const value = await AsyncStorage.getItem('penname');
+                if (value !== null) {
+                    setPenname(value);
+                }
+            } catch (error) {
+                console.log('Error fetching penname:', error);
+            }
+        };
+
+        fetchPenname();
+    }, []);
 
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.content}>
-                <Text style={styles.header}>Welcome, Anastasia</Text>
+                <Text style={styles.header}>{penname ? `Welcome, ${penname}` : 'Welcome, [Guest]'}</Text>
 
                 {/*DEBUG, REMOVE LATER - Buttons for vewing other screens not accessible rn*/}
                 {/* 
@@ -39,11 +47,7 @@ export default function OnlineHomepage() {
                 <Button
                     color='error'
                     style={{ position: 'absolute', right: 10, top: 5, paddingVertical: 2 }}
-                    onPress={() => navigation.navigate('OfflineHomepage')}>Debug - offline homepage</Button>
-
-                <Button color='error'
-                    style={{ position: 'absolute', right: 10, bottom: 80, paddingVertical: 2 }}
-                    onPress={handleLogout}>Debug - LOGOUT</Button> */}
+                    onPress={() => navigation.navigate('OfflineHomepage')}>Debug - offline homepage</Button> */}
 
                 {/* Daily Challenge */}
                 <TouchableOpacity

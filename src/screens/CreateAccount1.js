@@ -17,6 +17,7 @@ import { useUser } from '../contexts/UserContext';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore } from '../constants/firebaseConfig.js'
 import { doc, setDoc } from "firebase/firestore";
+import { storeLocal } from '../constants/storeLocal.js'
 
 
 export default function CreateOnline1() {
@@ -27,8 +28,6 @@ export default function CreateOnline1() {
     //what happens when you submit the form
     const onSubmit = (form) => {
         //console.log('Form data:', form);
-        navigation.navigate('OnlineHomepage');
-
         createUserWithEmailAndPassword(auth, form.email, form.password)
             .then(async (userCredential) => {
                 // Signed up 
@@ -40,6 +39,8 @@ export default function CreateOnline1() {
                     emailVerified: false,
                 });
                 alert(form.username + " logged in.")
+                await storeLocal("penname", form.username);
+                navigation.navigate('OnlineHomepage');
                 // ...
             })
             .catch((error) => {
@@ -101,7 +102,7 @@ export default function CreateOnline1() {
                                 onChange(text);
                                 if (errors.username) clearErrors('username');
                             }}
-                            placeholder="Username"
+                            placeholder="Penname"
                             placeholderTextColor="#CCC"
                             style={[
                                 styles.input,

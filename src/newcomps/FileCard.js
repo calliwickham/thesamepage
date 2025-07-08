@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import TileWithFoldedCorner from "./TileWithFoldedCorner"
 import { ALBUMSTHEMES } from "../constants/AlbumsThemes.js"
+import InProgressIcon from "./InProgressIcon.js"
 
 const albumThemes = ALBUMSTHEMES;
 
@@ -15,6 +16,11 @@ export default function FileCard({ file }) {
             activeOpacity={0.7}
             onPress={() => navigation.navigate('FileViewer', { file })}
         >
+            {file?.published === false && (
+                <View style={[styles.upperRightIcon]}>
+                    <InProgressIcon />
+                </View>
+            )}
             <TileWithFoldedCorner style={[{ height: albumThemes[file.album].cardHeight, marginVertical: 4 }]} fill={albumThemes[file.album].color} line={albumThemes[file.album].border}>
                 {/*content of tile*/}
                 <View style={[styles.upperSection, { flex: albumThemes[file.album].cardTitleFlex }]}>
@@ -95,5 +101,16 @@ const styles = StyleSheet.create({
         fontFamily: 'Crimson Text',
         textAlign: 'left',
         color: '#3F3F3F'
+    },
+    upperRightIcon: {
+        position: 'absolute',
+        top: 0,
+        right: 10,
+        zIndex: 2
+    },
+    debug: {
+        borderColor: 'orange',
+        borderStyle: 'dashed',
+        borderWidth: 2
     }
 });

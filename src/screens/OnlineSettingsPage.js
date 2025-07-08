@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 //firebase imports
 import { signOut } from 'firebase/auth';
 import { auth } from '../constants/firebaseConfig';
+import { clearLocal } from '../constants/storeLocal.js'
 
 export default function OnlineSettingsPage() {
     const navigation = useNavigation();
@@ -13,6 +14,7 @@ export default function OnlineSettingsPage() {
     const handleLogout = async () => {
         try {
             await signOut(auth);
+            await clearLocal("penname");
             navigation.replace('Login'); // or navigate('Login') if you want back navigation
             console.log('User signed out');
         } catch (error) {
