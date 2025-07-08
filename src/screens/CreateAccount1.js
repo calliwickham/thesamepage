@@ -18,7 +18,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { storeLocal } from '../constants/storeLocal.js'
 import uuid from 'react-native-uuid';
 import { getAuth, signInAnonymously } from 'firebase/auth';
-import { storeLocal, getLocal, removeLocal } from '../utils/localStorage';
+//import { storeLocal, getLocal, removeLocal } from '../utils/localStorage';
 
 
 
