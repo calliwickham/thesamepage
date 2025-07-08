@@ -22,7 +22,7 @@ const getWordCount = (text) => {
     return text.trim().split(/\s+/).filter(Boolean).length;
 };
 
-export default function FreeWriteScreen2() {
+export default function FreeWrite() {
 
     const navigation = useNavigation();
     const [title, setTitle] = useState('');

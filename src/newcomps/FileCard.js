@@ -9,12 +9,21 @@ const albumThemes = ALBUMSTHEMES;
 
 export default function FileCard({ file }) {
 
+    function onPress() {
+        if ('published' in file && file.published === false){
+            alert('Functionality incoming! Please wait.');
+        }
+        else {
+            navigation.navigate('FileViewer', { file });
+        }
+    }
+
     const navigation = useNavigation();
 
     return (
         <TouchableOpacity
             activeOpacity={0.7}
-            onPress={() => navigation.navigate('FileViewer', { file })}
+            onPress={() => onPress()}
         >
             {file?.published === false && (
                 <View style={[styles.upperRightIcon]}>
@@ -34,7 +43,7 @@ export default function FileCard({ file }) {
                         </Text>
                     )}
 
-                    <Text style={styles.cardText}>
+                    <Text style={[styles.cardText, { fontStyle: 'italic' }]}>
                         Date Created: {file.date}
                     </Text>
 
