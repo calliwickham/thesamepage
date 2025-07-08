@@ -3,17 +3,17 @@
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBSj_Vq4dsrLGSyWrB5C1ScrzvMkV8-bVA",
-  authDomain: "thesamepage-43fb0.firebaseapp.com",
-  projectId: "thesamepage-43fb0",
-  storageBucket: "thesamepage-43fb0.firebasestorage.app",
-  messagingSenderId: "34043205967",
-  appId: "1:34043205967:web:23bbb2774560f3cc228d3a"
+    apiKey: "AIzaSyBSj_Vq4dsrLGSyWrB5C1ScrzvMkV8-bVA",
+    authDomain: "thesamepage-43fb0.firebaseapp.com",
+    projectId: "thesamepage-43fb0",
+    storageBucket: "thesamepage-43fb0.firebasestorage.app",
+    messagingSenderId: "34043205967",
+    appId: "1:34043205967:web:23bbb2774560f3cc228d3a"
 };
 
 //firebase imports
 import { initializeApp } from "firebase/app";
-import { 
+import {
     //createUserWithEmailAndPassword, 
     //onAuthStateChanged,
     initializeAuth,
@@ -31,4 +31,4 @@ const auth = initializeAuth(firebaseApp, {
 //const database = getDatabase(firebaseApp);
 const firestore = getFirestore(firebaseApp);
 
-export {firebaseApp, auth, firestore}
+export { firebaseApp, auth, firestore }
