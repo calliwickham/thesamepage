@@ -55,6 +55,7 @@ export default function FreeWriteScreen2() {
             if (freeWriteId) {
                 const docRef = doc(firestore, 'Users', userId, 'FreeWrites', freeWriteId);
                 await updateDoc(docRef, {
+                    title: title,
                     text: text,
                     wordcount: wordCount,
                     date: new Date(),
@@ -63,6 +64,7 @@ export default function FreeWriteScreen2() {
             } else {
                 const freeWritesRef = collection(firestore, 'Users', userId, 'FreeWrites');
                 const docRef = await addDoc(freeWritesRef, {
+                    title: title,
                     text: text,
                     wordcount: wordCount,
                     date: new Date(),
