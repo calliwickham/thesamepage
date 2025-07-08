@@ -68,7 +68,19 @@ export default function GenericAlbum() {
 
     if (files === null) return <View style={styles.loadingView}><Text style={styles.loadingText}>Loading...</Text></View>;
 
-    return (
+    if (albumKey !== 'freewrite' && albumKey !== 'daily') {
+        return (
+            <View style={styles.loadingView}>
+                <View style={[styles.messageBox, {backgroundColor: albumThemes[albumKey].color}]}>
+                    <Text style={styles.wipTitle}>This Feature is Coming Soon!</Text>
+                    <Text style={styles.wipSubtitle}>
+                        We're still working on {albumThemes[albumKey].name}.{'\n'}Please check back in a future update.
+                    </Text>
+                </View>
+            </View>
+        );
+    }
+    else return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.header}>{albumThemes[albumKey].shortName} Files</Text>
             <SearchBox placeholder="Search for." style={styles.search} />
@@ -82,8 +94,12 @@ export default function GenericAlbum() {
                         <FileCard file={file} />
                     </TouchableOpacity>
                 ))}
-                {albumKey === 'trash' || albumKey === 'favorites' || albumKey === 'collaborative' ? <Text style={styles.loadingText}>The {albumKey} features are not available yet</Text> : null}
-                {albumKey !== 'trash' && albumKey !== 'favorites' && albumKey === 'collaborative' && files.length === 0 ? <Text style={styles.loadingText}>There's nothing here! Head back to home and choose a mode to start writing.</Text> : null}
+                {files.length === 0 ? <View style={[styles.messageBox, {backgroundColor: albumThemes[albumKey].color}]}>
+                    <Text style={styles.wipTitle}>There's nothing here!</Text>
+                    <Text style={styles.wipSubtitle}>
+                        Head back to home and choose {albumThemes[albumKey].name} mode to start writing!
+                    </Text>
+                </View> : null}
             </ScrollView>
         </SafeAreaView>
     );
@@ -121,5 +137,29 @@ const styles = StyleSheet.create({
         color: 'darkgreen',
         fontSize: 20,
         fontFamily: 'Crimson Text'
-    }
+    },
+    messageBox: {
+        padding: 24,
+        borderRadius: 12,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 1, height: 3 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        elevation: 3,
+        marginBottom: 20,
+    },
+    wipTitle: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        fontFamily: 'Crimson Text',
+        marginBottom: 8,
+        textAlign: 'center',
+    },
+    wipSubtitle: {
+        fontSize: 16,
+        fontFamily: 'Crimson Text',
+        textAlign: 'center',
+        color: '#555',
+    },
 });

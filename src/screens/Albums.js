@@ -14,11 +14,11 @@ import Button from '../newcomps/Button';
 import {ALBUMSTHEMES} from '../constants/AlbumsThemes.js'
 
 const dummyAlbumsData = [
-    { key: "daily", files: 25, edited: '10/03/2023' },
-    { key: "freewrite", files: 10, edited: '11/23/2024' },
-    { key: "collaborative", files: 12, edited: '8/03/2025' },
-    { key: "favorites", files: 7, edited: null },
-    { key: "trash", files: 128, edited: null },
+    { key: "daily", files: ' - - ', edited: ' - - ' },
+    { key: "freewrite", files: ' - - ', edited: ' - - ' },
+    { key: "collaborative", files: ' - - ', edited: ' - - ' },
+    { key: "favorites", files: ' - - ', edited: null },
+    { key: "trash", files: ' - - ', edited: null },
 ];
 
 const albumsThemes = ALBUMSTHEMES;
