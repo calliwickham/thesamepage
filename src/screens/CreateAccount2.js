@@ -9,10 +9,6 @@ import {
     Platform,
 } from 'react-native';
 import { useUser } from '../contexts/UserContext';
-
-
-
-
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm, Controller } from 'react-hook-form';
 import isEmail from 'validator/lib/isEmail';
@@ -25,11 +21,23 @@ export default function CreateAccount2({ navigation }) {
     const { setUserType } = useUser();
     const [showModal, setShowModal] = useState(false);
 
-    const { control, handleSubmit, formState: { errors }, clearErrors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        mode: 'onSubmit',
+        reValidateMode: 'onSubmit',
+    });
 
     const onSubmit = (formData) => {
-        Alert.alert('Account successfully created');
-        navigation.navigate('OnlineHomepage');
+        if (isEmail(formData.email)) {
+            setUserType('online'); // ✅ Only set here after validation
+            Alert.alert('Account successfully created');
+            navigation.navigate('OnlineHomepage');
+        } else {
+            Alert.alert('Invalid Email', 'Please enter a valid email address.');
+        }
     };
 
     return (
@@ -37,7 +45,7 @@ export default function CreateAccount2({ navigation }) {
             style={styles.wrapper}
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
-            <NavArrow style={{ marginVertical: 10 }} onPress={() => navigation.goBack()}> </NavArrow>
+            <NavArrow style={{ marginVertical: 10 }} onPress={() => navigation.goBack()} />
 
             <View style={styles.container}>
                 <Text style={styles.title}>Add Email</Text>
@@ -61,10 +69,7 @@ export default function CreateAccount2({ navigation }) {
                             )}
                             <TextInput
                                 value={value}
-                                onChangeText={(text) => {
-                                    onChange(text);
-                                    //if (errors.email) clearErrors('email');
-                                }}
+                                onChangeText={onChange}
                                 placeholder="Email Address"
                                 placeholderTextColor="#CCC"
                                 keyboardType="email-address"
@@ -77,10 +82,13 @@ export default function CreateAccount2({ navigation }) {
                     )}
                 />
 
-                <Button style={styles.button} textStyle={styles.buttonText} onPress={() => {
-    setUserType('online');
-    handleSubmit(onSubmit)();
-  }}>Continue</Button>
+                <Button
+                    style={styles.button}
+                    textStyle={styles.buttonText}
+                    onPress={handleSubmit(onSubmit)}
+                >
+                    Continue
+                </Button>
             </View>
 
             <GuestModal
@@ -102,8 +110,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 20,
         paddingTop: 0,
-        //borderColor: 'red',
-        //borderWidth: 1,
     },
     container: {
         padding: 20,
@@ -132,12 +138,6 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         color: '#000',
     },
-    label: {
-        fontSize: 18,
-        fontFamily: 'Crimson Text',
-        marginBottom: 8,
-        color: '#000',
-    },
     input: {
         backgroundColor: '#fff',
         borderRadius: 12,
@@ -157,27 +157,12 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 20,
     },
-    note: {
-        textAlign: 'center',
-        fontSize: 16,
-        fontFamily: 'Crimson Text',
-        fontWeight: '600',
-        color: '#F00',
-        marginBottom: 20,
-    },
-    localAccountText: {
-        marginTop: 15,
-        color: '#0056A3',
-        fontSize: 16,
-        textAlign: 'center',
-        fontFamily: 'CrimsonText-Regular',
-        textDecorationLine: 'underline',
-    },
     warning: {
         color: '#B00000',
         fontFamily: 'Crimson Text',
         fontSize: 16,
         fontWeight: '600',
         textAlign: 'left',
+        marginBottom: 6,
     },
 });
