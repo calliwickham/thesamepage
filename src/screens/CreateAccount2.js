@@ -15,7 +15,7 @@ import Button from '../newcomps/Button';
 import NavArrow from '../newcomps/NavArrow';
 import GuestModal from './GuestModal';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, firestore } from '../firebase';
+import { auth, firestore } from '../constants/firebaseConfig.js'
 import { doc, setDoc } from 'firebase/firestore';
 
 export default function CreateAccount2({ navigation }) {

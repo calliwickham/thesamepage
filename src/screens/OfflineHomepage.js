@@ -85,7 +85,7 @@ export default function OfflineHomepage() {
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.content}>
-                <Text style={styles.header}>Welcome, Anastasia</Text>
+                <Text style={styles.header}>Welcome, Guest</Text>
 
                 <SkewedCard
                     backgroundColor="#FFF1DC"
