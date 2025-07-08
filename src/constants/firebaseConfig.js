@@ -3,12 +3,12 @@
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyD_jPcn1v0pQWyR0NVR3SF7TOAZ5PBn-FI",
-  authDomain: "samepagedummy.firebaseapp.com",
-  projectId: "samepagedummy",
-  storageBucket: "samepagedummy.firebasestorage.app",
-  messagingSenderId: "3018177546",
-  appId: "1:3018177546:web:8d5966625d799918a0b3f3"
+  apiKey: "AIzaSyBSj_Vq4dsrLGSyWrB5C1ScrzvMkV8-bVA",
+  authDomain: "thesamepage-43fb0.firebaseapp.com",
+  projectId: "thesamepage-43fb0",
+  storageBucket: "thesamepage-43fb0.firebasestorage.app",
+  messagingSenderId: "34043205967",
+  appId: "1:34043205967:web:23bbb2774560f3cc228d3a"
 };
 
 //firebase imports

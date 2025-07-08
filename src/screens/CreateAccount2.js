@@ -4,7 +4,6 @@ import {
     Text,
     StyleSheet,
     TextInput,
-    TouchableOpacity,
     Alert,
     Platform,
 } from 'react-native';
@@ -12,31 +11,49 @@ import { useUser } from '../contexts/UserContext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm, Controller } from 'react-hook-form';
 import isEmail from 'validator/lib/isEmail';
-
 import Button from '../newcomps/Button';
 import NavArrow from '../newcomps/NavArrow';
-import GuestModal from './GuestModal.js';
+import GuestModal from './GuestModal';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, firestore } from '../firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 export default function CreateAccount2({ navigation }) {
-    const { setUserType } = useUser();
+    const { setUserType, userId } = useUser();
     const [showModal, setShowModal] = useState(false);
-
-    const {
-        control,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
+    const { control, handleSubmit, formState: { errors } } = useForm({
         mode: 'onSubmit',
         reValidateMode: 'onSubmit',
     });
 
-    const onSubmit = (formData) => {
-        if (isEmail(formData.email)) {
-            setUserType('online'); // ✅ Only set here after validation
-            Alert.alert('Account successfully created');
-            navigation.navigate('OnlineHomepage');
-        } else {
+    const onSubmit = async (formData) => {
+        const email = formData.email?.trim();
+        const password = 'defaultpassword'; // Replace with proper password logic if needed
+
+        if (!isEmail(email)) {
             Alert.alert('Invalid Email', 'Please enter a valid email address.');
+            return;
+        }
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const newUser = userCredential.user;
+
+            // Set Firestore document for online account
+            await setDoc(doc(firestore, 'users', newUser.uid), {
+                email: email,
+                createdAt: new Date(),
+                type: 'online',
+            });
+
+            // Optionally: migrate offline (guest) data to new user's collections here
+
+            setUserType('online');
+            Alert.alert('Success', 'Online account created!');
+            navigation.navigate('OnlineHomepage');
+        } catch (error) {
+            console.error('Error creating online account:', error);
+            Alert.alert('Error', error.message || 'Could not create online account.');
         }
     };
 

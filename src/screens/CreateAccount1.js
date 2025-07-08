@@ -18,6 +18,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore } from '../constants/firebaseConfig.js'
 import { doc, setDoc } from "firebase/firestore";
 import { storeLocal } from '../constants/storeLocal.js'
+import uuid from 'react-native-uuid';
 
 
 export default function CreateOnline1() {
@@ -209,11 +210,32 @@ export default function CreateOnline1() {
             <GuestModal
                 visible={showModal}
                 onClose={() => setShowModal(false)}
-                onConfirm={() => {
-                    navigation.navigate('OfflineHomepage');
-                    setShowModal(false);
-                    setUserType('offline');
+                onConfirm={async () => {
+                    const id = uuid.v4(); // generate a random user ID
+                    const guestPenname = 'Guest_' + id.toString().slice(0, 6);
+
+                    try {
+                        await setDoc(doc(firestore, "Users", id), {
+                            penname: guestPenname,
+                            joined: new Date(),
+                            email: null,
+                            emailVerified: false,
+                            isGuest: true,
+                        });
+
+                        // Optionally: Store locally if needed
+                        await storeLocal("penname", guestPenname);
+                        await storeLocal("userID", id);
+
+                        setUserType('offline');
+                        navigation.navigate('OfflineHomepage');
+                        setShowModal(false);
+                    } catch (error) {
+                        console.error("Error creating guest user:", error);
+                        alert("Failed to create guest account. Try again.");
+                    }
                 }}
+
                 styles={styles}
             />
         </KeyboardAwareScrollView>
