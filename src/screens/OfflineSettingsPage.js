@@ -13,6 +13,7 @@ import CheckBoxIcon from '../newcomps/CheckBoxIcon'; // Ensure this component ex
 import { signOut } from 'firebase/auth';
 import { auth } from '../constants/firebaseConfig';
 import { clearLocal } from '../constants/storeLocal.js'
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function OfflineSettingsPage() {
   const navigation = useNavigation();
@@ -37,6 +38,7 @@ export default function OfflineSettingsPage() {
   };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       <Text style={styles.title}>Your Account</Text>
 
@@ -117,7 +119,7 @@ export default function OfflineSettingsPage() {
           </View>
         </View>
       </Modal>
-    </View>
+    </View></ScrollView>
   );
 }
 
