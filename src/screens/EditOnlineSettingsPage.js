@@ -4,299 +4,299 @@ import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function EditOnlineSettingsPage() {
-  const navigation = useNavigation();
-  const [selectedDeleteOption, setSelectedDeleteOption] = useState('1 Year'); // default selected
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const navigation = useNavigation();
+    const [selectedDeleteOption, setSelectedDeleteOption] = useState('1 Year'); // default selected
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
 
-  const handleRedirect = () => {
-    navigation.navigate('Login');
-  };
-  const handleGoBack = () => {
-    navigation.navigate('OnlineSettingsPage');
-  };
-  const handleReset = () => {
-    navigation.navigate('ResetPassword');
-  };
+    const handleRedirect = () => {
+        navigation.navigate('Login');
+    };
+    const handleGoBack = () => {
+        navigation.navigate('OnlineSettingsPage');
+    };
+    const handleReset = () => {
+        navigation.navigate('ResetPassword');
+    };
 
-  return (
-    <ScrollView keyboardShouldPersistTaps="handled">
-      <View style={styles.container}>
-        <Text style={styles.header}>Your Account</Text>
+    return (
+        <ScrollView keyboardShouldPersistTaps="handled">
+            <View style={styles.container}>
+                <Text style={styles.header}>Your Account</Text>
 
-        <Text style={styles.label}>Username</Text>
-        <TextInput style={styles.input} value="supercoolwriter69" editable />
+                <Text style={styles.label}>Username</Text>
+                <TextInput style={styles.input} value="supercoolwriter69" editable />
 
-        <Text style={styles.label}>Email</Text>
-        <TextInput style={styles.input} value="supercoolwriter69@gmail.com" editable />
+                <Text style={styles.label}>Email</Text>
+                <TextInput style={styles.input} value="supercoolwriter69@gmail.com" editable />
 
-        <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
-          <Text style={styles.resetText}>Reset Password</Text>
-        </TouchableOpacity>
+                <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
+                    <Text style={styles.resetText}>Reset Password</Text>
+                </TouchableOpacity>
 
-        <Text style={styles.label}>Date Joined</Text>
-        <TextInput style={[styles.input, styles.disabledInput]} value="06/21/2025" editable={false} />
+                <Text style={styles.label}>Date Joined</Text>
+                <TextInput style={[styles.input, styles.disabledInput]} value="06/21/2025" editable={false} />
 
-        <Text style={styles.label}>Bio</Text>
-        <TextInput
-          style={[styles.input, styles.bioInput]}
-          value="Short blurb about writing"
-          multiline
-        />
+                <Text style={styles.label}>Bio</Text>
+                <TextInput
+                    style={[styles.input, styles.bioInput]}
+                    value="Short blurb about writing"
+                    multiline
+                />
 
-        <Text style={styles.label}>Daily Challenge Auto-Delete</Text>
-        <View style={styles.autoDeleteRow}>
-          {['30 Days', '1 Year', 'None'].map(option => (
-            <TouchableOpacity
-              key={option}
-              style={[
-                styles.autoDeleteButton,
-                selectedDeleteOption === option && styles.activeButton
-              ]}
-              onPress={() => setSelectedDeleteOption(option)}
-            >
-              <Text
-                style={[
-                  styles.autoDeleteText,
-                  selectedDeleteOption === option && styles.activeText
-                ]}
-              >
-                {option}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+                <Text style={styles.label}>Daily Challenge Auto-Delete</Text>
+                <View style={styles.autoDeleteRow}>
+                    {['30 Days', '1 Year', 'None'].map(option => (
+                        <TouchableOpacity
+                            key={option}
+                            style={[
+                                styles.autoDeleteButton,
+                                selectedDeleteOption === option && styles.activeButton
+                            ]}
+                            onPress={() => setSelectedDeleteOption(option)}
+                        >
+                            <Text
+                                style={[
+                                    styles.autoDeleteText,
+                                    selectedDeleteOption === option && styles.activeText
+                                ]}
+                            >
+                                {option}
+                            </Text>
+                        </TouchableOpacity>
+                    ))}
+                </View>
 
-        <TouchableOpacity style={styles.saveButton} onPress={handleGoBack}>
-          <Text style={styles.saveText}>Save Your Changes</Text>
-        </TouchableOpacity>
+                <TouchableOpacity style={styles.saveButton} onPress={handleGoBack}>
+                    <Text style={styles.saveText}>Save Your Changes</Text>
+                </TouchableOpacity>
 
-        <TouchableOpacity style={styles.deleteButton} onPress={() => setShowDeleteModal(true)}>
-          <Text style={styles.deleteText}>Delete My Account</Text>
-        </TouchableOpacity>
-        {showDeleteModal && (
-  <View style={styles.modalOverlay}>
-    <View style={styles.modalBox}>
-      <Text style={styles.modalTitle}>Are You Sure?</Text>
-      <Text style={styles.modalMessage}>
-        Proceeding with account deletion will{' '}
-        <Text style={{ fontStyle: 'italic' }}>permanently</Text> delete your account.
-      </Text>
-      <View style={styles.modalButtons}>
-        <TouchableOpacity
-          style={styles.goBackButton}
-          onPress={() => setShowDeleteModal(false)}
-        >
-          <Text style={styles.goBackText}>Go Back</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.deleteConfirmButton}
-          onPress={handleRedirect} // or replace with delete logic
-        >
-          <Text style={styles.deleteText}>Delete</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  </View>
-)}
+                <TouchableOpacity style={styles.deleteButton} onPress={() => setShowDeleteModal(true)}>
+                    <Text style={styles.deleteText}>Delete My Account</Text>
+                </TouchableOpacity>
+                {showDeleteModal && (
+                    <View style={styles.modalOverlay}>
+                        <View style={styles.modalBox}>
+                            <Text style={styles.modalTitle}>Are You Sure?</Text>
+                            <Text style={styles.modalMessage}>
+                                Proceeding with account deletion will{' '}
+                                <Text style={{ fontStyle: 'italic' }}>permanently</Text> delete your account.
+                            </Text>
+                            <View style={styles.modalButtons}>
+                                <TouchableOpacity
+                                    style={styles.goBackButton}
+                                    onPress={() => setShowDeleteModal(false)}
+                                >
+                                    <Text style={styles.goBackText}>Go Back</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.deleteConfirmButton}
+                                    onPress={handleRedirect} // or replace with delete logic
+                                >
+                                    <Text style={styles.deleteText}>Delete</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                )}
 
-      </View>
-    </ScrollView>
-  );
+            </View>
+        </ScrollView>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 24,
-    backgroundColor: '#fff',
-    flex: 1,
-  },
-  header: {
-    fontSize: 32,
-    fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 20,
-    fontFamily: 'Crimson Text',
-    marginBottom: 6,
-  },
-  input: {
-    backgroundColor: '#fff',
-    fontFamily: 'Crimson Text',
-    fontSize: 18,
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 20,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-  },
-  disabledInput: {
-    backgroundColor: '#f0f0f0',
-    color: '#999',
-  },
-  bioInput: {
-    height: 100,
-    textAlignVertical: 'top',
-  },
-  resetText: {
-    fontSize: 18,
-    fontFamily: 'Crimson Text',
-    fontWeight: '700',
-    color: '#000',
-  },
-  autoDeleteRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 20,
-  },
-  autoDeleteButton: {
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 20,
-    borderColor: '#000',
-    borderWidth: 1,
-    backgroundColor: '#fff',
-    elevation: 2,
-  },
-  autoDeleteText: {
-    fontFamily: 'Crimson Text',
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#aaa',
-  },
-  activeButton: {
-    backgroundColor: '#ccc',
-  },
-  activeText: {
-    color: '#000',
-  },
-  saveText: {
-    color: '#FFF4E2',
-    fontSize: 20,
-    fontFamily: 'Crimson Text',
-    fontWeight: '700',
-  },
-  deleteText: {
-    color: '#000',
-    fontSize: 20,
-    fontFamily: 'Crimson Text',
-    fontWeight: '700',
-  },
-  resetButton: {
-    backgroundColor: '#FFD12D',
-    paddingVertical: 14,
-    borderRadius: 30,
-    alignItems: 'center',
-    marginBottom: 30,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
-  saveButton: {
-    backgroundColor: '#10471B',
-    paddingVertical: 16,
-    borderRadius: 40,
-    alignItems: 'center',
-    marginTop: 20,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
-  deleteButton: {
-    backgroundColor: '#D60000',
-    paddingVertical: 16,
-    borderRadius: 40,
-    alignItems: 'center',
-    marginTop: 20,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
+    container: {
+        padding: 24,
+        backgroundColor: '#fff',
+        flex: 1,
+    },
+    header: {
+        fontSize: 32,
+        fontFamily: 'Crimson Text',
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
+    label: {
+        fontSize: 20,
+        fontFamily: 'Crimson Text',
+        marginBottom: 6,
+    },
+    input: {
+        backgroundColor: '#fff',
+        fontFamily: 'Crimson Text',
+        fontSize: 18,
+        borderRadius: 12,
+        padding: 12,
+        marginBottom: 20,
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+    },
+    disabledInput: {
+        backgroundColor: '#f0f0f0',
+        color: '#999',
+    },
+    bioInput: {
+        height: 100,
+        textAlignVertical: 'top',
+    },
+    resetText: {
+        fontSize: 18,
+        fontFamily: 'Crimson Text',
+        fontWeight: '700',
+        color: '#000',
+    },
+    autoDeleteRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: 20,
+    },
+    autoDeleteButton: {
+        paddingHorizontal: 18,
+        paddingVertical: 10,
+        borderRadius: 20,
+        borderColor: '#000',
+        borderWidth: 1,
+        backgroundColor: '#fff',
+        elevation: 2,
+    },
+    autoDeleteText: {
+        fontFamily: 'Crimson Text',
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#aaa',
+    },
+    activeButton: {
+        backgroundColor: '#ccc',
+    },
+    activeText: {
+        color: '#000',
+    },
+    saveText: {
+        color: '#FFF4E2',
+        fontSize: 20,
+        fontFamily: 'Crimson Text',
+        fontWeight: '700',
+    },
+    deleteText: {
+        color: '#000',
+        fontSize: 20,
+        fontFamily: 'Crimson Text',
+        fontWeight: '700',
+    },
+    resetButton: {
+        backgroundColor: '#FFD12D',
+        paddingVertical: 14,
+        borderRadius: 30,
+        alignItems: 'center',
+        marginBottom: 30,
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+    },
+    saveButton: {
+        backgroundColor: '#10471B',
+        paddingVertical: 16,
+        borderRadius: 40,
+        alignItems: 'center',
+        marginTop: 20,
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+    },
+    deleteButton: {
+        backgroundColor: '#D60000',
+        paddingVertical: 16,
+        borderRadius: 40,
+        alignItems: 'center',
+        marginTop: 20,
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+    },
     modalOverlay: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-  },
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 10,
+    },
 
-  modalBox: {
-    backgroundColor: '#fff',
-    padding: 24,
-    borderRadius: 12,
-    width: '85%',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 8,
-    alignItems: 'center',
-  },
+    modalBox: {
+        backgroundColor: '#fff',
+        padding: 24,
+        borderRadius: 12,
+        width: '85%',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 8,
+        alignItems: 'center',
+    },
 
-  modalTitle: {
-    fontSize: 22,
-    fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
+    modalTitle: {
+        fontSize: 22,
+        fontFamily: 'Crimson Text',
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
 
-  modalMessage: {
-    fontSize: 18,
-    fontFamily: 'Crimson Text',
-    textAlign: 'center',
-    marginBottom: 24,
-  },
+    modalMessage: {
+        fontSize: 18,
+        fontFamily: 'Crimson Text',
+        textAlign: 'center',
+        marginBottom: 24,
+    },
 
-  modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
+    modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
 
-  goBackButton: {
-    backgroundColor: '#FFD12D',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 40,
-    marginRight: 12,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-  },
+    goBackButton: {
+        backgroundColor: '#FFD12D',
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 40,
+        marginRight: 12,
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+    },
 
-  goBackText: {
-    fontSize: 18,
-    fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
-    color: '#000',
-  },
+    goBackText: {
+        fontSize: 18,
+        fontFamily: 'Crimson Text',
+        fontWeight: 'bold',
+        color: '#000',
+    },
 
-  deleteConfirmButton: {
-    backgroundColor: '#D60000',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 40,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-  },
+    deleteConfirmButton: {
+        backgroundColor: '#D60000',
+        paddingVertical: 12,
+        paddingHorizontal: 24,
+        borderRadius: 40,
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+    },
 });

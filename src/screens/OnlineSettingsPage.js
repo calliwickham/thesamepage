@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function OnlineSettingsPage() {
@@ -18,7 +18,7 @@ export default function OnlineSettingsPage() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>Your Account</Text>
 
       <Text style={styles.label}>Username</Text>
@@ -49,13 +49,13 @@ export default function OnlineSettingsPage() {
       </TouchableOpacity>
 
       <Text style={styles.link} onPress={handleGoToLogin}>Logout</Text>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 60,
+    paddingVertical: 20,
     paddingHorizontal: 20,
     backgroundColor: 'white',
     flex: 1,
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Crimson Text',
     color: '#0056B3',
     textAlign: 'center',
-    marginTop: 24,
+    marginVertical: 24,
     textDecorationLine: 'underline',
   },
 });
