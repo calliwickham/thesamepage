@@ -28,32 +28,37 @@ export default function GenericAlbum() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const userId = auth.currentUser?.uid;
-            const collectionName = albumThemes[albumKey].firestoreName;
-            const userCollectionRef = collection(firestore, 'Users', userId, collectionName);
-            const snapshot = await getDocs(userCollectionRef);
-            const docs = snapshot.docs.map(doc => {
-                const data = doc.data();
-                const entry = {
-                    id: doc.id, 
-                    album: albumKey,
-                    title: data.title || '[Untitled]',
-                    date: data.date?.toDate?.().toLocaleDateString() || '',
-                    text: data.text,
-                    wordcount: data.wordcount,
-                };
-                if ('published' in data) {
-                    entry.published = data.published;
-                }
-                return entry;
-            });
-            setFiles(docs);
+            try {
+                const userId = auth.currentUser?.uid;
+                const collectionName = albumThemes[albumKey].firestoreName;
+                const userCollectionRef = collection(firestore, 'Users', userId, collectionName);
+                const snapshot = await getDocs(userCollectionRef);
+                const docs = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    const entry = {
+                        id: doc.id,
+                        album: albumKey,
+                        title: data.title || '[Untitled]',
+                        date: data.date?.toDate?.().toLocaleDateString() || '',
+                        text: data.text,
+                        wordcount: data.wordcount,
+                    };
+                    if ('published' in data) {
+                        entry.published = data.published;
+                    }
+                    return entry;
+                });
+                setFiles(docs);
+            } catch (error) {
+                console.error("Error fetching files in album: ", error);
+                setFiles([]);
+            }
         };
 
         fetchData();
     }, []);
 
-    if (!files) return <View style={styles.loadingView}><Text style={styles.loadingText}>Loading...</Text></View>;
+    if (files === null) return <View style={styles.loadingView}><Text style={styles.loadingText}>Loading...</Text></View>;
 
     return (
         <SafeAreaView style={styles.container}>
@@ -69,6 +74,8 @@ export default function GenericAlbum() {
                         <FileCard file={file} />
                     </TouchableOpacity>
                 ))}
+                {files.length === 0 ? <Text style={styles.loadingText}>There's nothing here! Head back to home and choose a mode to start writing.</Text> : null}
+                
             </ScrollView>
         </SafeAreaView>
     );
