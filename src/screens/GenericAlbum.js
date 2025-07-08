@@ -29,6 +29,12 @@ export default function GenericAlbum() {
     useEffect(() => {
         const fetchData = async () => {
             try {
+
+                if (albumKey === 'trash' || albumKey === 'favorites') {
+                    setFiles([]); // temporary fallback until real logic is implemented
+                    return;
+                }
+
                 const userId = auth.currentUser?.uid;
                 const collectionName = albumThemes[albumKey].firestoreName;
                 const userCollectionRef = collection(firestore, 'Users', userId, collectionName);
@@ -58,6 +64,8 @@ export default function GenericAlbum() {
         fetchData();
     }, []);
 
+    console.log('Rendering for albumKey:', albumKey, 'with theme:', albumThemes[albumKey]);
+
     if (files === null) return <View style={styles.loadingView}><Text style={styles.loadingText}>Loading...</Text></View>;
 
     return (
@@ -74,8 +82,8 @@ export default function GenericAlbum() {
                         <FileCard file={file} />
                     </TouchableOpacity>
                 ))}
-                {files.length === 0 ? <Text style={styles.loadingText}>There's nothing here! Head back to home and choose a mode to start writing.</Text> : null}
-                
+                {albumKey === 'trash' || albumKey === 'favorites' || albumKey === 'collaborative' ? <Text style={styles.loadingText}>The {albumKey} features are not available yet</Text> : null}
+                {albumKey !== 'trash' && albumKey !== 'favorites' && albumKey === 'collaborative' && files.length === 0 ? <Text style={styles.loadingText}>There's nothing here! Head back to home and choose a mode to start writing.</Text> : null}
             </ScrollView>
         </SafeAreaView>
     );
