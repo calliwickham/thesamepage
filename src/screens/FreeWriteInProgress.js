@@ -32,6 +32,7 @@ export default function FreeWriteScreen1() {
                 .map(doc => {
                     const data = doc.data();
                     return {
+                        id: doc.id, 
                         album: albumKey,
                         title: data.title || '[Untitled]',
                         date: data.date?.toDate?.().toLocaleDateString() || '',

@@ -35,6 +35,7 @@ export default function GenericAlbum() {
             const docs = snapshot.docs.map(doc => {
                 const data = doc.data();
                 const entry = {
+                    id: doc.id, 
                     album: albumKey,
                     title: data.title || '[Untitled]',
                     date: data.date?.toDate?.().toLocaleDateString() || '',

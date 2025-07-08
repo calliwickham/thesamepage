@@ -34,7 +34,7 @@ export default function FileCard({ file }) {
                         </Text>
                     )}
 
-                    <Text style={styles.cardText}>
+                    <Text style={[styles.cardText, { fontStyle: 'italic' }]}>
                         Date Created: {file.date}
                     </Text>
 
