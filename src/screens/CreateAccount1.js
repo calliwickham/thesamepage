@@ -26,7 +26,7 @@ export default function CreateOnline1() {
 
     //what happens when you submit the form
     const onSubmit = (form) => {
-        console.log('Form data:', form);
+        //console.log('Form data:', form);
         navigation.navigate('OnlineHomepage');
 
         createUserWithEmailAndPassword(auth, form.email, form.password)
