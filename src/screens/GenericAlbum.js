@@ -34,13 +34,17 @@ export default function GenericAlbum() {
             const snapshot = await getDocs(userCollectionRef);
             const docs = snapshot.docs.map(doc => {
                 const data = doc.data();
-                return {
-                    album: albumKey, // from route params
-                    title: data.title || '[Untitled]', // default if missing
+                const entry = {
+                    album: albumKey,
+                    title: data.title || '[Untitled]',
                     date: data.date?.toDate?.().toLocaleDateString() || '',
                     text: data.text,
                     wordcount: data.wordcount,
                 };
+                if ('published' in data) {
+                    entry.published = data.published;
+                }
+                return entry;
             });
             setFiles(docs);
         };
@@ -48,51 +52,7 @@ export default function GenericAlbum() {
         fetchData();
     }, []);
 
-    if (!files) return <View style={{ flex: 1 }}><Text>Loading...</Text></View>;
-
-    const dummyFiles = [
-        {
-            id: 1,
-            album: 'freewrite',
-            title: 'just learned how babies are made',
-            date: '8/12/2023',
-            wordcount: 475,
-            text: `Dear Diary, \nIm traumatized. I’m having a little sister and I was sooooo curious how she was made so I lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque  faucibus ex sapien vitae pellentesque sem placerat.`,
-        },
-        {
-            id: 2,
-            album: 'freewrite',
-            title: 'a very very long title, notice that this person didn’t finish their work',
-            date: '8/12/2023',
-            wordcount: 475,
-            text: `Random stuff typing random stuff forever random stuff lorem ipsum dolor sit amet consectetur adipiscing elit.`,
-        },
-        {
-            id: 3,
-            album: 'collaborative',
-            authors: 'Anatasia, Connor',
-            title: 'The Ramen Noodle Shop',
-            date: '7/2/2025',
-            text: `The sun rose over the hill. \nSpot the dog wagged his tail.`,
-            wordcount: 12,
-        },
-        {
-            id: 4,
-            album: 'daily',
-            title: 'ostrich, speed, pavement',
-            date: '6/3/2025',
-            text: `An ostrich sped across the neighborhood...`,
-            wordcount: 123,
-        },
-        {
-            id: 5,
-            album: 'freewrite',
-            title: 'thoughts on leaves',
-            date: '8/12/2023',
-            wordcount: 475,
-            text: `leaves can be crunchy or soft depending on the season...`,
-        },
-    ];
+    if (!files) return <View style={styles.loadingView}><Text style={styles.loadingText}>Loading...</Text></View>;
 
     return (
         <SafeAreaView style={styles.container}>
@@ -135,4 +95,15 @@ const styles = StyleSheet.create({
         paddingLeft: '5%',
         paddingRight: '5%',
     },
+    loadingView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column'
+    },
+    loadingText: {
+        color: 'darkgreen',
+        fontSize: 20,
+        fontFamily: 'Crimson Text'
+    }
 });
