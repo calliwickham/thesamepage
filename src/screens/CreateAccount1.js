@@ -19,6 +19,9 @@ import { auth, firestore } from '../constants/firebaseConfig.js'
 import { doc, setDoc } from "firebase/firestore";
 import { storeLocal } from '../constants/storeLocal.js'
 import uuid from 'react-native-uuid';
+import { getAuth, signInAnonymously } from 'firebase/auth';
+import { storeLocal, getLocal, removeLocal } from '../utils/localStorage';
+
 
 
 export default function CreateOnline1() {
@@ -215,6 +218,12 @@ export default function CreateOnline1() {
                     const guestPenname = 'Guest_' + id.toString().slice(0, 6);
 
                     try {
+                        // Sign in the guest user anonymously
+                        const result = await signInAnonymously(auth);
+                        const user = result.user;
+                        const id = user.uid;
+
+                        // Create Firestore user record
                         await setDoc(doc(firestore, "Users", id), {
                             penname: guestPenname,
                             joined: new Date(),
@@ -223,17 +232,18 @@ export default function CreateOnline1() {
                             isGuest: true,
                         });
 
-                        // Optionally: Store locally if needed
+                        // Store locally if needed
                         await storeLocal("penname", guestPenname);
                         await storeLocal("userID", id);
 
                         setUserType('offline');
                         navigation.navigate('OfflineHomepage');
                         setShowModal(false);
-                    } catch (error) {
+
+                        } catch (error) {
                         console.error("Error creating guest user:", error);
                         alert("Failed to create guest account. Try again.");
-                    }
+                        }
                 }}
 
                 styles={styles}

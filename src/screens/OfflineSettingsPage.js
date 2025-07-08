@@ -10,12 +10,24 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CheckBoxIcon from '../newcomps/CheckBoxIcon'; // Ensure this component exists
+import { signOut } from 'firebase/auth';
+import { auth } from '../constants/firebaseConfig';
+import { clearLocal } from '../constants/storeLocal.js'
 
 export default function OfflineSettingsPage() {
   const navigation = useNavigation();
   const [isChecked, setIsChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
+  const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            await clearLocal("penname");
+            navigation.replace('Login'); // or navigate('Login') if you want back navigation
+            console.log('User signed out');
+        } catch (error) {
+            console.error('Sign out error:', error);
+        }
+    };
   const handleConvert = () => {
     if (!isChecked) {
       setShowModal(true);
@@ -70,6 +82,7 @@ export default function OfflineSettingsPage() {
       >
         <Text style={styles.convertText}>Convert</Text>
       </TouchableOpacity>
+      <Text style={styles.link} onPress={handleLogout}>Logout</Text>
 
       {/* Warning Modal */}
       <Modal
@@ -204,9 +217,13 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   link: {
-    color: '#0056B3',
-    textDecorationLine: 'underline',
-  },
+        fontSize: 18,
+        fontFamily: 'Crimson Text',
+        color: '#0056B3',
+        textAlign: 'center',
+        marginVertical: 24,
+        textDecorationLine: 'underline',
+    },
   convertButton: {
     backgroundColor: '#FFD12D',
     borderRadius: 30,
