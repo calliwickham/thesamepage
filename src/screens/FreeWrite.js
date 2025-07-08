@@ -104,7 +104,7 @@ export default function FreeWriteScreen2() {
 
 
 const styles = StyleSheet.create({
-    view:{
+    view: {
         flex: 1,
     },
     container: {
@@ -171,6 +171,8 @@ const styles = StyleSheet.create({
         textAlignVertical: 'top',
         fontSize: 18,
         flex: 1,
+        fontSize: 18,
+        fontFamily: 'Crimson Text',
     },
     clearButton: {
         position: 'absolute',
