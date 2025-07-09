@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import UndoIcon from '../newcomps/Undo'; // Your custom arrow icon
+import UndoIcon from '../newcomps/Undo';
+import Button from '../newcomps/Button';
 import { generateThreeWords } from '../utils/wordPool';
 
 export default function FreeWriteInspireMe() {
@@ -27,6 +28,7 @@ export default function FreeWriteInspireMe() {
         <TouchableOpacity style={styles.inspireButton}>
           <Text style={styles.inspireText}>Inspire Me</Text>
         </TouchableOpacity>*/}
+        <Button textStyle={{fontSize: 18, paddingLeft: 20, paddingRight: 20}} onPress={() => navigation.goBack()}> Return to {'\n'} Writing </Button>
       </View>
 
       {/* Speech Bubble with Triangle */}
@@ -47,12 +49,13 @@ export default function FreeWriteInspireMe() {
           ))}
 
           {/* Go Back to Writing Button */}
+          {/* 
           <TouchableOpacity
             style={styles.returnButton}
             onPress={() => navigation.goBack()}
           >
             <Text style={styles.returnText}>Return to Writing</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </View>
