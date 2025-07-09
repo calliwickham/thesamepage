@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -8,11 +8,18 @@ import {
     KeyboardAvoidingView,
     Platform,
     Modal,
-    Keyboard,
-    TouchableWithoutFeedback,
+    Alert
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+//firebase imports
+import { doc, collection, setDoc } from 'firebase/firestore';
+import { auth, firestore } from '../constants/firebaseConfig.js'
+
+const getWordCount = (text) => {
+    return text.trim().split(/\s+/).filter(Boolean).length;
+};
 
 
 import SaveIcon from '../newcomps/SaveIcon';
@@ -23,18 +30,66 @@ export default function DailyChallengeScreen() {
     const [story, setStory] = useState('');
     const [showExitModal, setShowExitModal] = useState(false);
 
-    const handleClear = () => setStory('');
-    const handleSubmit = () => {
-        alert('Story submitted!');
+    const route = useRoute();
+    const file = route.params?.file;
+
+    const [prevStory, setPrevStory] = useState('');
+    const [dailyId, setDailyId] = useState(null);
+
+    useEffect(() => {
+            if (file) {
+                setStory(file.text || '');
+                setPrevStory(file.text || '');
+                setDailyId(file.id || null);
+            }
+        }, [file]);
+
+    const onSaveOrPublish = async (buttonType, text) => {
+
+        const published = buttonType == 'save' ? false : true;
+
+        const userId = auth.currentUser?.uid;
+        if (!userId) {
+            alert('User not authenticated.');
+            return;
+        }
+
+        try {
+            const userId = auth.currentUser?.uid;
+            const todayId = new Date().toISOString().split('T')[0]; // ISO format
+            const wordCount = getWordCount(text);
+
+            const docRef = doc(firestore, 'Users', userId, 'DailyChallenges', todayId);
+
+            await setDoc(docRef, {
+                words: 'three words here',
+                text: text,
+                wordcount: wordCount,
+                date: new Date(),
+                published: published,
+            });
+            console.log('Daily Challenge saved successfully!');
+        } catch (error) {
+            console.log('Error saving Daily Challenge:', error);
+        }
+
+    };
+
+    const handleStoryChange = (text) => {
+        setPrevStory(story);
+        setStory(text);
+    };
+
+    const handleClear = () => {
+        setPrevStory(story);
         setStory('');
     };
-    const handleSave = () => {
-        alert('Story saved!');
+
+    const handleUndo = () => {
+        setStory(prevStory);
     };
 
     return (
-
-
         <KeyboardAwareScrollView
             contentContainerStyle={styles.container}
             enableOnAndroid={true}
@@ -45,15 +100,15 @@ export default function DailyChallengeScreen() {
                 Write a short story inspired by{'\n'}these three words...
             </Text>
 
-            <TouchableOpacity style={styles.wordButton}>
+            <View style={styles.wordButton}>
                 <Text style={styles.wordText}>significance</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.wordButton}>
+            </View>
+            <View style={styles.wordButton}>
                 <Text style={styles.wordText}>disaster</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.wordButton}>
+            </View>
+            <View style={styles.wordButton}>
                 <Text style={styles.wordText}>organization</Text>
-            </TouchableOpacity>
+            </View>
 
             <View style={styles.textBoxWrapper}>
                 <TextInput
@@ -62,7 +117,7 @@ export default function DailyChallengeScreen() {
                     placeholderTextColor="#ccc"
                     multiline
                     value={story}
-                    onChangeText={setStory}
+                    onChangeText={handleStoryChange}
                 />
                 <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
                     <Text style={styles.clearText}>clear</Text>
@@ -70,21 +125,19 @@ export default function DailyChallengeScreen() {
             </View>
 
             <View style={styles.buttonRow}>
-                <TouchableOpacity onPress={handleSave}>
+                <TouchableOpacity onPress={() => onSaveOrPublish('save', story)}>
                     <SaveIcon width={50} height={50} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+                <TouchableOpacity style={styles.submitButton} onPress={() => {
+                    onSaveOrPublish('publish', story);
+                    navigation.navigate('Albums');
+                    Alert.alert('Published', 'You can find it in the Daily Challenge album.');
+                }}>
                     <Text style={styles.submitText}>Submit</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => {
-                    if (story.trim()) {
-                        setShowExitModal(true);
-                    } else {
-                        navigation.goBack();
-                    }
-                }}>
+                <TouchableOpacity onPress={handleUndo}>
                     <UndoIcon width={50} height={50} />
                 </TouchableOpacity>
             </View>
@@ -137,7 +190,8 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#E8EFE2',
         flex: 1,
-        paddingTop: 32,
+        paddingTop: 20,
+        paddingBottom: 10,
         paddingHorizontal: 24,
     },
     header: {
@@ -159,7 +213,7 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
     wordText: {
-        color: '#fff',
+        color: '#FFF4E2',
         fontSize: 20,
         fontFamily: 'Crimson Text',
         fontWeight: '700',

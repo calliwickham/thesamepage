@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,12 +11,11 @@ import SinglePage from '../newcomps/SinglePage';
 import Puzzle from '../newcomps/Puzzle';
 
 //firebase imports
-import { signOut } from 'firebase/auth';
-import { auth } from '../constants/firebaseConfig';
+import { collection, query, where, getDocs, getDoc, deleteDoc, doc } from 'firebase/firestore';
+import { auth, firestore } from '../constants/firebaseConfig';
 
 export default function OnlineHomepage() {
     const navigation = useNavigation();
-
     const [penname, setPenname] = useState(null);
 
     useEffect(() => {
@@ -32,6 +31,68 @@ export default function OnlineHomepage() {
         };
 
         fetchPenname();
+    }, []);
+
+
+    //For daily challenge notifs
+    const [todaysChallenge, setTodaysChallenge] = useState(null);
+    const [challengeStatus, setChallengeStatus] = useState('none'); // 'none' | 'in-progress' | 'completed'
+    useEffect(() => {
+        const cleanupUnpublishedChallenges = async () => {
+            try {
+                const userId = auth.currentUser?.uid;
+                if (!userId) return;
+
+                const dailyRef = collection(firestore, 'Users', userId, 'DailyChallenges');
+                const unpublishedQuery = query(dailyRef, where('published', '==', false));
+                const snapshot = await getDocs(unpublishedQuery);
+
+                const todayISO = new Date().toISOString().split('T')[0];
+                const deletionPromises = [];
+
+                snapshot.docs.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const entryDate = data.date?.toDate?.();
+                    const entryISO = entryDate?.toISOString().split('T')[0];
+
+                    if (entryISO !== todayISO) {
+                        const deletionRef = doc(firestore, 'Users', userId, 'DailyChallenges', docSnap.id);
+                        deletionPromises.push(deleteDoc(deletionRef));
+                    }
+                });
+
+                await Promise.all(deletionPromises);
+            } catch (error) {
+                console.error('Error cleaning unpublished challenges:', error);
+            }
+        };
+
+        const checkDailyChallengeStatus = async () => {
+            try {
+                const userId = auth.currentUser?.uid;
+                const todayId = new Date().toISOString().split('T')[0];
+                const todayDocRef = doc(firestore, 'Users', userId, 'DailyChallenges', todayId);
+                const todaySnap = await getDoc(todayDocRef);
+
+                if (todaySnap.exists()) {
+                    const data = todaySnap.data();
+
+                    if (data.published === true) {
+                        setChallengeStatus('completed');
+                    } else {
+                        setChallengeStatus('in-progress');
+                        setTodaysChallenge({ id: todaySnap.id, ...data });
+                    }
+                } else {
+                    setChallengeStatus('none');
+                }
+            } catch (error) {
+                console.error('Error loading daily challenge:', error);
+            }
+        };
+
+        cleanupUnpublishedChallenges();
+        checkDailyChallengeStatus();
     }, []);
 
     return (
@@ -52,7 +113,10 @@ export default function OnlineHomepage() {
                 {/* Daily Challenge */}
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#FFF1DC' }, styles.right]}
-                    onPress={() => navigation.navigate('DailyChallengeScreen')}
+                    onPress={() => {
+                        console.log('status:' + challengeStatus +'\n' + todaysChallenge)
+                        navigation.navigate('DailyChallengeScreen', { file: todaysChallenge });
+                    }}
                 >
                     <View style={[styles.circle, { borderColor: '#F8E6C7' }]}>
                         <CalendarIcon width={40} height={40} />

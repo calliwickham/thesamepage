@@ -111,9 +111,6 @@ export default function FreeWrite() {
         setStory(prevStory);
     };
 
-    const handlePublish = () => {
-        console.log('Publishing:', { title, story });
-    };
 
     return (
         <TouchableWithoutFeedback styles={styles.view} onPress={Keyboard.dismiss} accessible={false}>
