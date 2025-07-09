@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  TouchableOpacity,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+    Dimensions,
+    TouchableOpacity,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { collection, getDocs } from 'firebase/firestore';
@@ -18,159 +18,168 @@ const albumsThemes = ALBUMSTHEMES;
 const cardHeight = Dimensions.get('window').height / 6.5;
 
 export default function Albums() {
-  const navigation = useNavigation();
-  const [albumData, setAlbumData] = useState({
-    daily: { files: ' - - ', edited: ' - - ' },
-    freewrite: { files: ' - - ', edited: ' - - ' },
-    collaborative: { files: ' - - ', edited: null },
-    favorites: { files: ' - - ', edited: null },
-    trash: { files: ' - - ', edited: null },
-  });
+    const navigation = useNavigation();
+    const [albumData, setAlbumData] = useState({
+        daily: { files: ' - - ', edited: ' - - ' },
+        freewrite: { files: ' - - ', edited: ' - - ' },
+        collaborative: { files: ' - - ', edited: null },
+        favorites: { files: ' - - ', edited: null },
+        trash: { files: ' - - ', edited: null },
+    });
 
-  useEffect(() => {
-    const fetchAlbums = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
+    useEffect(() => {
+        const fetchAlbums = async () => {
+            const user = auth.currentUser;
+            if (!user) return;
 
-      const loadCollection = async (collectionName) => {
-        const ref = collection(firestore, 'Users', user.uid, collectionName);
-        const snapshot = await getDocs(ref);
-        const docs = snapshot.docs.map(doc => doc.data());
+            const loadCollection = async (collectionName) => {
+                const ref = collection(firestore, 'Users', user.uid, collectionName);
+                const snapshot = await getDocs(ref);
 
-        const files = docs.length;
+                const docs = snapshot.docs
+                    .map(doc => doc.data())
+                    .filter(doc => {
+                        const isDeleted = doc.deleted === true;
+                        const isUnpublishedDaily =
+                            collectionName === 'DailyChallenges' && doc.published !== true;
+                        return !isDeleted && !isUnpublishedDaily;
+                    });
 
-        const editedTimestamps = docs
-            .map(doc => {
-            const raw = doc.date; // Fix: using the actual field name used in your file entries
-            return raw?.toDate?.();
-            })
-            .filter(Boolean);
+                const files = docs.length;
 
-        const latest = editedTimestamps.length
-            ? new Date(Math.max(...editedTimestamps.map(d => d.getTime())))
-            : null;
+                const editedTimestamps = docs
+                    .map(doc => {
+                        const raw = doc.date;
+                        return raw?.toDate?.();
+                    })
+                    .filter(Boolean);
 
-        return {
-            files: files > 0 ? files.toString() : ' - - ',
-            edited: latest ? latest.toLocaleDateString() : ' - - ',
+                const latest = editedTimestamps.length
+                    ? new Date(Math.max(...editedTimestamps.map(d => d.getTime())))
+                    : null;
+
+                return {
+                    files: files > 0 ? files.toString() : ' - - ',
+                    edited: latest ? latest.toLocaleDateString() : ' - - ',
+                };
+            };
+
+
+            const [daily, freewrite] = await Promise.all([
+                loadCollection('DailyChallenges'),
+                loadCollection('FreeWrites'),
+            ]);
+
+            setAlbumData(prev => ({
+                ...prev,
+                daily,
+                freewrite,
+            }));
         };
-        };
 
-      const [daily, freewrite] = await Promise.all([
-        loadCollection('DailyChallenges'),
-        loadCollection('FreeWrites'),
-      ]);
+        fetchAlbums();
+    }, []);
 
-      setAlbumData(prev => ({
-        ...prev,
-        daily,
-        freewrite,
-      }));
-    };
+    const albumOrder = ["daily", "freewrite", "collaborative", "favorites", "trash"];
 
-    fetchAlbums();
-  }, []);
+    return (
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.header}>My Albums</Text>
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+                {albumOrder.map((key, index) => (
+                    <View
+                        key={index}
+                        style={[
+                            styles.card,
+                            { backgroundColor: albumsThemes[key].color },
+                            { borderColor: albumsThemes[key].border },
+                        ]}
+                    >
+                        <View style={styles.upperSection}>
+                            <Text style={styles.albumTitle}>
+                                {albumsThemes[key].name}
+                                {key === 'favorites' || key === 'trash' ? "" : " Album"}
+                            </Text>
+                        </View>
 
-  const albumOrder = ["daily", "freewrite", "collaborative", "favorites", "trash"];
+                        <View style={styles.divider} />
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>My Albums</Text>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {albumOrder.map((key, index) => (
-          <View
-            key={index}
-            style={[
-              styles.card,
-              { backgroundColor: albumsThemes[key].color },
-              { borderColor: albumsThemes[key].border },
-            ]}
-          >
-            <View style={styles.upperSection}>
-              <Text style={styles.albumTitle}>
-                {albumsThemes[key].name}
-                {key === 'favorites' || key === 'trash' ? "" : " Album"}
-              </Text>
-            </View>
-
-            <View style={styles.divider} />
-
-            <View style={styles.lowerSection}>
-              <View style={styles.leftTextContainer}>
-                <Text style={styles.descriptionText}>
-                  {albumData[key].edited ? `Last Edited: ${albumData[key].edited}\n` : ""}
-                  Number of Files: {albumData[key].files}
-                </Text>
-              </View>
-              <View style={styles.rightPlaceholder}>
-                <Button style={{ marginLeft: 10 }} onPress={() => navigation.navigate('GenericAlbum', { albumKey: key })}>
-                  View Files
-                </Button>
-              </View>
-            </View>
-          </View>
-        ))}
-      </ScrollView>
-    </SafeAreaView>
-  );
+                        <View style={styles.lowerSection}>
+                            <View style={styles.leftTextContainer}>
+                                <Text style={styles.descriptionText}>
+                                    {albumData[key].edited ? `Last Edited: ${albumData[key].edited}\n` : ""}
+                                    Number of Files: {albumData[key].files}
+                                </Text>
+                            </View>
+                            <View style={styles.rightPlaceholder}>
+                                <Button style={{ marginLeft: 10 }} onPress={() => navigation.navigate('GenericAlbum', { albumKey: key })}>
+                                    View Files
+                                </Button>
+                            </View>
+                        </View>
+                    </View>
+                ))}
+            </ScrollView>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: 'white' },
-  header: {
-    fontSize: 32,
-    fontFamily: 'Crimson Text',
-    marginVertical: 16,
-    fontWeight: 'bold',
-    paddingLeft: '5%',
-    marginBottom: 10,
-  },
-  scrollContainer: {
-    paddingBottom: 0,
-    paddingLeft: '5%',
-    paddingRight: '5%',
-  },
-  card: {
-    width: '100%',
-    height: cardHeight,
-    borderRadius: 16,
-    marginBottom: 20,
-    paddingTop: 8,
-    paddingBottom: 8,
-    paddingLeft: 12,
-    paddingRight: 12,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-  },
-  upperSection: { flex: 0.4, justifyContent: 'center' },
-  albumTitle: {
-    fontSize: 24,
-    fontStyle: 'italic',
-    fontFamily: 'Crimson Text',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: 'black',
-    marginVertical: 4,
-  },
-  lowerSection: {
-    flex: 0.6,
-    flexDirection: 'row',
-    marginTop: 4,
-  },
-  leftTextContainer: { flex: 1, justifyContent: 'center' },
-  descriptionText: {
-    fontSize: 16,
-    fontFamily: 'Crimson Text',
-  },
-  rightPlaceholder: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    container: { flex: 1, backgroundColor: 'white' },
+    header: {
+        fontSize: 32,
+        fontFamily: 'Crimson Text',
+        marginVertical: 16,
+        fontWeight: 'bold',
+        paddingLeft: '5%',
+        marginBottom: 10,
+    },
+    scrollContainer: {
+        paddingBottom: 0,
+        paddingLeft: '5%',
+        paddingRight: '5%',
+    },
+    card: {
+        width: '100%',
+        height: cardHeight,
+        borderRadius: 16,
+        marginBottom: 20,
+        paddingTop: 8,
+        paddingBottom: 8,
+        paddingLeft: 12,
+        paddingRight: 12,
+        borderStyle: 'solid',
+        borderWidth: 1,
+        elevation: 4,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+    },
+    upperSection: { flex: 0.4, justifyContent: 'center' },
+    albumTitle: {
+        fontSize: 24,
+        fontStyle: 'italic',
+        fontFamily: 'Crimson Text',
+    },
+    divider: {
+        height: 1,
+        backgroundColor: 'black',
+        marginVertical: 4,
+    },
+    lowerSection: {
+        flex: 0.6,
+        flexDirection: 'row',
+        marginTop: 4,
+    },
+    leftTextContainer: { flex: 1, justifyContent: 'center' },
+    descriptionText: {
+        fontSize: 16,
+        fontFamily: 'Crimson Text',
+    },
+    rightPlaceholder: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
