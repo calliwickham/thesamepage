@@ -33,7 +33,7 @@ export default function MyFriends() {
           return {
             name: data.penname || 'Friend',
             date: new Date(data.added?.seconds * 1000).toLocaleDateString(),
-            details: `You have been friends with ${data.penname || 'this user'} since ${new Date(data.added?.seconds * 1000).toLocaleDateString()}.`,
+            bio: data.bio || 'No bio submitted.',
           };
         });
 
@@ -76,7 +76,7 @@ export default function MyFriends() {
               <Text style={styles.date}>Friends Since: {friend.date}</Text>
             </View>
             <Text style={styles.preview} numberOfLines={3}>
-              {friend.details}
+              {friend.bio}
             </Text>
           </TouchableOpacity>
         ))}
@@ -95,7 +95,7 @@ export default function MyFriends() {
                 <Text style={styles.name}>{selectedFriend.name}</Text>
                 <Text style={styles.date}>Friends Since: {selectedFriend.date}</Text>
               </View>
-              <Text style={styles.fullDetails}>{selectedFriend.details}</Text>
+              <Text style={styles.fullDetails}>{selectedFriend.bio}</Text>
               <TouchableOpacity
                 style={styles.closeButton}
                 onPress={() => setSelectedFriend(null)}

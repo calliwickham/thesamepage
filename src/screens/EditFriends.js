@@ -35,7 +35,7 @@ export default function EditFriends() {
           return {
             id: docSnap.id,
             name: data.penname || 'Friend',
-            description: `You’ve been friends since ${new Date(data.added?.seconds * 1000).toLocaleDateString()}.`,
+            bio: data.bio || 'No bio submitted.',
           };
         });
         setFriends(loaded);
@@ -57,10 +57,10 @@ export default function EditFriends() {
       const user = auth.currentUser;
       if (!user || !selectedFriend) return;
 
-      // Delete the friend from current user's subcollection
+      // Remove from current user
       await deleteDoc(doc(firestore, 'Users', user.uid, 'Friends', selectedFriend.id));
 
-      // Optionally also delete the current user from their subcollection
+      // Also remove from other user
       await deleteDoc(doc(firestore, 'Users', selectedFriend.id, 'Friends', user.uid));
 
       setFriends((prev) => prev.filter((f) => f.id !== selectedFriend.id));
@@ -88,7 +88,7 @@ export default function EditFriends() {
                 <Text style={styles.deleteX}>✕</Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.description}>{friend.description}</Text>
+            <Text style={styles.description}>{friend.bio}</Text>
           </View>
         ))}
       </ScrollView>

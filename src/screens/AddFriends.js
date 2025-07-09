@@ -49,7 +49,7 @@ export default function AddFriends() {
           foundUsers.push({
             id: docSnap.id,
             name: docSnap.data().penname,
-            description: 'User on TheSamePage.',
+            bio: docSnap.data().bio || 'No bio submitted.',
           });
         }
       });
@@ -102,7 +102,7 @@ export default function AddFriends() {
                 <Text style={styles.plus}>＋</Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.description}>{friend.description}</Text>
+            <Text style={styles.description}>{friend.bio}</Text>
           </View>
         ))}
 

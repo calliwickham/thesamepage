@@ -28,10 +28,11 @@ export default function FriendRequests() {
           const senderData = senderSnap.exists() ? senderSnap.data() : {};
 
           loadedRequests.push({
-            id: docSnap.id,
-            message: requestData.message || '',
-            name: senderData.penname || 'Unknown User',
-          });
+          id: docSnap.id,
+          message: requestData.message || '',
+          name: senderData.penname || 'Unknown User',
+          bio: senderData.bio || 'No bio submitted.',
+        });
         }
 
         setRequests(loadedRequests);
@@ -144,7 +145,10 @@ export default function FriendRequests() {
                   <Text style={styles.modalClose}>X</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={styles.modalMessage}>{selectedRequest.message || ''}</Text>
+              <Text style={styles.modalMessage}>
+                {selectedRequest.bio}
+              </Text>
+
               <View style={styles.modalButtons}>
                 <TouchableOpacity
                   style={styles.acceptButton}
