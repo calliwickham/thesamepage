@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import UndoIcon from '../newcomps/Undo';
+import Shuffle from '../newcomps/Shuffle';
 import Button from '../newcomps/Button';
 import { generateThreeWords } from '../utils/wordPool';
 
@@ -38,14 +38,14 @@ export default function FreeWriteInspireMe() {
           <View style={styles.topRow}>
             <Text style={styles.promptText}>Use these words to inspire your story...</Text>
             <TouchableOpacity onPress={handleRefresh}>
-              <UndoIcon width={32} height={32} />
+              <Shuffle/>
             </TouchableOpacity>
           </View>
 
           {inspirationalWords.map((word, index) => (
-            <TouchableOpacity key={index} style={styles.wordButton}>
+            <View key={index} style={styles.wordButton}>
               <Text style={styles.wordText}>{word}</Text>
-            </TouchableOpacity>
+            </View>
           ))}
 
           {/* Go Back to Writing Button */}
