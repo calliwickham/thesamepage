@@ -13,6 +13,8 @@ import {
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import { generateThreeWords } from '../utils/wordPool';
+
 //firebase imports
 import { doc, collection, setDoc } from 'firebase/firestore';
 import { auth, firestore } from '../constants/firebaseConfig.js'
@@ -35,14 +37,21 @@ export default function DailyChallengeScreen() {
 
     const [prevStory, setPrevStory] = useState('');
     const [dailyId, setDailyId] = useState(null);
+    const [challengeWords, setChallengeWords] = useState([]);
 
     useEffect(() => {
-            if (file) {
-                setStory(file.text || '');
-                setPrevStory(file.text || '');
-                setDailyId(file.id || null);
-            }
-        }, [file]);
+        if (file) {
+            setStory(file.text || '');
+            setPrevStory(file.text || '');
+            setDailyId(file.id || null);
+        }
+    }, [file]);
+
+    useEffect(() => {
+        if (challengeWords.length === 0) {
+            setChallengeWords(generateThreeWords()); // returns an array of 3
+        }
+    }, []);
 
     const onSaveOrPublish = async (buttonType, text) => {
 
@@ -62,7 +71,7 @@ export default function DailyChallengeScreen() {
             const docRef = doc(firestore, 'Users', userId, 'DailyChallenges', todayId);
 
             await setDoc(docRef, {
-                words: 'three words here',
+                words: challengeWords,
                 text: text,
                 wordcount: wordCount,
                 date: new Date(),
@@ -101,13 +110,13 @@ export default function DailyChallengeScreen() {
             </Text>
 
             <View style={styles.wordButton}>
-                <Text style={styles.wordText}>significance</Text>
+                <Text style={styles.wordText}>{challengeWords[0]}</Text>
             </View>
             <View style={styles.wordButton}>
-                <Text style={styles.wordText}>disaster</Text>
+                <Text style={styles.wordText}>{challengeWords[1]}</Text>
             </View>
             <View style={styles.wordButton}>
-                <Text style={styles.wordText}>organization</Text>
+                <Text style={styles.wordText}>{challengeWords[2]}</Text>
             </View>
 
             <View style={styles.textBoxWrapper}>
