@@ -99,19 +99,6 @@ export default function DailyChallengeScreen() {
 
     };
 
-    //for if the user tries to leave
-    useFocusEffect(
-        useCallback(() => {
-            const unsubscribe = navigation.addListener('beforeRemove', (event) => {
-                event.preventDefault(); // Stop navigation
-                setPendingNavigation(event.data.action); // Save target
-                setShowExitModal(true); // Show modal
-            });
-
-            return unsubscribe;
-        }, [navigation])
-    );
-
     const handleStoryChange = (text) => {
         setPrevStory(story);
         setStory(text);
@@ -197,9 +184,7 @@ export default function DailyChallengeScreen() {
                                 <TouchableOpacity
                                     style={styles.exitButton}
                                     onPress={() => {
-                                        if (pendingNavigation) {
-                                            navigation.dispatch(pendingNavigation); // Resume navigation
-                                        }
+                                        navigation.goBack();
                                         setShowExitModal(false);
                                     }}
                                 >
@@ -208,7 +193,7 @@ export default function DailyChallengeScreen() {
                                 <TouchableOpacity
                                     style={styles.saveButton}
                                     onPress={() => {
-                                        handleSave();
+                                        onSaveOrPublish('save', story);
                                         setShowExitModal(false);
                                         navigation.goBack();
                                     }}
