@@ -49,6 +49,8 @@ export default function GenericAlbum() {
                         date: data.date?.toDate?.().toLocaleDateString() || '',
                         text: data.text,
                         wordcount: data.wordcount,
+                        deleted: data.deleted ?? false,
+                        published: data.published ?? false,
                     };
                     if ('published' in data) {
                         entry.published = data.published;
@@ -56,9 +58,12 @@ export default function GenericAlbum() {
                     return entry;
                 });
 
-                const filteredDocs = albumKey === 'daily'
-                    ? docs.filter(entry => entry.published === true)
-                    : docs;
+                const filteredDocs = docs.filter(entry => {
+                    const isDeleted = entry.deleted === true;
+                    const isUnpublishedDaily = albumKey === 'daily' && entry.published !== true;
+                    return !isDeleted && !isUnpublishedDaily;
+                });
+
                 setFiles(filteredDocs);
             } catch (error) {
                 console.error("Error fetching files in album: ", error);

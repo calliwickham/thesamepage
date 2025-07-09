@@ -93,8 +93,12 @@ export default function OnlineHomepage() {
             }
         };
 
-        cleanupUnpublishedChallenges();
-        checkDailyChallengeStatus();
+        const runStartupChecks = async () => {
+            await cleanupUnpublishedChallenges();
+            await checkDailyChallengeStatus();
+        };
+
+        runStartupChecks();
     }, []);
 
     return (
@@ -112,7 +116,7 @@ export default function OnlineHomepage() {
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#FFF1DC' }, styles.right]}
                     onPress={() => {
-                        if (challengeStatus === 'completed'){
+                        if (challengeStatus === 'completed') {
                             alert('Challenge already completed!');
                         }
                         else {
@@ -127,9 +131,9 @@ export default function OnlineHomepage() {
                         <Text style={styles.cardTitle}>Daily Challenge</Text>
                         <Text style={styles.cardText}>Get a fresh prompt to inspire you</Text>
                     </View>
-                    {dataFetched && challengeStatus === 'none'? <View style={styles.topRight}><YellowWarning /></View> : null}
-                    {challengeStatus === 'completed'? <View style={styles.bottomRight}><CheckBoxIcon /></View> : null}
-                    {challengeStatus === 'in-progress'? <View style={styles.bottomRight}><InProgressIcon /></View> : null}
+                    {dataFetched && challengeStatus === 'none' ? <View style={styles.topRight}><YellowWarning /></View> : null}
+                    {challengeStatus === 'completed' ? <View style={styles.bottomRight}><CheckBoxIcon /></View> : null}
+                    {challengeStatus === 'in-progress' ? <View style={styles.bottomRight}><InProgressIcon /></View> : null}
                 </TouchableOpacity>
 
                 {/* Free Write */}
