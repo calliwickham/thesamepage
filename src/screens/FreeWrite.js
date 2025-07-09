@@ -129,7 +129,7 @@ export default function FreeWrite() {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.view}>
-                <View style={[styles.container, styles.debugRed]}>
+                <View style={[styles.container]}>
                     <View style={styles.headerRow} onLayout={(event) => {
                         const { y, height } = event.nativeEvent.layout;
                         setHeaderBottom(y + height);
@@ -185,25 +185,63 @@ export default function FreeWrite() {
                         </TouchableOpacity>
                     </View>
                 </View>
-                {/* 
-                <View style={[styles.view, {position: 'absolute', backgroundColor: 'yellow', width: '100%', height: '100%'}]}>
-                    <Text> MODAL BACKGROUND </Text>
-                </View>*/}
-                <View style={[styles.popUp, { top: headerBottom - 8 }]}>
-                    <SpeechBubble style={{ height: Dimensions.get('window').height * 0.55, width: '100%' }}>
-                        <View style={[styles.popUpTitle]}>
-                            <Text style={styles.promptText}> Use these words to inspire your story... </Text>
-                            <TouchableOpacity style={{ marginTop: 10 }} onPress={handleRefresh}>
-                                <Shuffle />
-                            </TouchableOpacity>
-                        </View>
-                        {inspirationalWords.map((word, index) => (
-                            <View key={index} style={styles.wordButton}>
-                                <Text style={styles.wordText}>{word}</Text>
+
+                {isModalVisible && (
+                    <>
+                        {/* Modal background */}
+                        <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    backgroundColor: 'rgba(0,0,0,0.4)',
+                                    zIndex: 998,
+                                }}
+                            />
+                        </TouchableWithoutFeedback>
+
+                        {/* Modal popup wrapper — full screen width */}
+                        <View
+                            style={{
+                                position: 'absolute',
+                                top: headerBottom - 8,
+                                left: 0,
+                                right: 0,
+                                alignItems: 'center', // ✅ centers the SpeechBubble
+                                zIndex: 999,
+                            }}
+                        >
+                            <View style={[styles.popUp, { width: '95%' }]}>
+                                <SpeechBubble
+                                    style={{
+                                        height: Dimensions.get('window').height * 0.55,
+                                        width: '100%',
+                                    }}
+                                >
+                                    <View style={styles.popUpTitle}>
+                                        <Text style={styles.promptText}>Use these words to inspire your story...</Text>
+                                        <TouchableOpacity style={{ marginTop: 10 }} onPress={handleRefresh}>
+                                            <Shuffle />
+                                        </TouchableOpacity>
+                                    </View>
+
+                                    {inspirationalWords.map((word, index) => (
+                                        <View key={index} style={styles.wordButton}>
+                                            <Text style={styles.wordText}>{word}</Text>
+                                        </View>
+                                    ))}
+                                </SpeechBubble>
+                                {/*Fills gaps in the speech bubble */}
+                                <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
+                                    <View style={{ position: 'absolute', backgroundColor: 'transparent', width: '100%', height: '15%' }}></View>
+                                </TouchableWithoutFeedback>
                             </View>
-                        ))}
-                    </SpeechBubble>
-                </View>
+                        </View>
+                    </>
+                )}
             </View>
         </TouchableWithoutFeedback>
     );
@@ -365,7 +403,7 @@ const styles = StyleSheet.create({
     popUpTitle: {
         flexDirection: 'row',
         width: '95%,',
-        padding: 20
+        padding: 22
     },
     promptText: {
         fontSize: 20,
