@@ -8,11 +8,15 @@ import {
     ScrollView,
     Keyboard,
     TouchableWithoutFeedback,
-    Alert
+    Alert,
+    Dimensions
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import SaveIcon from '../newcomps/SaveIcon';
 import UndoIcon from '../newcomps/Undo';
+import Shuffle from '../newcomps/Shuffle';
+import SpeechBubble from '../newcomps/SpeechBubble';
+import { generateThreeWords } from '../utils/wordPool';
 
 //firebase imports
 import { doc, collection, addDoc, updateDoc } from 'firebase/firestore';
@@ -33,6 +37,16 @@ export default function FreeWrite() {
     const [prevTitle, setPrevTitle] = useState('');
     const [prevStory, setPrevStory] = useState('');
     const [freeWriteId, setFreeWriteId] = useState(null);
+
+    const [inspirationalWords, setInspirationalWords] = useState(generateThreeWords());
+    const handleRefresh = () => {
+        setInspirationalWords(generateThreeWords());
+    };
+
+    //for speech bubble position:
+    const [headerBottom, setHeaderBottom] = useState(0);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
 
     useEffect(() => {
         if (file) {
@@ -113,58 +127,82 @@ export default function FreeWrite() {
 
 
     return (
-        <TouchableWithoutFeedback styles={styles.view} onPress={Keyboard.dismiss} accessible={false}>
-            <View style={styles.container}>
-                <View style={styles.headerRow}>
-                    <Text style={styles.header}>Free Write</Text>
-                    <TouchableOpacity style={styles.inspireButton} onPress={() => navigation.navigate('FreeWriteInspireMe')}>
-                        <Text style={styles.inspireText}>Inspire Me</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View>
-                    <TextInput
-                        style={styles.titleInput}
-                        placeholder="Title of Work"
-                        value={title}
-                        onChangeText={handleTitleChange}
-                        placeholderTextColor="#aaa"
-                    />
-                </View>
-
-                <View style={styles.scrollSection}>
-                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                        <TextInput
-                            style={styles.storyInput}
-                            placeholder="Write your story"
-                            value={story}
-                            onChangeText={handleStoryChange}
-                            placeholderTextColor="#ccc"
-                            multiline
-                        />
-                    </ScrollView>
-                    <TouchableOpacity onPress={handleClear} style={styles.clearButton}>
-                        <Text style={styles.clearText}>clear</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.buttonRow}>
-                    <TouchableOpacity onPress={() => onSaveOrPublish('save', title, story)}>
-                        <SaveIcon />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.publishButton} onPress={() => {
-                        onSaveOrPublish('publish', title, story);
-                        navigation.navigate('Albums');
-                        Alert.alert('Published', 'You can find it in the Free Write album.');
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <View style={styles.view}>
+                <View style={[styles.container, styles.debugRed]}>
+                    <View style={styles.headerRow} onLayout={(event) => {
+                        const { y, height } = event.nativeEvent.layout;
+                        setHeaderBottom(y + height);
                     }}>
-                        <Text style={styles.publishText}>Publish</Text>
-                    </TouchableOpacity>
+                        <Text style={styles.header}>Free Write</Text>
+                        <TouchableOpacity style={styles.inspireButton} onPress={() => setIsModalVisible(true)}>
+                            <Text style={styles.inspireText}>Inspire Me</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View>
+                        <TextInput
+                            style={styles.titleInput}
+                            placeholder="Title of Work"
+                            value={title}
+                            onChangeText={handleTitleChange}
+                            placeholderTextColor="#aaa"
+                        />
+                    </View>
+
+                    <View style={styles.scrollSection}>
+                        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                            <TextInput
+                                style={styles.storyInput}
+                                placeholder="Write your story"
+                                value={story}
+                                onChangeText={handleStoryChange}
+                                placeholderTextColor="#ccc"
+                                multiline
+                            />
+                        </ScrollView>
+                        <TouchableOpacity onPress={handleClear} style={styles.clearButton}>
+                            <Text style={styles.clearText}>clear</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.buttonRow}>
+                        <TouchableOpacity onPress={() => onSaveOrPublish('save', title, story)}>
+                            <SaveIcon />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.publishButton} onPress={() => {
+                            onSaveOrPublish('publish', title, story);
+                            navigation.navigate('Albums');
+                            Alert.alert('Published', 'You can find it in the Free Write album.');
+                        }}>
+                            <Text style={styles.publishText}>Publish</Text>
+                        </TouchableOpacity>
 
 
-                    <TouchableOpacity onPress={handleUndo}>
-                        <UndoIcon width={41} height={38} />
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={handleUndo}>
+                            <UndoIcon width={41} height={38} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                {/* 
+                <View style={[styles.view, {position: 'absolute', backgroundColor: 'yellow', width: '100%', height: '100%'}]}>
+                    <Text> MODAL BACKGROUND </Text>
+                </View>*/}
+                <View style={[styles.popUp, { top: headerBottom - 8 }]}>
+                    <SpeechBubble style={{ height: Dimensions.get('window').height * 0.55, width: '100%' }}>
+                        <View style={[styles.popUpTitle]}>
+                            <Text style={styles.promptText}> Use these words to inspire your story... </Text>
+                            <TouchableOpacity style={{ marginTop: 10 }} onPress={handleRefresh}>
+                                <Shuffle />
+                            </TouchableOpacity>
+                        </View>
+                        {inspirationalWords.map((word, index) => (
+                            <View key={index} style={styles.wordButton}>
+                                <Text style={styles.wordText}>{word}</Text>
+                            </View>
+                        ))}
+                    </SpeechBubble>
                 </View>
             </View>
         </TouchableWithoutFeedback>
@@ -173,6 +211,16 @@ export default function FreeWrite() {
 
 
 const styles = StyleSheet.create({
+    debugRed: {
+        borderColor: 'red',
+        borderWidth: 2,
+        borderStyle: 'dashed'
+    },
+    debugOrange: {
+        borderColor: 'orange',
+        borderWidth: 1,
+        borderStyle: 'dashed'
+    },
     view: {
         flex: 1,
     },
@@ -287,5 +335,43 @@ const styles = StyleSheet.create({
         fontFamily: 'Crimson Text',
         fontWeight: '700',
         color: '#000',
+    },
+    popUp: {
+        position: 'absolute',
+        alignSelf: 'center',
+        width: '95%',
+        alignItems: 'center',
+    },
+    wordButton: {
+        backgroundColor: '#0B3D0B',
+        width: '80%',
+        paddingVertical: 14,
+        paddingHorizontal: 12,
+        borderRadius: 4,
+        marginVertical: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 1, height: 3 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+        elevation: 4,
+    },
+    wordText: {
+        fontSize: 20,
+        fontFamily: 'Crimson Text',
+        color: '#fff',
+        textAlign: 'center',
+        fontWeight: '600',
+    },
+    popUpTitle: {
+        flexDirection: 'row',
+        width: '95%,',
+        padding: 20
+    },
+    promptText: {
+        fontSize: 20,
+        fontFamily: 'Crimson Text',
+        fontWeight: '600',
+        flex: 1,
+        textAlign: 'center'
     },
 });
