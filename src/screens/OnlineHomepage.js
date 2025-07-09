@@ -54,7 +54,13 @@ export default function OnlineHomepage() {
                 snapshot.docs.forEach(docSnap => {
                     const data = docSnap.data();
                     const entryDate = data.date?.toDate?.();
-                    const entryISO = entryDate?.toISOString().split('T')[0];
+
+                    if (!entryDate) {
+                        console.warn(`Skipping deletion: missing or invalid date for doc ${docSnap.id}`);
+                        return;
+                    }
+
+                    const entryISO = entryDate.toISOString().split('T')[0];
 
                     if (entryISO !== todayISO) {
                         const deletionRef = doc(firestore, 'Users', userId, 'DailyChallenges', docSnap.id);
