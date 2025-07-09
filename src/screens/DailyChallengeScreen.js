@@ -41,17 +41,23 @@ export default function DailyChallengeScreen() {
 
     useEffect(() => {
         if (file) {
+            // Load saved story details from the file
             setStory(file.text || '');
             setPrevStory(file.text || '');
             setDailyId(file.id || null);
+
+            // Use saved words if they exist
+            if (Array.isArray(file.words) && file.words.length === 3) {
+                setChallengeWords(file.words);
+            } else {
+                setChallengeWords(generateThreeWords());
+            }
+        } else {
+            // No file — generate new words
+            setChallengeWords(generateThreeWords());
+            onSaveOrPublish('save', story);
         }
     }, [file]);
-
-    useEffect(() => {
-        if (challengeWords.length === 0) {
-            setChallengeWords(generateThreeWords()); // returns an array of 3
-        }
-    }, []);
 
     const onSaveOrPublish = async (buttonType, text) => {
 
