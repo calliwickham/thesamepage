@@ -6,6 +6,7 @@ import {
     View,
     Text,
     TouchableOpacity,
+    alert
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 

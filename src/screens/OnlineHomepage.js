@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import InProgressIcon from '../newcomps/InProgressIcon';
 import CheckBoxIcon from '../newcomps/CheckBoxIcon';
-import YellowNotif from '../newcomps/YellowNotif';
+import YellowWarning from '../newcomps/YellowWarning';
 import CalendarIcon from '../newcomps/CalendarIcon';
 import SinglePage from '../newcomps/SinglePage';
 import Puzzle from '../newcomps/Puzzle';
@@ -35,6 +35,7 @@ export default function OnlineHomepage() {
 
 
     //For daily challenge notifs
+    const [dataFetched, setDataFetched] = useState(false);
     const [todaysChallenge, setTodaysChallenge] = useState(null);
     const [challengeStatus, setChallengeStatus] = useState('none'); // 'none' | 'in-progress' | 'completed'
     useEffect(() => {
@@ -86,6 +87,7 @@ export default function OnlineHomepage() {
                 } else {
                     setChallengeStatus('none');
                 }
+                setDataFetched(true);
             } catch (error) {
                 console.error('Error loading daily challenge:', error);
             }
@@ -104,18 +106,18 @@ export default function OnlineHomepage() {
                 {/* 
                  <Button color='error'
                     style={{ position: 'absolute', left: 10, top: 5, paddingVertical: 2 }}
-                    onPress={() => navigation.navigate('Debug')}>Debug - components</Button>
-                <Button
-                    color='error'
-                    style={{ position: 'absolute', right: 10, top: 5, paddingVertical: 2 }}
-                    onPress={() => navigation.navigate('OfflineHomepage')}>Debug - offline homepage</Button> */}
+                    onPress={() => navigation.navigate('Debug')}>Debug - components</Button> */}
 
                 {/* Daily Challenge */}
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#FFF1DC' }, styles.right]}
                     onPress={() => {
-                        console.log('status:' + challengeStatus +'\n' + todaysChallenge)
-                        navigation.navigate('DailyChallengeScreen', { file: todaysChallenge });
+                        if (challengeStatus === 'completed'){
+                            alert('Challenge already completed!');
+                        }
+                        else {
+                            navigation.navigate('DailyChallengeScreen', { file: todaysChallenge });
+                        }
                     }}
                 >
                     <View style={[styles.circle, { borderColor: '#F8E6C7' }]}>
@@ -125,12 +127,9 @@ export default function OnlineHomepage() {
                         <Text style={styles.cardTitle}>Daily Challenge</Text>
                         <Text style={styles.cardText}>Get a fresh prompt to inspire you</Text>
                     </View>
-                    <View style={styles.topRight}>
-                        <YellowNotif />
-                    </View>
-                    <View style={styles.bottomRight}>
-                        <CheckBoxIcon />
-                    </View>
+                    {dataFetched && challengeStatus === 'none'? <View style={styles.topRight}><YellowWarning /></View> : null}
+                    {challengeStatus === 'completed'? <View style={styles.bottomRight}><CheckBoxIcon /></View> : null}
+                    {challengeStatus === 'in-progress'? <View style={styles.bottomRight}><InProgressIcon /></View> : null}
                 </TouchableOpacity>
 
                 {/* Free Write */}
