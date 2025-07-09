@@ -140,7 +140,7 @@ export default function FreeWrite() {
                         </TouchableOpacity>
                     </View>
 
-                    <View>
+                    <View style={isModalVisible && styles.invisible}>
                         <TextInput
                             style={styles.titleInput}
                             placeholder="Title of Work"
@@ -150,7 +150,7 @@ export default function FreeWrite() {
                         />
                     </View>
 
-                    <View style={styles.scrollSection}>
+                    <View style={[styles.scrollSection, isModalVisible && styles.invisible]}>
                         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                             <TextInput
                                 style={styles.storyInput}
@@ -197,7 +197,7 @@ export default function FreeWrite() {
                                     left: 0,
                                     right: 0,
                                     bottom: 0,
-                                    backgroundColor: 'rgba(0,0,0,0.4)',
+                                    backgroundColor: 'transparent',
                                     zIndex: 998,
                                 }}
                             />
@@ -412,4 +412,8 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center'
     },
+    invisible: {
+        opacity: 0,
+        pointerEvents: 'none',
+    }
 });
