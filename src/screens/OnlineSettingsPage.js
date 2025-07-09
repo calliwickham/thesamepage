@@ -1,158 +1,189 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-//firebase imports
 import { signOut } from 'firebase/auth';
-import { auth } from '../constants/firebaseConfig';
-import { clearLocal } from '../constants/storeLocal.js'
+import { auth, firestore } from '../constants/firebaseConfig';
+import { clearLocal } from '../constants/storeLocal.js';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function OnlineSettingsPage() {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+  const [userInfo, setUserInfo] = useState({
+    penname: '',
+    email: '',
+    joined: '',
+    bio: '',
+    autoDelete: '1 Year'
+  });
 
-    const handleLogout = async () => {
-        try {
-            await signOut(auth);
-            await clearLocal("penname");
-            navigation.replace('Login'); // or navigate('Login') if you want back navigation
-            console.log('User signed out');
-        } catch (error) {
-            console.error('Sign out error:', error);
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      try {
+        const userDoc = await getDoc(doc(firestore, 'Users', user.uid));
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          setUserInfo({
+            penname: data.penname || '',
+            email: data.email || user.email || '',
+            joined: data.joined ? new Date(data.joined.seconds * 1000).toLocaleDateString() : '',
+            bio: data.bio || '',
+            autoDelete: data.autoDelete || '1 Year',
+          });
         }
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+      }
     };
 
-    const handleGoToEdit = () => {
-        navigation.navigate('EditOnlineSettingsPage');
-    };
-    const handleReset = () => {
-        navigation.navigate('ResetPassword');
-    };
+    fetchUserInfo();
+  }, []);
 
-    return (
-        <ScrollView style={styles.container}>
-            <Text style={styles.title}>Your Account</Text>
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      await clearLocal("penname");
+      navigation.replace('Login');
+      console.log('User signed out');
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
 
-            <Text style={styles.label}>Username</Text>
-            <Text style={styles.value}>supercoolwriter69</Text>
+  const handleGoToEdit = () => {
+    navigation.navigate('EditOnlineSettingsPage');
+  };
 
-            <Text style={styles.label}>Email</Text>
-            <Text style={styles.value}>supercoolwriter69@gmail.com</Text>
+  const handleReset = () => {
+    navigation.navigate('ResetPassword');
+  };
 
-            <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
-                <Text style={styles.resetButtonText}>Reset Password</Text>
-            </TouchableOpacity>
+  return (
+    <ScrollView style={styles.container}>
+      <Text style={styles.title}>Your Account</Text>
 
-            <Text style={styles.label}>Date Joined</Text>
-            <Text style={styles.value}>06/21/2025</Text>
+      <Text style={styles.label}>Username</Text>
+      <Text style={styles.value}>{userInfo.penname}</Text>
 
-            <Text style={styles.label}>Bio</Text>
-            <Text style={styles.value}>Short blurb about writing</Text>
+      <Text style={styles.label}>Email</Text>
+      <Text style={styles.value}>{userInfo.email}</Text>
 
-            <Text style={styles.label}>Daily Challenge Auto-Delete</Text>
-            <View style={styles.optionRow}>
-                <Text style={styles.option}>30 Days</Text>
-                <Text style={[styles.option, styles.selectedOption]}>1 Year</Text>
-                <Text style={styles.option}>None</Text>
-            </View>
+      <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
+        <Text style={styles.resetButtonText}>Reset Password</Text>
+      </TouchableOpacity>
 
-            <TouchableOpacity style={styles.editButton} onPress={handleGoToEdit}>
-                <Text style={styles.editButtonText}>Edit Your Account</Text>
-            </TouchableOpacity>
+      <Text style={styles.label}>Date Joined</Text>
+      <Text style={styles.value}>{userInfo.joined}</Text>
 
-            <Text style={styles.link} onPress={handleLogout}>Logout</Text>
-        </ScrollView>
-    );
+      <Text style={styles.label}>Bio</Text>
+      <Text style={styles.value}>{userInfo.bio}</Text>
+
+      <Text style={styles.label}>Daily Challenge Auto-Delete</Text>
+      <View style={styles.optionRow}>
+        <Text style={[styles.option, userInfo.autoDelete === '30 Days' && styles.selectedOption]}>30 Days</Text>
+        <Text style={[styles.option, userInfo.autoDelete === '1 Year' && styles.selectedOption]}>1 Year</Text>
+        <Text style={[styles.option, userInfo.autoDelete === 'None' && styles.selectedOption]}>None</Text>
+      </View>
+
+      <TouchableOpacity style={styles.editButton} onPress={handleGoToEdit}>
+        <Text style={styles.editButtonText}>Edit Your Account</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.link} onPress={handleLogout}>Logout</Text>
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        paddingVertical: 20,
-        paddingHorizontal: 20,
-        backgroundColor: 'white',
-        flex: 1,
-    },
-    title: {
-        fontSize: 28,
-        fontFamily: 'Crimson Text',
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
-    label: {
-        fontSize: 22,
-        fontFamily: 'Crimson Text',
-        fontWeight: '600',
-        marginTop: 20,
-    },
-    value: {
-        fontSize: 20,
-        fontFamily: 'Crimson Text',
-        marginTop: 6,
-        marginLeft: 10,
-    },
-    resetButton: {
-        backgroundColor: '#FFD12D',
-        borderRadius: 30,
-        paddingVertical: 12,
-        paddingHorizontal: 30,
-        alignItems: 'center',
-        marginTop: 12,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 4,
-    },
-    resetButtonText: {
-        fontSize: 20,
-        fontFamily: 'Crimson Text',
-        fontWeight: '700',
-        color: '#000',
-    },
-    optionRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginVertical: 12,
-    },
-    option: {
-        backgroundColor: '#eee',
-        borderRadius: 20,
-        paddingVertical: 8,
-        paddingHorizontal: 18,
-        fontSize: 16,
-        fontFamily: 'Crimson Text',
-        color: '#aaa',
-        overflow: 'hidden',
-    },
-    selectedOption: {
-        backgroundColor: '#ccc',
-        color: '#000',
-        fontWeight: '700',
-    },
-    editButton: {
-        backgroundColor: '#0B3D0B',
-        borderRadius: 30,
-        paddingVertical: 14,
-        alignItems: 'center',
-        marginTop: 30,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 5,
-        elevation: 5,
-    },
-    editButtonText: {
-        fontFamily: 'Crimson Text',
-        fontSize: 22,
-        fontWeight: '600',
-        color: 'white',
-    },
-    link: {
-        fontSize: 18,
-        fontFamily: 'Crimson Text',
-        color: '#0056B3',
-        textAlign: 'center',
-        marginVertical: 24,
-        textDecorationLine: 'underline',
-    },
+  container: {
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    backgroundColor: 'white',
+    flex: 1,
+  },
+  title: {
+    fontSize: 28,
+    fontFamily: 'Crimson Text',
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 22,
+    fontFamily: 'Crimson Text',
+    fontWeight: '600',
+    marginTop: 20,
+  },
+  value: {
+    fontSize: 20,
+    fontFamily: 'Crimson Text',
+    marginTop: 6,
+    marginLeft: 10,
+  },
+  resetButton: {
+    backgroundColor: '#FFD12D',
+    borderRadius: 30,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    alignItems: 'center',
+    marginTop: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  resetButtonText: {
+    fontSize: 20,
+    fontFamily: 'Crimson Text',
+    fontWeight: '700',
+    color: '#000',
+  },
+  optionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 12,
+  },
+  option: {
+    backgroundColor: '#eee',
+    borderRadius: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 18,
+    fontSize: 16,
+    fontFamily: 'Crimson Text',
+    color: '#aaa',
+    overflow: 'hidden',
+  },
+  selectedOption: {
+    backgroundColor: '#ccc',
+    color: '#000',
+    fontWeight: '700',
+  },
+  editButton: {
+    backgroundColor: '#0B3D0B',
+    borderRadius: 30,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginTop: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  editButtonText: {
+    fontFamily: 'Crimson Text',
+    fontSize: 22,
+    fontWeight: '600',
+    color: 'white',
+  },
+  link: {
+    fontSize: 18,
+    fontFamily: 'Crimson Text',
+    color: '#0056B3',
+    textAlign: 'center',
+    marginVertical: 24,
+    textDecorationLine: 'underline',
+  },
 });

@@ -1,24 +1,74 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Pressable,
+  Alert,
   Modal,
+  ScrollView,
+  Pressable,
   Linking,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { ScrollView } from 'react-native-gesture-handler';
-import CheckBoxIcon from '../newcomps/CheckBoxIcon';
+import { auth, firestore } from '../constants/firebaseConfig';
+import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { deleteUser } from 'firebase/auth';
+import CheckBoxIcon from '../newcomps/CheckBoxIcon'; // Make sure this exists
 
 export default function EditOfflineSettingsPage() {
   const navigation = useNavigation();
-  const [selectedDeleteOption, setSelectedDeleteOption] = useState('1 Year');
-  const [isChecked, setIsChecked] = useState(false);
+  const [username, setUsername] = useState('');
+  const [selectedOption, setSelectedOption] = useState('1 Year');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showConvertModal, setShowConvertModal] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+      try {
+        const userDoc = await getDoc(doc(firestore, 'Users', user.uid));
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          setUsername(data.penname || '');
+          setSelectedOption(data.autoDelete || '1 Year');
+        }
+      } catch (err) {
+        console.error('Error loading user info:', err);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+  const handleSave = async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+    try {
+      await updateDoc(doc(firestore, 'Users', user.uid), {
+        penname: username,
+        autoDelete: selectedOption,
+      });
+      navigation.navigate('OfflineSettingsPage');
+    } catch (err) {
+      console.error('Save error:', err);
+    }
+  };
+
+  const handleDelete = async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+    try {
+      await deleteDoc(doc(firestore, 'Users', user.uid));
+      await deleteUser(user);
+      navigation.replace('Login');
+    } catch (err) {
+      Alert.alert('Delete Error', err.message);
+    }
+  };
 
   const handleConvert = () => {
     if (!isChecked) {
@@ -28,218 +78,318 @@ export default function EditOfflineSettingsPage() {
     }
   };
 
-  const handleDelete = () => {
-    setShowDeleteModal(true);
-  };
-
-  const handleRedirect = () => {
-    navigation.navigate('Login');
-  };
-
   return (
-    <ScrollView keyboardShouldPersistTaps="handled">
-      <View style={styles.container}>
-        <Text style={styles.header}>Your Account</Text>
-        
-        <Text style={styles.label}>Date Joined</Text>
-        <TextInput style={[styles.input, styles.disabledInput]} value="06/21/2025" editable={false} />
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.header}>Edit Your Account</Text>
 
-        <Text style={styles.label}>Daily Challenge Auto-Delete</Text>
-        <View style={styles.autoDeleteRow}>
-          {['30 Days', '1 Year', 'None'].map(option => (
-            <TouchableOpacity
-              key={option}
-              style={[styles.autoDeleteButton, selectedDeleteOption === option && styles.activeButton]}
-              onPress={() => setSelectedDeleteOption(option)}
+      <Text style={styles.label}>Username</Text>
+      <TextInput
+        style={styles.input}
+        value={username}
+        onChangeText={setUsername}
+      />
+
+      <Text style={styles.label}>Daily Challenge Auto-Delete</Text>
+      <View style={styles.autoDeleteRow}>
+        {['30 Days', '1 Year', 'None'].map(option => (
+          <TouchableOpacity
+            key={option}
+            style={[
+              styles.autoDeleteButton,
+              selectedOption === option && styles.selected,
+            ]}
+            onPress={() => setSelectedOption(option)}
+          >
+            <Text
+              style={[
+                styles.autoDeleteText,
+                selectedOption === option && styles.selectedText,
+              ]}
             >
-              <Text style={[styles.autoDeleteText, selectedDeleteOption === option && styles.activeText]}>
-                {option}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        <TouchableOpacity style={styles.saveButton} onPress={() => navigation.goBack()}>
-          <Text style={styles.saveText}>Save Your Changes</Text>
-        </TouchableOpacity>
-
-        <View style={{ height: 1, backgroundColor: '#000', marginVertical: 24 }} />
-
-        <Text style={styles.label}>Convert to an Online Account?</Text>
-        <View style={{ flexDirection: 'row', gap: 12, marginBottom: 24 }}>
-          <Pressable onPress={() => setIsChecked(!isChecked)}>
-            {isChecked ? <CheckBoxIcon /> : <View style={styles.uncheckedBox} />}
-          </Pressable>
-          <Text style={{ flex: 1, fontSize: 16, fontFamily: 'Crimson Text' }}>
-            By checking this box, you acknowledge that your account will be online, allowing you to collaborate, connect,
-            and communicate with other users. You also agree to follow our{' '}
-            <Text style={styles.link} onPress={() => Linking.openURL('https://example.com/community-guidelines')}>
-              Community Guidelines
-            </Text>{' '}
-            and to interact respectfully, avoiding any behavior that could make others feel uncomfortable.
-          </Text>
-        </View>
-
-        <TouchableOpacity style={styles.resetButton} onPress={handleConvert}>
-          <Text style={styles.resetText}>Convert</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-          <Text style={styles.deleteText}>Delete My Account</Text>
-        </TouchableOpacity>
-
-        {showConvertModal && (
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={showConvertModal}
-            onRequestClose={() => setShowConvertModal(false)}
-          >
-            <View style={styles.modalOverlay}>
-              <View style={styles.popupBox}>
-                <TouchableOpacity
-                  style={styles.closeButton}
-                  onPress={() => setShowConvertModal(false)}
-                >
-                  <Text style={styles.closeButtonText}>✕</Text>
-                </TouchableOpacity>
-
-                <Text style={styles.popupTitle}>Are you sure?</Text>
-
-                <Text style={styles.popupMessage}>
-                  Without an online account, your progress will be saved to this device only.
-                </Text>
-                <Text style={styles.popupMessage}>
-                  If the app is uninstalled or the device is reset, your data may be lost.
-                </Text>
-
-                <View style={styles.modalButtons}>
-                  <TouchableOpacity
-                    style={styles.modalCloseButton}
-                    onPress={() => setShowConvertModal(false)}
-                  >
-                    <Text style={styles.modalCloseText}>Close</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </Modal>
-        )}
-
-        {showDeleteModal && (
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={showDeleteModal}
-            onRequestClose={() => setShowDeleteModal(false)}
-          >
-            <View style={styles.modalOverlay}>
-              <View style={styles.popupBox}>
-                <Text style={styles.popupTitle}>Are You Sure?</Text>
-                <Text style={styles.popupMessage}>
-                  Proceeding with account deletion will{' '}
-                  <Text style={{ fontStyle: 'italic' }}>permanently</Text> delete your account.
-                </Text>
-                <View style={styles.modalButtons}>
-                  <TouchableOpacity
-                    style={styles.modalCloseButton}
-                    onPress={() => setShowDeleteModal(false)}
-                  >
-                    <Text style={styles.modalCloseText}>Go Back</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.modalConfirmButton}
-                    onPress={() => {
-                        setShowDeleteModal(false);
-                        handleRedirect();
-                    }}
-                    >
-                    <Text style={styles.modalConfirmText}>Delete</Text>
-                    </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </Modal>
-        )}
+              {option}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
+
+      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+        <Text style={styles.saveText}>Save Your Changes</Text>
+      </TouchableOpacity>
+
+      
+
+      <View style={styles.divider} />
+
+      <Text style={styles.convertTitle}>Convert to an Online Account?</Text>
+      <View style={styles.checkboxContainer}>
+        <Pressable onPress={() => setIsChecked(!isChecked)}>
+          {isChecked ? <CheckBoxIcon /> : <View style={styles.uncheckedBox} />}
+        </Pressable>
+        <Text style={styles.checkboxText}>
+          By checking this box, you acknowledge that your account will be online, allowing you to collaborate, connect, and communicate with other users. You also agree to follow our{' '}
+          <Text
+            style={styles.link}
+            onPress={() => Linking.openURL('https://example.com/community-guidelines')}
+          >
+            Community Guidelines
+          </Text>{' '}
+          and to interact respectfully, avoiding any behavior that could make others feel uncomfortable.
+        </Text>
+      </View>
+
+      <TouchableOpacity style={styles.convertButton} onPress={handleConvert}>
+        <Text style={styles.convertText}>Convert</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.deleteButton} onPress={() => setShowDeleteModal(true)}>
+              <Text style={styles.deleteText}>Delete My Account</Text>
+            </TouchableOpacity>
+      {/* Convert Modal */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={showConvertModal}
+        onRequestClose={() => setShowConvertModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalBox}>
+            <Text style={styles.modalTitle}>Are you sure?</Text>
+            <Text style={styles.modalMessage}>
+              You must check the agreement box to proceed.
+            </Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={styles.goBackButton}
+                onPress={() => setShowConvertModal(false)}
+              >
+                <Text style={styles.goBackText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Delete Modal */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={showDeleteModal}
+        onRequestClose={() => setShowDeleteModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalBox}>
+            <Text style={styles.modalTitle}>Are You Sure?</Text>
+            <Text style={styles.modalMessage}>
+              This will permanently delete your account.
+            </Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={styles.goBackButton}
+                onPress={() => setShowDeleteModal(false)}
+              >
+                <Text style={styles.goBackText}>Go Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.deleteConfirmButton}
+                onPress={handleDelete}
+              >
+                <Text style={styles.deleteText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 24, backgroundColor: '#fff', flex: 1 },
-  header: { fontSize: 32, fontFamily: 'Crimson Text', fontWeight: 'bold', marginBottom: 20 },
-  label: { fontSize: 22,
+  container: {
+    padding: 24,
+    paddingBottom: 60,
+    backgroundColor: '#fff',
+  },
+  header: {
+    fontSize: 32,
+    fontFamily: 'Crimson Text',
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 20,
+    fontFamily: 'Crimson Text',
+    marginBottom: 6,
+  },
+  input: {
+    backgroundColor: '#fff',
+    fontFamily: 'Crimson Text',
+    fontSize: 18,
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 20,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
+  autoDeleteRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 20,
+  },
+  autoDeleteButton: {
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    borderRadius: 20,
+    borderColor: '#000',
+    borderWidth: 1,
+    backgroundColor: '#fff',
+    elevation: 2,
+  },
+  autoDeleteText: {
+    fontFamily: 'Crimson Text',
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#aaa',
+  },
+  selected: {
+    backgroundColor: '#ccc',
+  },
+  selectedText: {
+    color: '#000',
+  },
+  saveButton: {
+    backgroundColor: '#10471B',
+    paddingVertical: 16,
+    borderRadius: 40,
+    alignItems: 'center',
+    marginTop: 20,
+    elevation: 5,
+  },
+  saveText: {
+    color: '#FFF4E2',
+    fontSize: 20,
+    fontFamily: 'Crimson Text',
+    fontWeight: '700',
+  },
+  deleteButton: {
+    backgroundColor: '#D60000',
+    paddingVertical: 16,
+    borderRadius: 40,
+    alignItems: 'center',
+    marginTop: 20,
+    elevation: 5,
+  },
+  deleteText: {
+    color: '#000',
+    fontSize: 20,
+    fontFamily: 'Crimson Text',
+    fontWeight: '700',
+  },
+  divider: {
+    height: 2,
+    backgroundColor: '#000',
+    marginVertical: 24,
+  },
+  convertTitle: {
+    fontSize: 22,
     fontFamily: 'Crimson Text',
     fontWeight: '600',
     marginTop: 16,
-    marginBottom: 10,},
-  input: {
-    backgroundColor: '#fff', fontFamily: 'Crimson Text', fontSize: 18,
-    borderRadius: 12, padding: 12, marginBottom: 20,
-    elevation: 3, shadowColor: '#000', shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2, shadowRadius: 3,
+    marginBottom: 10,
   },
-  disabledInput: { backgroundColor: '#f0f0f0', color: '#999' },
-  autoDeleteRow: { flexDirection: 'row', justifyContent: 'space-between', marginVertical: 20 },
-  autoDeleteButton: {
-    paddingHorizontal: 18, paddingVertical: 10, borderRadius: 20,
-    borderColor: '#000', borderWidth: 1, backgroundColor: '#fff', elevation: 2,
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 20,
   },
-  autoDeleteText: { fontFamily: 'Crimson Text', fontSize: 16, fontWeight: '600', color: '#aaa' },
-  activeButton: { backgroundColor: '#ccc' },
-  activeText: { color: '#000' },
-  saveButton: {
-    backgroundColor: '#10471B', paddingVertical: 16, borderRadius: 40,
-    alignItems: 'center', marginTop: 10, elevation: 5,
-  },
-  saveText: { color: '#FFF4E2', fontSize: 20, fontFamily: 'Crimson Text', fontWeight: '700' },
-  resetButton: {
-    backgroundColor: '#FFD12D', paddingVertical: 14, borderRadius: 30,
-    alignItems: 'center', marginTop: 12, elevation: 5,
-  },
-  resetText: { fontSize: 18, fontFamily: 'Crimson Text', fontWeight: '700', color: '#000' },
-  deleteButton: {
-    backgroundColor: '#D60000', paddingVertical: 16, borderRadius: 40,
-    alignItems: 'center', marginTop: 20, elevation: 5,
-  },
-  deleteText: { fontSize: 20, fontFamily: 'Crimson Text', fontWeight: '700', color: '#000' },
-  link: { color: '#007AFF', textDecorationLine: 'underline' },
   uncheckedBox: {
-    width: 22, height: 22, borderWidth: 2, borderColor: '#000',
-    borderRadius: 4, marginTop: 3,
+    width: 24,
+    height: 24,
+    borderWidth: 2,
+    borderColor: '#000',
+    borderRadius: 4,
+    marginRight: 10,
+    marginTop: 4,
+  },
+  checkboxText: {
+    flex: 1,
+    fontSize: 16,
+    fontFamily: 'Crimson Text',
+    color: '#000',
+  },
+  link: {
+    fontSize: 16,
+    fontFamily: 'Crimson Text',
+    color: '#0056B3',
+    textDecorationLine: 'underline',
+  },
+  convertButton: {
+    backgroundColor: '#FFD12D',
+    borderRadius: 30,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginTop: 10,
+    elevation: 5,
+  },
+  convertText: {
+    fontSize: 20,
+    fontFamily: 'Crimson Text',
+    fontWeight: '700',
+    color: '#000',
   },
   modalOverlay: {
-    flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', justifyContent: 'center', alignItems: 'center',
+    position: 'absolute',
+    top: 0, bottom: 0, left: 0, right: 0,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
   },
-  popupBox: {
-    width: 320, backgroundColor: 'white', borderRadius: 10, padding: 20,
-    shadowColor: '#000', shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25, shadowRadius: 4, elevation: 6,
+  modalBox: {
+    backgroundColor: '#fff',
+    padding: 24,
+    borderRadius: 12,
+    width: '85%',
+    elevation: 8,
+    alignItems: 'center',
   },
-  closeButton: { alignSelf: 'flex-end' },
-  closeButtonText: { fontSize: 22, fontWeight: '600' },
-  popupTitle: {
-    fontSize: 20, fontWeight: 'bold', fontFamily: 'Crimson Text', marginBottom: 10,
+  modalTitle: {
+    fontSize: 22,
+    fontFamily: 'Crimson Text',
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
-  popupMessage: {
-    fontSize: 16, fontFamily: 'Crimson Text', marginBottom: 8,
+  modalMessage: {
+    fontSize: 18,
+    fontFamily: 'Crimson Text',
+    textAlign: 'center',
+    marginBottom: 24,
   },
   modalButtons: {
-    flexDirection: 'row', justifyContent: 'flex-end', marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
   },
-  modalCloseButton: {
-    backgroundColor: '#0B3D0B', paddingVertical: 10, paddingHorizontal: 24,
-    borderRadius: 30, elevation: 3,
+  goBackButton: {
+    backgroundColor: '#FFD12D',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 40,
+    elevation: 3,
   },
-  modalCloseText: {
-    color: '#fff', fontSize: 18, fontWeight: '600', fontFamily: 'Crimson Text',
+  goBackText: {
+    fontSize: 18,
+    fontFamily: 'Crimson Text',
+    fontWeight: 'bold',
+    color: '#000',
   },
-  modalConfirmButton: {
-    backgroundColor: '#D60000', paddingVertical: 12, paddingHorizontal: 24,
-    borderRadius: 40, elevation: 3, marginLeft: 12,
-  },
-  modalConfirmText: {
-    color: '#000', fontSize: 18, fontWeight: '700', fontFamily: 'Crimson Text',
+  deleteConfirmButton: {
+    backgroundColor: '#D60000',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 40,
+    marginLeft: 12,
+    elevation: 3,
   },
 });

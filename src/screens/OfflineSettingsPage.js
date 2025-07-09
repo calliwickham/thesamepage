@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -8,27 +8,59 @@ import {
   Linking,
   Modal,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import CheckBoxIcon from '../newcomps/CheckBoxIcon'; // Ensure this component exists
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import CheckBoxIcon from '../newcomps/CheckBoxIcon';
 import { signOut } from 'firebase/auth';
-import { auth } from '../constants/firebaseConfig';
-import { clearLocal } from '../constants/storeLocal.js'
+import { auth, firestore } from '../constants/firebaseConfig';
+import { clearLocal } from '../constants/storeLocal.js';
 import { ScrollView } from 'react-native-gesture-handler';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function OfflineSettingsPage() {
   const navigation = useNavigation();
   const [isChecked, setIsChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const handleLogout = async () => {
+  const [userInfo, setUserInfo] = useState({
+    penname: '',
+    joined: '',
+    autoDelete: '1 Year',
+  });
+
+  useFocusEffect(
+    useCallback(() => {
+      const fetchOfflineInfo = async () => {
+        const user = auth.currentUser;
+        if (!user) return;
+
         try {
-            await signOut(auth);
-            await clearLocal("penname");
-            navigation.replace('Login'); // or navigate('Login') if you want back navigation
-            console.log('User signed out');
-        } catch (error) {
-            console.error('Sign out error:', error);
+          const userDoc = await getDoc(doc(firestore, 'Users', user.uid));
+          if (userDoc.exists()) {
+            const data = userDoc.data();
+            setUserInfo({
+              penname: data.penname || '',
+              joined: data.joined ? new Date(data.joined.seconds * 1000).toLocaleDateString() : '',
+              autoDelete: data.autoDelete || '1 Year',
+            });
+          }
+        } catch (err) {
+          console.error('Error loading offline user info:', err);
         }
-    };
+      };
+
+      fetchOfflineInfo();
+    }, [])
+  );
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      await clearLocal("penname");
+      navigation.replace('Login');
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
+
   const handleConvert = () => {
     if (!isChecked) {
       setShowModal(true);
@@ -39,90 +71,94 @@ export default function OfflineSettingsPage() {
 
   return (
     <ScrollView>
-    <View style={styles.container}>
-      <Text style={styles.title}>Your Account</Text>
+      <View style={styles.container}>
+        <Text style={styles.title}>Your Account</Text>
 
-      <Text style={styles.label}>Date Joined</Text>
-      <Text style={styles.value}>06/21/2025</Text>
+        <Text style={styles.label}>Username</Text>
+        <Text style={styles.value}>{userInfo.penname}</Text>
 
-      <Text style={styles.label}>Daily Challenge Auto-Delete</Text>
-      <View style={styles.autoDeleteRow}>
-        <Text style={styles.autoDeleteButtonDisabled}>30 Days</Text>
-        <Text style={[styles.autoDeleteButtonDisabled, styles.selected]}>1 Year</Text>
-        <Text style={styles.autoDeleteButtonDisabled}>None</Text>
-      </View>
+        <Text style={styles.label}>Date Joined</Text>
+        <Text style={styles.value}>{userInfo.joined}</Text>
 
-      <TouchableOpacity
-        style={styles.editButton}
-        onPress={() => navigation.navigate('EditOfflineSettingsPage')}
-      >
-        <Text style={styles.editButtonText}>Edit Your Account</Text>
-      </TouchableOpacity>
+        <Text style={styles.label}>Daily Challenge Auto-Delete</Text>
+        <View style={styles.autoDeleteRow}>
+          <Text style={[styles.autoDeleteButtonDisabled, userInfo.autoDelete === '30 Days' && styles.selected]}>30 Days</Text>
+          <Text style={[styles.autoDeleteButtonDisabled, userInfo.autoDelete === '1 Year' && styles.selected]}>1 Year</Text>
+          <Text style={[styles.autoDeleteButtonDisabled, userInfo.autoDelete === 'None' && styles.selected]}>None</Text>
+        </View>
 
-      <View style={styles.divider} />
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={() => navigation.navigate('EditOfflineSettingsPage')}
+        >
+          <Text style={styles.editButtonText}>Edit Your Account</Text>
+        </TouchableOpacity>
 
-      <Text style={styles.convertTitle}>Convert to an Online Account?</Text>
-      <View style={styles.checkboxContainer}>
-        <Pressable onPress={() => setIsChecked(!isChecked)}>
-          {isChecked ? <CheckBoxIcon /> : <View style={styles.uncheckedBox} />}
-        </Pressable>
-        <Text style={styles.checkboxText}>
-          By checking this box, you acknowledge that your account will be online, allowing you to collaborate, connect, and communicate with other users. You also agree to follow our{' '}
-          <Text
-            style={styles.link}
-            onPress={() => Linking.openURL('https://example.com/community-guidelines')}
-          >
-            Community Guidelines
-          </Text>{' '}
-          and to interact respectfully, avoiding any behavior that could make others feel uncomfortable.
-        </Text>
-      </View>
+        <View style={styles.divider} />
 
-      <TouchableOpacity
-        style={styles.convertButton}
-        onPress={handleConvert}
-      >
-        <Text style={styles.convertText}>Convert</Text>
-      </TouchableOpacity>
-      <Text style={styles.link} onPress={handleLogout}>Logout</Text>
-
-      {/* Warning Modal */}
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={showModal}
-        onRequestClose={() => setShowModal(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.popupBox}>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setShowModal(false)}
+        <Text style={styles.convertTitle}>Convert to an Online Account?</Text>
+        <View style={styles.checkboxContainer}>
+          <Pressable onPress={() => setIsChecked(!isChecked)}>
+            {isChecked ? <CheckBoxIcon /> : <View style={styles.uncheckedBox} />}
+          </Pressable>
+          <Text style={styles.checkboxText}>
+            By checking this box, you acknowledge that your account will be online, allowing you to collaborate, connect, and communicate with other users. You also agree to follow our{' '}
+            <Text
+              style={styles.link}
+              onPress={() => Linking.openURL('https://example.com/community-guidelines')}
             >
-              <Text style={styles.closeButtonText}>✕</Text>
-            </TouchableOpacity>
-            <Text style={styles.popupTitle}>Are you sure?</Text>
-            <Text style={styles.popupMessage}>
-              Without an online account, your progress will be saved to this device only.
-            </Text>
-            <Text style={styles.popupMessage}>
-              If the app is uninstalled or the device is reset, your data may be lost.
-            </Text>
-            <View style={styles.modalButtons}>
+              Community Guidelines
+            </Text>{' '}
+            and to interact respectfully, avoiding any behavior that could make others feel uncomfortable.
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.convertButton}
+          onPress={handleConvert}
+        >
+          <Text style={styles.convertText}>Convert</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.link} onPress={handleLogout}>Logout</Text>
+
+        {/* Warning Modal */}
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={showModal}
+          onRequestClose={() => setShowModal(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.popupBox}>
               <TouchableOpacity
-                style={styles.modalCloseButton}
+                style={styles.closeButton}
                 onPress={() => setShowModal(false)}
               >
-                <Text style={styles.modalCloseText}>Close</Text>
+                <Text style={styles.closeButtonText}>✕</Text>
               </TouchableOpacity>
+              <Text style={styles.popupTitle}>Are you sure?</Text>
+              <Text style={styles.popupMessage}>
+                Without an online account, your progress will be saved to this device only.
+              </Text>
+              <Text style={styles.popupMessage}>
+                If the app is uninstalled or the device is reset, your data may be lost.
+              </Text>
+              <View style={styles.modalButtons}>
+                <TouchableOpacity
+                  style={styles.modalCloseButton}
+                  onPress={() => setShowModal(false)}
+                >
+                  <Text style={styles.modalCloseText}>Close</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
-    </View></ScrollView>
+        </Modal>
+      </View>
+    </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     padding: 24,
@@ -219,13 +255,13 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   link: {
-        fontSize: 18,
-        fontFamily: 'Crimson Text',
-        color: '#0056B3',
-        textAlign: 'center',
-        marginVertical: 24,
-        textDecorationLine: 'underline',
-    },
+    fontSize: 18,
+    fontFamily: 'Crimson Text',
+    color: '#0056B3',
+    textAlign: 'center',
+    marginVertical: 24,
+    textDecorationLine: 'underline',
+  },
   convertButton: {
     backgroundColor: '#FFD12D',
     borderRadius: 30,
@@ -297,25 +333,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontFamily: 'Crimson Text',
   },
-  modalConfirmButton: {
-    backgroundColor: '#FFD12D',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 30,
-    elevation: 3,
-  },
-  modalConfirmText: {
-    color: '#000',
-    fontSize: 18,
-    fontWeight: '700',
-    fontFamily: 'Crimson Text',
-  },
-  popupFooter: {
-    fontSize: 14,
-    fontFamily: 'Crimson Text',
-    textAlign: 'center',
-    marginTop: 12,
-    color: '#555',
-  },
-
 });
