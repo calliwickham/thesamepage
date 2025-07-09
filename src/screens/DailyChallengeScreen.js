@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     View,
     Text,
@@ -10,7 +10,7 @@ import {
     Modal,
     Alert
 } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { generateThreeWords } from '../utils/wordPool';
@@ -29,35 +29,38 @@ import UndoIcon from '../newcomps/Undo';
 
 export default function DailyChallengeScreen() {
     const navigation = useNavigation();
-    const [story, setStory] = useState('');
+
+    const [pendingNavigation, setPendingNavigation] = useState(null);
     const [showExitModal, setShowExitModal] = useState(false);
 
     const route = useRoute();
     const file = route.params?.file;
 
+    const [story, setStory] = useState('');
     const [prevStory, setPrevStory] = useState('');
     const [dailyId, setDailyId] = useState(null);
     const [challengeWords, setChallengeWords] = useState([]);
 
     useEffect(() => {
         if (file) {
-            // Load saved story details from the file
             setStory(file.text || '');
             setPrevStory(file.text || '');
             setDailyId(file.id || null);
 
-            // Use saved words if they exist
             if (Array.isArray(file.words) && file.words.length === 3) {
                 setChallengeWords(file.words);
             } else {
                 setChallengeWords(generateThreeWords());
             }
         } else {
-            // No file — generate new words
             setChallengeWords(generateThreeWords());
-            onSaveOrPublish('save', story);
         }
     }, [file]);
+    useEffect(() => {
+        if (!file && challengeWords.length === 3) {
+            onSaveOrPublish('save', story);
+        }
+    }, [challengeWords]);
 
     const onSaveOrPublish = async (buttonType, text) => {
 
@@ -76,19 +79,38 @@ export default function DailyChallengeScreen() {
 
             const docRef = doc(firestore, 'Users', userId, 'DailyChallenges', todayId);
 
-            await setDoc(docRef, {
+            const data = {
                 words: challengeWords,
-                text: text,
+                text,
                 wordcount: wordCount,
                 date: new Date(),
-                published: published,
-            });
+                published,
+            };
+
+            if (published && Array.isArray(challengeWords) && challengeWords.length === 3) {
+                data.title = `${challengeWords[0]}, ${challengeWords[1]} ${challengeWords[2]}`;
+            }
+
+            await setDoc(docRef, data);
             console.log('Daily Challenge saved successfully!');
         } catch (error) {
             console.log('Error saving Daily Challenge:', error);
         }
 
     };
+
+    //for if the user tries to leave
+    useFocusEffect(
+        useCallback(() => {
+            const unsubscribe = navigation.addListener('beforeRemove', (event) => {
+                event.preventDefault(); // Stop navigation
+                setPendingNavigation(event.data.action); // Save target
+                setShowExitModal(true); // Show modal
+            });
+
+            return unsubscribe;
+        }, [navigation])
+    );
 
     const handleStoryChange = (text) => {
         setPrevStory(story);
@@ -175,8 +197,10 @@ export default function DailyChallengeScreen() {
                                 <TouchableOpacity
                                     style={styles.exitButton}
                                     onPress={() => {
+                                        if (pendingNavigation) {
+                                            navigation.dispatch(pendingNavigation); // Resume navigation
+                                        }
                                         setShowExitModal(false);
-                                        navigation.goBack();
                                     }}
                                 >
                                     <Text style={styles.exitText}>Exit without saving</Text>

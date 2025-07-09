@@ -54,7 +54,11 @@ export default function GenericAlbum() {
                     }
                     return entry;
                 });
-                setFiles(docs);
+
+                const filteredDocs = albumKey === 'daily'
+                    ? docs.filter(entry => entry.published === true)
+                    : docs;
+                setFiles(filteredDocs);
             } catch (error) {
                 console.error("Error fetching files in album: ", error);
                 setFiles([]);
@@ -71,7 +75,7 @@ export default function GenericAlbum() {
     if (albumKey !== 'freewrite' && albumKey !== 'daily') {
         return (
             <View style={styles.loadingView}>
-                <View style={[styles.messageBox, {backgroundColor: albumThemes[albumKey].color}]}>
+                <View style={[styles.messageBox, { backgroundColor: albumThemes[albumKey].color }]}>
                     <Text style={styles.wipTitle}>This Feature is Coming Soon!</Text>
                     <Text style={styles.wipSubtitle}>
                         We're still working on {albumThemes[albumKey].name}.{'\n'}Please check back in a future update.
@@ -94,7 +98,7 @@ export default function GenericAlbum() {
                         <FileCard file={file} />
                     </TouchableOpacity>
                 ))}
-                {files.length === 0 ? <View style={[styles.messageBox, {backgroundColor: albumThemes[albumKey].color}]}>
+                {files.length === 0 ? <View style={[styles.messageBox, { backgroundColor: albumThemes[albumKey].color }]}>
                     <Text style={styles.wipTitle}>There's nothing here!</Text>
                     <Text style={styles.wipSubtitle}>
                         Head back to home and choose {albumThemes[albumKey].name} mode to start writing!
