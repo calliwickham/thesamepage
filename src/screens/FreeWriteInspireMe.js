@@ -23,9 +23,10 @@ export default function FreeWriteInspireMe() {
       {/* Header */}
       <View style={styles.headerRow}>
         <Text style={styles.header}>Free Write</Text>
+        {/* 
         <TouchableOpacity style={styles.inspireButton}>
           <Text style={styles.inspireText}>Inspire Me</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
       </View>
 
       {/* Speech Bubble with Triangle */}
