@@ -32,7 +32,6 @@ import OfflineSettingsPage from './src/screens/OfflineSettingsPage.js';
 import EditOfflineSettingsPage from './src/screens/EditOfflineSettingsPage.js';
 import FreeWriteScreen1 from './src/screens/FreeWriteInProgress.js';
 import FreeWrite from './src/screens/FreeWrite.js';
-import FreeWriteInspireMe from './src/screens/FreeWriteInspireMe.js';
 import DailyChallengeScreen from './src/screens/DailyChallengeScreen.js';
 import MyFriends from './src/screens/MyFriends.js';
 import EditFriends from './src/screens/EditFriends.js';
@@ -115,7 +114,6 @@ export default function App() {
                             <Stack.Screen name="EditFriends" component={EditFriends} />
                             <Stack.Screen name="MyFriends" component={MyFriends} />
                             <Stack.Screen name="DailyChallengeScreen" component={DailyChallengeScreen} />
-                            <Stack.Screen name="FreeWriteInspireMe" component={FreeWriteInspireMe} />
                             <Stack.Screen name="FreeWriteScreen2" component={FreeWrite} />
                             <Stack.Screen name="FreeWriteScreen1" component={FreeWriteScreen1} />
                             <Stack.Screen name="AuthGate" component={AuthGate} />
