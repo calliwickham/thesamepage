@@ -15,6 +15,7 @@ import RedNotif from '../newcomps/RedNotif';
 export default function MyFriends() {
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [friends, setFriends] = useState([]);
+  const [hasFriendRequests, setHasFriendRequests] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -42,7 +43,22 @@ export default function MyFriends() {
       }
     };
 
+    const checkFriendRequests = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      try {
+        const snapshot = await getDocs(
+          collection(firestore, 'Users', user.uid, 'FriendRequests')
+        );
+        setHasFriendRequests(!snapshot.empty);
+      } catch (err) {
+        console.error('Error checking friend requests:', err);
+      }
+    };
+
     fetchFriends();
+    checkFriendRequests();
   }, []);
 
   return (
@@ -66,7 +82,6 @@ export default function MyFriends() {
         ))}
       </ScrollView>
 
-      {/* Modal */}
       {selectedFriend && (
         <Modal
           transparent
@@ -92,14 +107,15 @@ export default function MyFriends() {
         </Modal>
       )}
 
-      {/* Bottom Buttons */}
       <View style={styles.bottomButtons}>
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => navigation.navigate('AddFriends')}
         >
-          <Text style={styles.addText}>Add Friends</Text>
-          <RedNotif/>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={styles.addText}>Add Friends</Text>
+            {hasFriendRequests && <View style={{ marginLeft: 8 }}><RedNotif /></View>}
+          </View>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.editButton}
@@ -111,6 +127,8 @@ export default function MyFriends() {
     </View>
   );
 }
+
+
 
 
 const styles = StyleSheet.create({
