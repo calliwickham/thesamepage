@@ -180,4 +180,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column'
     },
+    loadingText: {
+        color: 'darkgreen',
+        fontSize: 20,
+        fontFamily: 'Crimson Text'
+    },
 });
