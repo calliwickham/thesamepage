@@ -88,7 +88,7 @@ export default function DailyChallengeScreen() {
             };
 
             if (published && Array.isArray(challengeWords) && challengeWords.length === 3) {
-                data.title = `${challengeWords[0]}, ${challengeWords[1]} ${challengeWords[2]}`;
+                data.title = `${challengeWords[0]}, ${challengeWords[1]}, ${challengeWords[2]}`;
             }
 
             await setDoc(docRef, data);
