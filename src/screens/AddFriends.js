@@ -1,17 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
   ScrollView, StyleSheet
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { collection, getDocs, query, where, doc, setDoc } from 'firebase/firestore';
+import {
+  collection, getDocs, query, where, doc, setDoc
+} from 'firebase/firestore';
 import { auth, firestore } from '../constants/firebaseConfig';
 
 export default function AddFriends() {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [hasRequests, setHasRequests] = useState(false);
   const currentUser = auth.currentUser;
+
+  useEffect(() => {
+    const checkFriendRequests = async () => {
+      try {
+        const snapshot = await getDocs(
+          collection(firestore, 'Users', currentUser.uid, 'FriendRequests')
+        );
+        if (!snapshot.empty) {
+          setHasRequests(true);
+        } else {
+          setHasRequests(false);
+        }
+      } catch (err) {
+        console.error('Friend request check error:', err);
+      }
+    };
+
+    checkFriendRequests();
+  }, []);
 
   const handleSearch = async () => {
     try {
@@ -27,7 +49,7 @@ export default function AddFriends() {
           foundUsers.push({
             id: docSnap.id,
             name: docSnap.data().penname,
-            description: 'User on TheSamePage.', // Placeholder
+            description: 'User on TheSamePage.',
           });
         }
       });
@@ -84,23 +106,27 @@ export default function AddFriends() {
           </View>
         ))}
 
-        <View style={styles.notificationBox}>
-          <Text style={styles.noticeHeader}>You Have 3 New Friend Requests!</Text>
-          <Text style={styles.noticeText}>
-            Click the Button below to see your requests:
-          </Text>
-          <TouchableOpacity
-            style={styles.viewButton}
-            onPress={() => navigation.navigate('FriendRequests')}
-          >
-            <Text style={styles.viewText}>View Requests</Text>
-          </TouchableOpacity>
-        </View>
+        {hasRequests && (
+          <View style={styles.notificationBox}>
+            <Text style={styles.noticeHeader}>You Have New Friend Requests!</Text>
+            <Text style={styles.noticeText}>
+              Click the Button below to see your requests:
+            </Text>
+            <TouchableOpacity
+              style={styles.viewButton}
+              onPress={() => navigation.navigate('FriendRequests')}
+            >
+              <Text style={styles.viewText}>View Requests</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
+  // ... all existing styles stay the same ...
   container: {
     flex: 1,
     backgroundColor: '#fff',

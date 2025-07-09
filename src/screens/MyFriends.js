@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,34 +8,42 @@ import {
   ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { auth, firestore } from '../constants/firebaseConfig';
+import { collection, getDocs } from 'firebase/firestore';
 import RedNotif from '../newcomps/RedNotif';
 
 export default function MyFriends() {
   const [selectedFriend, setSelectedFriend] = useState(null);
+  const [friends, setFriends] = useState([]);
   const navigation = useNavigation();
 
-  const friends = [
-    {
-      name: 'Anastasia',
-      date: '06/22/2025',
-      details: 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis...',
-    },
-    {
-      name: 'Connor',
-      date: '12/30/2025',
-      details: 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis...',
-    },
-    {
-      name: 'Fiona',
-      date: '08/13/2013',
-      details: 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis...',
-    },
-    {
-      name: 'Jonathan',
-      date: '07/26/2024',
-      details: 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor.',
-    },
-  ];
+  useEffect(() => {
+    const fetchFriends = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      try {
+        const snapshot = await getDocs(
+          collection(firestore, 'Users', user.uid, 'Friends')
+        );
+
+        const fetchedFriends = snapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            name: data.penname || 'Friend',
+            date: new Date(data.added?.seconds * 1000).toLocaleDateString(),
+            details: `You have been friends with ${data.penname || 'this user'} since ${new Date(data.added?.seconds * 1000).toLocaleDateString()}.`,
+          };
+        });
+
+        setFriends(fetchedFriends);
+      } catch (err) {
+        console.error('Error fetching friends:', err);
+      }
+    };
+
+    fetchFriends();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -103,6 +111,7 @@ export default function MyFriends() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

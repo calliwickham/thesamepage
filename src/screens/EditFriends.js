@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,26 +9,66 @@ import {
   ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { auth, firestore } from '../constants/firebaseConfig';
+import {
+  collection,
+  getDocs,
+  deleteDoc,
+  doc
+} from 'firebase/firestore';
 
 export default function EditFriends() {
   const navigation = useNavigation();
-  const [friends, setFriends] = useState([
-    { name: 'Anastasia', description: 'Lorem ipsum dolor sit amet...', id: 1 },
-    { name: 'Connor', description: 'Lorem ipsum dolor sit amet...', id: 2 },
-    { name: 'Fiona', description: 'Lorem ipsum dolor sit amet...', id: 3 },
-    { name: 'Jonathan', description: 'Lorem ipsum dolor sit amet...', id: 4 },
-  ]);
+  const [friends, setFriends] = useState([]);
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      try {
+        const snapshot = await getDocs(collection(firestore, 'Users', user.uid, 'Friends'));
+        const loaded = snapshot.docs.map((docSnap) => {
+          const data = docSnap.data();
+          return {
+            id: docSnap.id,
+            name: data.penname || 'Friend',
+            description: `You’ve been friends since ${new Date(data.added?.seconds * 1000).toLocaleDateString()}.`,
+          };
+        });
+        setFriends(loaded);
+      } catch (error) {
+        console.error('Error fetching friends:', error);
+      }
+    };
+
+    fetchFriends();
+  }, []);
 
   const handleDeletePress = (friend) => {
     setSelectedFriend(friend);
     setShowDeleteModal(true);
   };
 
-  const confirmDelete = () => {
-    setFriends((prev) => prev.filter(f => f.id !== selectedFriend.id));
-    setShowDeleteModal(false);
+  const confirmDelete = async () => {
+    try {
+      const user = auth.currentUser;
+      if (!user || !selectedFriend) return;
+
+      // Delete the friend from current user's subcollection
+      await deleteDoc(doc(firestore, 'Users', user.uid, 'Friends', selectedFriend.id));
+
+      // Optionally also delete the current user from their subcollection
+      await deleteDoc(doc(firestore, 'Users', selectedFriend.id, 'Friends', user.uid));
+
+      setFriends((prev) => prev.filter((f) => f.id !== selectedFriend.id));
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.error('Delete friend error:', error);
+      Alert.alert('Error', 'Failed to remove friend.');
+    }
   };
 
   const handleSave = () => {
@@ -63,8 +103,7 @@ export default function EditFriends() {
             <View style={styles.modalBox}>
               <Text style={styles.modalTitle}>Are You Sure?</Text>
               <Text style={styles.modalText}>
-                Proceeding with friend removal will{' '}
-                <Text style={{ fontStyle: 'italic' }}>permanently</Text> remove {selectedFriend.name} from your account.
+                Proceeding with friend removal will <Text style={{ fontStyle: 'italic' }}>permanently</Text> remove {selectedFriend.name} from your account.
               </Text>
               <Text style={styles.modalText}>
                 You’ll need to add them again if you want to re-friend them.

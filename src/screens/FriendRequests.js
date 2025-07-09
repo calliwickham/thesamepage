@@ -1,57 +1,109 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Modal,
+  View, Text, TouchableOpacity, StyleSheet, ScrollView, Modal
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { auth, firestore } from '../constants/firebaseConfig';
+import {
+  collection, getDocs, doc, setDoc, deleteDoc, getDoc
+} from 'firebase/firestore';
 
 export default function FriendRequests() {
   const navigation = useNavigation();
-
-  const [requests, setRequests] = useState([
-    {
-      name: 'Joshua',
-      message:
-        'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis...',
-    },
-    {
-      name: 'Connor',
-      message:
-        'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis...',
-    },
-    {
-      name: 'Finn',
-      message:
-        'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis...',
-    },
-  ]);
-
+  const [requests, setRequests] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
+  const user = auth.currentUser;
 
-  const handleAccept = (name) => {
-    alert(`${name} accepted!`);
-    setRequests(requests.filter((r) => r.name !== name));
-    setSelectedRequest(null);
+  useEffect(() => {
+    const fetchRequests = async () => {
+      if (!user) return;
+      try {
+        const snapshot = await getDocs(collection(firestore, 'Users', user.uid, 'FriendRequests'));
+        const loadedRequests = [];
+
+        for (const docSnap of snapshot.docs) {
+          const requestData = docSnap.data();
+          const senderRef = doc(firestore, 'Users', docSnap.id);
+          const senderSnap = await getDoc(senderRef);
+          const senderData = senderSnap.exists() ? senderSnap.data() : {};
+
+          loadedRequests.push({
+            id: docSnap.id,
+            message: requestData.message || '',
+            name: senderData.penname || 'Unknown User',
+          });
+        }
+
+        setRequests(loadedRequests);
+      } catch (error) {
+        console.error("Error loading friend requests:", error);
+      }
+    };
+    fetchRequests();
+  }, []);
+
+  const handleAccept = async (request) => {
+    try {
+      const requesterId = request.id;
+      const receiverId = user.uid;
+
+      // Get both users' pennames
+      const requesterSnap = await getDoc(doc(firestore, 'Users', requesterId));
+      const receiverSnap = await getDoc(doc(firestore, 'Users', receiverId));
+      const requesterPenname = requesterSnap.exists() ? requesterSnap.data().penname : 'Friend';
+      const receiverPenname = receiverSnap.exists() ? receiverSnap.data().penname : 'You';
+
+      // Add each other as friends with penname
+      await setDoc(doc(firestore, 'Users', receiverId, 'Friends', requesterId), {
+        friendId: requesterId,
+        penname: requesterPenname,
+        added: new Date(),
+      });
+      await setDoc(doc(firestore, 'Users', requesterId, 'Friends', receiverId), {
+        friendId: receiverId,
+        penname: receiverPenname,
+        added: new Date(),
+      });
+
+      // Delete request
+      await deleteDoc(doc(firestore, 'Users', receiverId, 'FriendRequests', requesterId));
+
+      setRequests(prev => prev.filter(r => r.id !== requesterId));
+      setSelectedRequest(null);
+      alert(`${request.name || 'User'} accepted!`);
+    } catch (error) {
+      console.error("Accept error:", error);
+      alert("Error accepting request.");
+    }
   };
 
-  const handleDelete = (name) => {
-    alert(`${name} deleted.`);
-    setRequests(requests.filter((r) => r.name !== name));
-    setSelectedRequest(null);
+  const handleDelete = async (request) => {
+    try {
+      await deleteDoc(doc(firestore, 'Users', user.uid, 'FriendRequests', request.id));
+      setRequests(prev => prev.filter(r => r.id !== request.id));
+      setSelectedRequest(null);
+      alert(`${request.name || 'User'} deleted.`);
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("Error deleting request.");
+    }
   };
 
-  const handleClearAll = () => {
-    setRequests([]);
-    alert('All friend requests cleared.');
+  const handleClearAll = async () => {
+    try {
+      for (const request of requests) {
+        await deleteDoc(doc(firestore, 'Users', user.uid, 'FriendRequests', request.id));
+      }
+      setRequests([]);
+      alert('All friend requests cleared.');
+    } catch (error) {
+      console.error("Clear all error:", error);
+      alert("Error clearing requests.");
+    }
   };
 
   return (
     <View style={styles.container}>
-      {/* Header with Back Arrow */}
       <View style={styles.headerRow}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.backArrow}>←</Text>
@@ -63,7 +115,7 @@ export default function FriendRequests() {
         {requests.map((request, index) => (
           <View key={index} style={styles.card}>
             <View style={styles.cardTopRow}>
-              <Text style={styles.name}>{request.name}</Text>
+              <Text style={styles.name}>{request.name || 'Unknown User'}</Text>
               <TouchableOpacity
                 style={styles.viewButton}
                 onPress={() => setSelectedRequest(request)}
@@ -71,7 +123,7 @@ export default function FriendRequests() {
                 <Text style={styles.viewText}>View Request</Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.message}>{request.message}</Text>
+            <Text style={styles.message}>{request.message || ''}</Text>
           </View>
         ))}
 
@@ -82,28 +134,27 @@ export default function FriendRequests() {
         )}
       </ScrollView>
 
-      {/* Modal */}
       {selectedRequest && (
         <Modal transparent animationType="fade">
           <View style={styles.modalOverlay}>
             <View style={styles.modalBox}>
               <View style={styles.modalHeaderRow}>
-                <Text style={styles.modalTitle}>Friend Request: {selectedRequest.name}</Text>
+                <Text style={styles.modalTitle}>Friend Request: {selectedRequest.name || 'Unknown User'}</Text>
                 <TouchableOpacity onPress={() => setSelectedRequest(null)}>
                   <Text style={styles.modalClose}>X</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={styles.modalMessage}>{selectedRequest.message}</Text>
+              <Text style={styles.modalMessage}>{selectedRequest.message || ''}</Text>
               <View style={styles.modalButtons}>
                 <TouchableOpacity
                   style={styles.acceptButton}
-                  onPress={() => handleAccept(selectedRequest.name)}
+                  onPress={() => handleAccept(selectedRequest)}
                 >
                   <Text style={styles.acceptText}>Accept</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.deleteButton}
-                  onPress={() => handleDelete(selectedRequest.name)}
+                  onPress={() => handleDelete(selectedRequest)}
                 >
                   <Text style={styles.deleteText}>Delete</Text>
                 </TouchableOpacity>
@@ -116,7 +167,9 @@ export default function FriendRequests() {
   );
 }
 
+
 const styles = StyleSheet.create({
+  // Keep your styles exactly the same – no changes
   container: {
     backgroundColor: '#fff',
     flex: 1,
@@ -155,6 +208,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   name: {
+    color: '#000',
     fontSize: 22,
     fontFamily: 'Crimson Text',
     fontWeight: '700',
