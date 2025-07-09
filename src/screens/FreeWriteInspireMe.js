@@ -7,25 +7,15 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import UndoIcon from '../newcomps/Undo'; // Your custom arrow icon
+import { generateThreeWords } from '../utils/wordPool';
 
 export default function FreeWriteInspireMe() {
   const navigation = useNavigation();
 
-  const WORD_POOL = [
-    'journey', 'light', 'echo', 'storm', 'courage', 'mystery', 'hope',
-    'memory', 'relic', 'dream', 'flight', 'mirror', 'forest', 'voice',
-  ];
-
-  // Function to get 3 random words
-  const generateWords = () => {
-    const shuffled = [...WORD_POOL].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 3);
-  };
-
-  const [inspirationalWords, setInspirationalWords] = useState(generateWords());
+  const [inspirationalWords, setInspirationalWords] = useState(generateThreeWords());
 
   const handleRefresh = () => {
-    setInspirationalWords(generateWords());
+    setInspirationalWords(generateThreeWords());
   };
 
   return (
