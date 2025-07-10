@@ -11,7 +11,9 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { auth, firestore } from '../constants/firebaseConfig';
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { deleteUser } from 'firebase/auth';
+import { EmailAuthProvider, reauthenticateWithCredential, deleteUser } from 'firebase/auth';
+
+import Button from '../newcomps/Button';
 
 export default function EditOnlineSettingsPage() {
     const navigation = useNavigation();
@@ -63,13 +65,20 @@ export default function EditOnlineSettingsPage() {
         }
     };
 
-    const handleDelete = async () => {
+    const [password, setPassword] = useState('');
+
+
+    const handleDelete = async (password) => {
+        const user = auth.currentUser;
+        if (!user) return;
+
         try {
-            const user = auth.currentUser;
-            if (!user) return;
+            const credential = EmailAuthProvider.credential(user.email, password);
+            await reauthenticateWithCredential(user, credential);
 
             await deleteDoc(doc(firestore, 'Users', user.uid));
             await deleteUser(user);
+
             navigation.replace('Login');
         } catch (err) {
             Alert.alert('Delete Error', err.message);
@@ -124,6 +133,7 @@ export default function EditOnlineSettingsPage() {
                 ))}
             </View>
 
+
             <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
                 <Text style={styles.saveText}>Save Your Changes</Text>
             </TouchableOpacity>
@@ -139,19 +149,32 @@ export default function EditOnlineSettingsPage() {
                         <Text style={styles.modalMessage}>
                             This will permanently delete your account.
                         </Text>
+                        <Text style={styles.modalMessage}>
+                            If so, please enter your password to authenticate deletion:
+                        </Text>
+                        <TextInput
+                            style={[styles.input, { width: '90%' }]}
+                            placeholder="Enter your password"
+                            placeholderTextColor="#aaa"
+                            secureTextEntry
+                            value={password}
+                            onChangeText={setPassword}
+                        />
                         <View style={styles.modalButtons}>
-                            <TouchableOpacity
+                            <Button color="red"
+                                style={styles.deleteConfirmButton}
+                                textStyle={styles.deleteText}
+                                onPress={() => {handleDelete(password)}}
+                            >
+                                Confirm Delete
+                            </Button>
+                            <Button color="yellow"
                                 style={styles.goBackButton}
+                                textStyle={styles.goBackText}
                                 onPress={() => setShowDeleteModal(false)}
                             >
-                                <Text style={styles.goBackText}>Go Back</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.deleteConfirmButton}
-                                onPress={handleDelete}
-                            >
-                                <Text style={styles.deleteText}>Delete</Text>
-                            </TouchableOpacity>
+                                Go Back
+                            </Button>
                         </View>
                     </View>
                 </View>
@@ -257,7 +280,7 @@ const styles = StyleSheet.create({
     },
     deleteText: {
         color: '#000',
-        fontSize: 20,
+        fontSize: 18,
         fontFamily: 'CrimsonText-Bold',
         fontWeight: '600',
     },
@@ -294,9 +317,10 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     modalButtons: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between',
-        width: '100%',
+        alignItems: 'center',
+        width: '80%',
     },
     goBackButton: {
         backgroundColor: '#FFD12D',
@@ -305,12 +329,16 @@ const styles = StyleSheet.create({
         borderRadius: 40,
         marginRight: 12,
         elevation: 3,
+        width: "60%",
+        marginVertical: 30,
+        marginTop: 40
     },
     goBackText: {
-        fontSize: 18,
+        fontSize: 22,
         fontFamily: 'CrimsonText-Bold',
         fontWeight: '500',
         color: '#000',
+        textAlign: 'center',
     },
     deleteConfirmButton: {
         backgroundColor: '#D60000',
@@ -318,5 +346,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         borderRadius: 40,
         elevation: 3,
+        textAlign: 'center',
     },
 });

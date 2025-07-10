@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         color: '#FFF4E2'
     },
     red: {
-        backgroundColor: '#FF0000'
+        backgroundColor: '#DF0000'
     },
     error: {
         borderColor: '#ffb3b3',
