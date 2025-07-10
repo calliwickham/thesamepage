@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   deleteX: {
     fontSize: 26,
     color: 'red',
-    fontWeight: 'bold',
+    fontWeight: '500',
   },
   description: {
     fontFamily: 'CrimsonText-Regular',

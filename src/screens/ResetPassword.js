@@ -49,14 +49,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '600',
     textAlign: 'center',
     marginBottom: 20,
   },
   message: {
     fontSize: 18,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     textAlign: 'center',
     marginBottom: 40,
   },
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 14,
     fontSize: 18,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   sendButtonText: {
     color: '#fff',
     fontSize: 20,
-    fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '600',
   },
 });

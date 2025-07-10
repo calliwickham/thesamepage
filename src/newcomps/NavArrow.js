@@ -21,7 +21,7 @@ const NavArrow = ({ style, onPress }) => {
         style={{
           marginLeft: 2,
           color: '#073902',
-          fontFamily: 'Crimson Text',
+          fontFamily: 'CrimsonText-SemiBold',
           fontSize: 22,
           fontWeight: '600',
         }}

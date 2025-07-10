@@ -72,13 +72,13 @@ const styles = StyleSheet.create({
     right: 16,
   },
   title: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontWeight: '500',
     fontSize: 36,
     marginTop: 10,
   },
   text: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     fontSize: 16,
     marginTop: 10,
   },
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   closeText: {
     color: 'white',
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontWeight: '500',
     fontSize: 16,
   },
@@ -116,14 +116,14 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   confirmText: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontWeight: '500',
     fontSize: 16,
     color: '#000',
   },
   footerNote: {
     fontSize: 14,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     color: '#555',
     alignSelf: 'center',
     marginTop: 10,

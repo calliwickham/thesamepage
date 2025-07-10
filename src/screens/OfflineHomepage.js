@@ -51,7 +51,7 @@ export default function OfflineHomepage() {
                     <View style={styles.errorBox}>
                         <Text style={styles.errorText}>
                             To access Collaborative Mode, you{'\n'}
-                            must have an <Text style={{ fontWeight: 'bold' }}>Online Account</Text>. You may{'\n'}
+                            must have an <Text style={{ fontWeight: '500', fontFamily: 'CrimsonText-SemiBold' }}>Online Account</Text>. You may{'\n'}
                             update your account type in Settings.
                         </Text>
                     </View>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         fontSize: 38,
         fontWeight: '600',
         marginBottom: 20,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Bold',
         paddingLeft: '5%'
     },
     card: {
@@ -199,12 +199,12 @@ const styles = StyleSheet.create({
     cardTitle: {
         fontSize: 24,
         fontWeight: '600',
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Bold',
         marginBottom: 4,
     },
     cardText: {
         fontSize: 18,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
     },
     topRight: {
         position: 'absolute',
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     errorText: {
         color: '#F00',
         textAlign: 'center',
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         fontSize: 16,
         fontStyle: 'normal',
         fontWeight: '600',

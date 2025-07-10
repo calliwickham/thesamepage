@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: '500',
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     marginBottom: 10,
   },
   divider: {
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   info: {
     fontSize: 22,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     marginBottom: 16,
     color: '#000',
   },
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 3,
     elevation: 3,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
   },
   button: {
     paddingVertical: 10,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   warning: {
     color: '#B00000',
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-SemiBold',
     fontSize: 16,
     fontWeight: '600',
   },

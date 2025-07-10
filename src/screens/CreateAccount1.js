@@ -180,7 +180,7 @@ export default function CreateOnline1() {
                     <Text style={styles.checkboxText}>
                         By checking this box, you acknowledge that your account will be online, allowing you to collaborate, connect, and communicate with other users. You also agree to follow our{' '}
                         <Text
-                            style={[styles.link, { fontFamily: 'Crimson Text', fontWeight: '500' }]}
+                            style={[styles.link, { fontFamily: 'CrimsonText-Bold', fontWeight: '500' }]}
                             onPress={() => Linking.openURL('https://example.com/community-guidelines')}
                         >
                             Community Guidelines
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 32,
         fontWeight: '500',
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Bold',
         marginBottom: 8,
     },
     divider: {
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     checkboxText: {
         flex: 1,
         fontSize: 16,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
         color: '#000',
     },
     link: {
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
     },
     warning: {
         color: '#B00000',
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         fontSize: 16,
         fontWeight: '600',
         textAlign: 'left',
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 22,
         fontWeight: '600',
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Bold',
     },
     linkText: {
         marginTop: 12,

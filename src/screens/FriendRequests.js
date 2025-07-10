@@ -286,7 +286,6 @@ const styles = StyleSheet.create({
     },
     modalClose: {
         fontSize: 20,
-        //fontWeight: 'bold',
     },
     modalFriendName:{
         fontSize: 16,

@@ -101,8 +101,8 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 28,
-        fontFamily: 'Crimson Text',
-        fontWeight: 'bold',
+        fontFamily: 'CrimsonText-Bold',
+        fontWeight: '500',
         textAlign: 'center',
         marginBottom: 24,
     },
@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         fontSize: 18,
-        fontFamily: 'Crimson Text',
-        fontWeight: '600',
+        fontFamily: 'CrimsonText-SemiBold',
+        fontWeight: '500',
         marginBottom: 10,
     },
     divider: {
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     },
     cardDate: {
         fontSize: 16,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Italic',
         marginBottom: 6,
     },
     italic: {
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     },
     cardDesc: {
         fontSize: 16,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
     },
     newButton: {
         backgroundColor: '#FFD12D',
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     },
     newButtonText: {
         fontSize: 20,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Bold',
         fontWeight: '600',
         color: '#000',
     },
@@ -183,6 +183,6 @@ const styles = StyleSheet.create({
     loadingText: {
         color: 'darkgreen',
         fontSize: 20,
-        fontFamily: 'Crimson Text'
+        fontFamily: 'CrimsonText-SemiBold'
     },
 });

@@ -72,13 +72,13 @@ const styles = StyleSheet.create({
     },
     popupTitle: {
         fontSize: 26,
-        fontWeight: 'bold',
-        fontFamily: 'Crimson Text',
+        fontWeight: '500',
+        fontFamily: 'CrimsonText-Bold',
         marginBottom: 16,
     },
     popupMessage: {
         fontSize: 16,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
         marginVertical: 12,
     },
     modalButtons: {
@@ -90,11 +90,11 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 18,
         fontWeight: '600',
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Bold',
     },
     popupFooter: {
         fontSize: 14,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
         textAlign: 'center',
         marginTop: 12,
         color: '#555',

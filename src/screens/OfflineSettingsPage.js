@@ -173,13 +173,13 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 22,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-SemiBold',
     fontWeight: '600',
     marginTop: 16,
   },
   value: {
     fontSize: 20,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     marginLeft: 10,
     marginTop: 4,
   },
@@ -195,14 +195,15 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 18,
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     color: '#aaa',
     textAlign: 'center',
   },
   selected: {
     backgroundColor: '#ccc',
     color: '#000',
-    fontWeight: '700',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '600',
   },
   editButton: {
     backgroundColor: '#10471B',
@@ -217,9 +218,9 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   editButtonText: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontSize: 20,
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#fff',
   },
   divider: {
@@ -229,7 +230,7 @@ const styles = StyleSheet.create({
   },
   convertTitle: {
     fontSize: 22,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontWeight: '600',
     marginTop: 16,
     marginBottom: 10,
@@ -251,12 +252,12 @@ const styles = StyleSheet.create({
   checkboxText: {
     flex: 1,
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     color: '#000',
   },
   link: {
     fontSize: 18,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     color: '#0056B3',
     textAlign: 'center',
     marginVertical: 24,
@@ -276,8 +277,8 @@ const styles = StyleSheet.create({
   },
   convertText: {
     fontSize: 20,
-    fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontFamily: 'CrimsonText-SemiBold',
+    fontWeight: '600',
     color: '#000',
   },
   modalOverlay: {
@@ -306,13 +307,13 @@ const styles = StyleSheet.create({
   },
   popupTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    fontFamily: 'Crimson Text',
+    fontWeight: '500',
+    fontFamily: 'CrimsonText-Bold',
     marginBottom: 10,
   },
   popupMessage: {
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     marginBottom: 8,
   },
   modalButtons: {
@@ -331,6 +332,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
   },
 });

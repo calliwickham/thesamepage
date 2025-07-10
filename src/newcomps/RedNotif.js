@@ -27,8 +27,8 @@ const RedNotif = () => {
           textAnchor="middle"
           fontSize="20"
           fill="white"
-          fontWeight="bold"
-          fontFamily="Crimson Text"
+          fontWeight="500"
+          fontFamily="CrimsonText-Bold"
         >
           !
         </SvgText>

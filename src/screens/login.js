@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     },
     warning: {
         color: '#B00000',
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         fontSize: 16,
         fontWeight: '600',
         textAlign: 'left',
