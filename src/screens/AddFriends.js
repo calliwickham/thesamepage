@@ -37,14 +37,14 @@ export default function AddFriends() {
 
     const handleSearch = async () => {
 
-        if (searchQuery === "")
-            return;
+        const trimmedQuery = searchQuery.trim();
+        if (trimmedQuery === "") return;
 
         try {
             const q = query(
                 collection(firestore, 'Users'),
-                where('penname', '>=', searchQuery),
-                where('penname', '<=', searchQuery + '\uf8ff')
+                where('penname', '>=', trimmedQuery),
+                where('penname', '<=', trimmedQuery + '\uf8ff')
             );
             const snapshot = await getDocs(q);
             const foundUsers = [];
