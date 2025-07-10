@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "demoApp",
-    "slug": "demoApp",
+    "name": "The Same Page",
+    "slug": "samePage",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icons/image.png",
@@ -20,13 +20,19 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.studentah.samePage"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "4a95ce05-7495-4c92-988d-ed71da5d348b"
+      }
+    }
   }
 }

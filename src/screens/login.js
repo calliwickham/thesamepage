@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     },
     welcome: {
         fontSize: 36,
-        fontWeight: '700',
+        fontWeight: '600',
         fontFamily: 'CrimsonText-Bold',
         marginBottom: 8,
     },
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     },
     loginHeader: {
         fontSize: 32,
-        fontWeight: '700',
+        fontWeight: '600',
         fontFamily: 'CrimsonText-Bold',
         marginBottom: 12,
     },

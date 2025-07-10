@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 22,
-        fontWeight: '700',
+        fontWeight: '600',
         fontFamily: 'Crimson Text',
     },
     linkText: {

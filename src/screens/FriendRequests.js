@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 30,
-    fontWeight: '700',
+    fontWeight: '600',
     fontFamily: 'Crimson Text',
   },
   card: {
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 22,
     fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontWeight: '600',
   },
   viewButton: {
     backgroundColor: '#10471B',
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontWeight: '600',
   },
   message: {
     marginTop: 6,
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   clearText: {
     fontSize: 20,
     fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#000',
   },
   modalOverlay: {
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontWeight: '600',
   },
   modalClose: {
     fontSize: 20,

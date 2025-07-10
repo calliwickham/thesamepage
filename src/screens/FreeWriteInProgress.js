@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     newButtonText: {
         fontSize: 20,
         fontFamily: 'Crimson Text',
-        fontWeight: '700',
+        fontWeight: '600',
         color: '#000',
     },
     loadingView: {

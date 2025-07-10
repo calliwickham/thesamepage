@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontWeight: '600',
   },
   badge: {
     backgroundColor: '#D60000',
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   badgeText: {
     color: '#fff',
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   editButton: {
     backgroundColor: '#FFD12D',
@@ -271,6 +271,6 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 18,
     fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontWeight: '600',
   },
 });

@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 32,
     fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontWeight: '600',
     marginBottom: 16,
   },
   card: {
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontWeight: '600',
   },
   deleteX: {
     fontSize: 26,
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   saveText: {
     fontSize: 20,
     fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#000',
   },
   modalOverlay: {

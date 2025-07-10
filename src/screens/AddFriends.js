@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 32,
-    fontWeight: '700',
+    fontWeight: '600',
     fontFamily: 'Crimson Text',
     marginBottom: 12,
   },
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   searchText: {
     fontSize: 20,
     fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontWeight: '600',
   },
   resultsTitle: {
     fontSize: 18,
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontWeight: '600',
   },
   plus: {
     fontSize: 26,
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   },
   noticeHeader: {
     fontSize: 20,
-    fontWeight: '700',
+    fontWeight: '600',
     fontFamily: 'Crimson Text',
     marginBottom: 8,
   },
@@ -255,6 +255,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontWeight: '600',
   },
 });

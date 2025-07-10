@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 38,
-        fontWeight: '700',
+        fontWeight: '600',
         marginBottom: 20,
         fontFamily: 'Crimson Text',
         paddingLeft: '5%'
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         fontSize: 24,
-        fontWeight: '700',
+        fontWeight: '600',
         fontFamily: 'Crimson Text',
         marginBottom: 4,
     },

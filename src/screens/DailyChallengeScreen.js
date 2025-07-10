@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
         fontSize: 22,
         textAlign: 'center',
         fontFamily: 'Crimson Text',
-        fontWeight: '700',
+        fontWeight: '600',
         marginBottom: 20,
     },
     wordButton: {
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
         color: '#FFF4E2',
         fontSize: 20,
         fontFamily: 'Crimson Text',
-        fontWeight: '700',
+        fontWeight: '600',
         textAlign: 'center',
     },
     textBoxWrapper: {
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
     },
     clearText: {
         color: '#D33',
-        fontWeight: '700',
+        fontWeight: '600',
         fontFamily: 'Crimson Text',
         fontSize: 16,
     },
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     submitText: {
         fontSize: 20,
         fontFamily: 'Crimson Text',
-        fontWeight: '700',
+        fontWeight: '600',
         color: '#000',
     },
     modalOverlay: {

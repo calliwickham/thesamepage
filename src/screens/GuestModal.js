@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     modalConfirmText: {
         color: '#000',
         fontSize: 18,
-        fontWeight: '700',
+        fontWeight: '600',
         fontFamily: 'Crimson Text',
     },
     popupFooter: {

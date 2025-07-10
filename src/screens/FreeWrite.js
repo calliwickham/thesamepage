@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontFamily: 'Crimson Text',
         color: '#fff',
-        fontWeight: '700',
+        fontWeight: '600',
     },
     titleInput: {
         backgroundColor: '#fff',
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     publishText: {
         fontSize: 20,
         fontFamily: 'Crimson Text',
-        fontWeight: '700',
+        fontWeight: '600',
         color: '#000',
     },
     popUp: {
