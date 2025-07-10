@@ -84,9 +84,9 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 32,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: '500',
     marginTop: 12,
     marginBottom: 8,
     paddingHorizontal: 20,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     lineHeight: 28,
   },
   returnButton: {
@@ -117,8 +117,8 @@ const styles = StyleSheet.create({
   returnButtonText: {
     color: 'white',
     fontSize: 18,
-    fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '500',
   },
   modalOverlay: {
     flex: 1,
@@ -144,17 +144,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   popupTitle: {
-    fontWeight: 'bold',
+    fontWeight: '500',
     fontSize: 18,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-SemiBold',
     marginBottom: 4,
   },
   popupSub: {
     fontSize: 15,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
   },
   italic: {
-    fontStyle: 'italic',
+    fontFamily: 'CrimsonText-Italic',
   },
   popupDivider: {
     height: 1,
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   },
   popupItem: {
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     paddingVertical: 6,
   },
 });

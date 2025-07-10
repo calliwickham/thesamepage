@@ -214,7 +214,7 @@ export default function FreeWrite() {
                                 zIndex: 999,
                             }}
                         >
-                            <View style={[styles.popUp, { width: '95%' }]}>
+                            <View style={[styles.popUp, { width: '95%', overflow: 'visible' }]}>
                                 <SpeechBubble
                                     style={{
                                         height: Dimensions.get('window').height * 0.55,
@@ -277,8 +277,8 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 32,
-        fontFamily: 'Crimson Text',
-        fontWeight: 'bold',
+        fontFamily: 'CrimsonText-Bold',
+        fontWeight: '500',
     },
     inspireButton: {
         backgroundColor: '#0B3D0B',
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     },
     inspireText: {
         fontSize: 18,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         color: '#fff',
         fontWeight: '600',
     },
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 12,
         fontSize: 20,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
         padding: 12,
         marginVertical: 20,
         shadowColor: '#000',
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         flex: 1,
         fontSize: 18,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
     },
     clearButton: {
         position: 'absolute',
@@ -340,8 +340,10 @@ const styles = StyleSheet.create({
     },
     clearText: {
         color: 'red',
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         fontWeight: '600',
+        paddingBottom: 3,
+        paddingTop: 0,
         fontSize: 16,
     },
     buttonRow: {
@@ -370,7 +372,7 @@ const styles = StyleSheet.create({
     },
     publishText: {
         fontSize: 20,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Bold',
         fontWeight: '600',
         color: '#000',
     },
@@ -395,7 +397,7 @@ const styles = StyleSheet.create({
     },
     wordText: {
         fontSize: 20,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         color: '#fff',
         textAlign: 'center',
         fontWeight: '600',
@@ -407,7 +409,7 @@ const styles = StyleSheet.create({
     },
     promptText: {
         fontSize: 20,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         fontWeight: '600',
         flex: 1,
         textAlign: 'center'

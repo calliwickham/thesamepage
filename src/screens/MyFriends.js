@@ -92,7 +92,7 @@ export default function MyFriends() {
           <View style={styles.modalOverlay}>
             <View style={styles.modalBox}>
               <View style={styles.cardHeader}>
-                <Text style={styles.name}>{selectedFriend.name}</Text>
+                <Text style={styles.name} numberOfLines={2}>{selectedFriend.name}</Text>
                 <Text style={styles.date}>Friends Since: {selectedFriend.date}</Text>
               </View>
               <Text style={styles.fullDetails}>{selectedFriend.bio}</Text>
@@ -140,8 +140,8 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 34,
-    fontWeight: 'bold',
-    fontFamily: 'Crimson Text',
+    fontWeight: '500',
+    fontFamily: 'CrimsonText-Bold',
     marginBottom: 16,
   },
   card: {
@@ -162,17 +162,18 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    fontWeight: 'bold',
-    fontFamily: 'Crimson Text',
+    fontWeight: '500',
+    fontFamily: 'CrimsonText-Bold',
+    flexShrink: 1, 
+    flexBasis: '60%'
   },
   date: {
     fontSize: 16,
-    fontStyle: 'italic',
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Italic',
   },
   preview: {
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     color: '#333',
   },
   modalOverlay: {
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
   },
   fullDetails: {
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     marginTop: 12,
     marginBottom: 20,
     color: '#111',
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: '#000',
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
   },
   bottomButtons: {
     position: 'absolute',
@@ -241,7 +242,7 @@ const styles = StyleSheet.create({
   addText: {
     color: '#fff',
     fontSize: 18,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontWeight: '600',
   },
   badge: {
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
   editText: {
     color: '#000',
     fontSize: 18,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontWeight: '600',
   },
 });

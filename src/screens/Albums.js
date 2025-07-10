@@ -150,8 +150,8 @@ const styles = StyleSheet.create({
   upperSection: { flex: 0.4, justifyContent: 'center' },
   albumTitle: {
     fontSize: 24,
-    fontStyle: 'italic',
-    fontFamily: 'Crimson Text',
+    //fontStyle: 'italic',
+    fontFamily: 'CrimsonText-Italic',
   },
   divider: {
     height: 1,
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   leftTextContainer: { flex: 1, justifyContent: 'center' },
   descriptionText: {
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
   },
   rightPlaceholder: {
     flex: 1,

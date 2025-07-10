@@ -210,8 +210,8 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 32,
-    fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '500',
     marginBottom: 20,
   },
   label: {

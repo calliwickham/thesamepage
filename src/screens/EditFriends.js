@@ -103,7 +103,7 @@ export default function EditFriends() {
             <View style={styles.modalBox}>
               <Text style={styles.modalTitle}>Are You Sure?</Text>
               <Text style={styles.modalText}>
-                Proceeding with friend removal will <Text style={{ fontStyle: 'italic' }}>permanently</Text> remove {selectedFriend.name} from your account.
+                Proceeding with friend removal will <Text style={{ fontFamily: 'CrimsonText-Italic' }}>permanently</Text> remove {selectedFriend.name} from your account.
               </Text>
               <Text style={styles.modalText}>
                 You’ll need to add them again if you want to re-friend them.
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 32,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontWeight: '600',
     marginBottom: 16,
   },
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-SemiBold',
     fontWeight: '600',
   },
   deleteX: {
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   description: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     fontSize: 16,
     marginTop: 4,
     color: '#333',
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   },
   saveText: {
     fontSize: 20,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontWeight: '600',
     color: '#000',
   },
@@ -209,14 +209,14 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalTitle: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: '500',
     textAlign: 'center',
     marginBottom: 10,
   },
   modalText: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 12,
@@ -234,9 +234,9 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   goBackText: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '500',
     color: '#000',
   },
   deleteButton: {
@@ -247,9 +247,9 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   deleteText: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '500',
     color: '#fff',
   },
 });

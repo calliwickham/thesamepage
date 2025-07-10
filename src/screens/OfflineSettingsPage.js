@@ -167,8 +167,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '500',
     marginBottom: 24,
   },
   label: {

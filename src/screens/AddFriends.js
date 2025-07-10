@@ -136,12 +136,12 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 32,
     fontWeight: '600',
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     marginBottom: 12,
   },
   subHeader: {
     fontSize: 18,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-SemiBold',
     borderBottomWidth: 1,
     borderBottomColor: '#000',
     paddingBottom: 4,
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     marginBottom: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -174,12 +174,12 @@ const styles = StyleSheet.create({
   },
   searchText: {
     fontSize: 20,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontWeight: '600',
   },
   resultsTitle: {
     fontSize: 18,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-SemiBold',
     marginBottom: 10,
   },
   resultsContainer: {
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontWeight: '600',
   },
   plus: {
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
   },
   description: {
     marginTop: 6,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     fontSize: 16,
     color: '#333',
   },
@@ -231,12 +231,12 @@ const styles = StyleSheet.create({
   noticeHeader: {
     fontSize: 20,
     fontWeight: '600',
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     marginBottom: 8,
   },
   noticeText: {
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     marginBottom: 10,
   },
   viewButton: {
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   viewText: {
     color: '#fff',
     fontSize: 18,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontWeight: '600',
   },
 });
