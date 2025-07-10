@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { auth, firestore } from '../constants/firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import RedNotif from '../newcomps/RedNotif';
 
 export default function MyFriends() {
@@ -20,29 +20,33 @@ export default function MyFriends() {
 
   useEffect(() => {
     const fetchFriends = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
+  const user = auth.currentUser;
+  if (!user) return;
 
-      try {
-        const snapshot = await getDocs(
-          collection(firestore, 'Users', user.uid, 'Friends')
-        );
+  try {
+    const snapshot = await getDocs(
+      collection(firestore, 'Users', user.uid, 'Friends')
+    );
 
-        const fetchedFriends = snapshot.docs.map(doc => {
-          const data = doc.data();
+    const fetchedFriends = await Promise.all(snapshot.docs.map(async docSnap => {
+          const data = docSnap.data();
+          const friendId = data.friendId;
+          const friendRef = doc(firestore, 'Users', friendId);
+          const friendDoc = await getDoc(friendRef);
+          const friendData = friendDoc.exists() ? friendDoc.data() : {};
+
           return {
             name: data.penname || 'Friend',
-            date: new Date(data.added?.seconds * 1000).toLocaleDateString(),
-            bio: data.bio || 'No bio submitted.',
+            date: data.added?.seconds ? new Date(data.added.seconds * 1000).toLocaleDateString() : '',
+            bio: friendData.bio || 'No bio submitted.',
           };
-        });
+        }));
 
         setFriends(fetchedFriends);
       } catch (err) {
         console.error('Error fetching friends:', err);
       }
     };
-
     const checkFriendRequests = async () => {
       const user = auth.currentUser;
       if (!user) return;
@@ -148,12 +152,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 6,
     elevation: 4,
+    width: '97%',
+    alignSelf: 'center',
   },
   cardHeader: {
     flexDirection: 'row',
@@ -238,6 +245,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
+    marginBottom: 10,
   },
   addText: {
     color: '#fff',
@@ -267,6 +275,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
+    marginBottom: 10,
   },
   editText: {
     color: '#000',

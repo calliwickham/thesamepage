@@ -251,7 +251,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Italianno',
         color: '#444',
-        marginTop: 24,
+        marginTop: 24,  
+        width: '100%',
+        alignSelf: 'center',
     },
     inputError: {
         borderColor: 'red',
