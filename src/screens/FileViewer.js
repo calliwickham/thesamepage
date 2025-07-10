@@ -1,69 +1,117 @@
 import React, { useState } from 'react';
 import {
-  SafeAreaView, ScrollView, StyleSheet, View, Text,
-  TouchableOpacity, Modal
+    SafeAreaView, ScrollView, StyleSheet, View, Text,
+    TouchableOpacity, Modal, Alert
 } from 'react-native';
 import { useRoute, useNavigation } from "@react-navigation/native";
 import Bookmark from '../newcomps/Bookmark';
 import EmptyBookmark from '../newcomps/EmptyBookmark';
 import InfoIcon from '../newcomps/InfoIcon';
 
+import { getDocs, collection, doc, updateDoc } from 'firebase/firestore';
+import { auth, firestore } from '../constants/firebaseConfig.js'
+import { ALBUMSTHEMES } from '../constants/AlbumsThemes.js';
+
 export default function FileViewer() {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const { file } = route.params;
-  const [isBookmarked, setIsBookmarked] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
+    const navigation = useNavigation();
+    const route = useRoute();
+    const { file } = route.params;
+    const [isBookmarked, setIsBookmarked] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.topBar}>
-        <View style={styles.rightIcons}>
-          <TouchableOpacity onPress={() => setIsBookmarked(prev => !prev)}>
-            {isBookmarked ? <Bookmark /> : <EmptyBookmark />}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setShowPopup(true)}>
-            <InfoIcon />
-          </TouchableOpacity>
-        </View>
-      </View>
+    const albumThemes = ALBUMSTHEMES;
 
-      <Text style={styles.header}>{file.title}</Text>
-      <View style={styles.divider} />
+    const deleteFile = async () => {
+        const userId = auth.currentUser?.uid;
+        if (!userId) {
+            alert('User not authenticated.');
+            return;
+        }
 
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.text}>{file.text}</Text>
-      </ScrollView>
+        const collectionName = albumThemes[file.album].firestoreName;
+        if (!collectionName) {
+            console.error('Unknown album type:', file.album);
+            return;
+        }
 
-      {/* Return to Albums Button */}
-      <TouchableOpacity
-        style={styles.returnButton}
-        onPress={() => navigation.navigate('Albums')}
-      >
-        <Text style={styles.returnButtonText}>Return to Albums</Text>
-      </TouchableOpacity>
+        
+        console.log('got docRef');
+        try {
+            const docRef = doc(firestore, 'Users', userId, collectionName, file.id);
+            await updateDoc(docRef, {
+                deleted: true,
+                deletedOn: new Date(), 
+            });
+            console.log('File' + file.id + 'marked as deleted.');
+            alert('File Deleted');
+            navigation.goBack();
+            // Optionally navigate back or show a toast
+        } catch (error) {
+            console.error('Error deleting file:', error);
+        }
+    };
 
-      <Modal transparent visible={showPopup} animationType="fade">
-        <TouchableOpacity
-          style={styles.modalOverlay}
-          activeOpacity={1}
-          onPress={() => setShowPopup(false)}
-        >
-          <View style={styles.popupMenu}>
-            <View style={styles.popupSection}>
-              <Text style={styles.popupTitle}>About File</Text>
-              <Text style={styles.popupSub}>Created <Text style={styles.italic}>8/12/2023</Text></Text>
-              <Text style={styles.popupSub}>140 words</Text>
+    return (
+        <SafeAreaView style={styles.container}>
+            <View style={styles.topBar}>
+                <View style={styles.rightIcons}>
+                    <TouchableOpacity onPress={() => setIsBookmarked(prev => !prev)}>
+                        {isBookmarked ? <Bookmark /> : <EmptyBookmark />}
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setShowPopup(true)}>
+                        <InfoIcon />
+                    </TouchableOpacity>
+                </View>
             </View>
-            <View style={styles.popupDivider} />
-            <Text style={styles.popupItem}>Add to Favorites</Text>
-            <Text style={styles.popupItem}>Edit</Text>
-            <Text style={styles.popupItem}>Delete Story</Text>
-          </View>
-        </TouchableOpacity>
-      </Modal>
-    </SafeAreaView>
-  );
+
+            <Text style={styles.header}>{file.title}</Text>
+            <View style={styles.divider} />
+
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+                <Text style={styles.text}>{file.text}</Text>
+            </ScrollView>
+
+            {/* Return to Albums Button */}
+            <TouchableOpacity
+                style={styles.returnButton}
+                onPress={() => navigation.navigate('Albums')}
+            >
+                <Text style={styles.returnButtonText}>Return to Albums</Text>
+            </TouchableOpacity>
+
+            <Modal transparent visible={showPopup} animationType="fade">
+                <View style={styles.modalOverlay}>
+                    {/* Touchable background to dismiss modal */}
+                    <TouchableOpacity
+                        style={StyleSheet.absoluteFill}
+                        activeOpacity={1}
+                        onPress={() => setShowPopup(false)}
+                    />
+
+                    {/* Modal content */}
+                    <View style={styles.popupMenu}>
+                        <View style={styles.popupSection}>
+                            <Text style={styles.popupTitle}>About File</Text>
+                            <Text style={styles.popupSub}>
+                                Created <Text style={styles.italic}>8/12/2023</Text>
+                            </Text>
+                            <Text style={styles.popupSub}>140 words</Text>
+                        </View>
+
+                        <View style={styles.popupDivider} />
+
+                        <Text style={styles.popupItem}>Add to Favorites</Text>
+                        <Text style={styles.popupItem}>Edit</Text>
+
+                        {/* Only this is touchable */}
+                        <TouchableOpacity onPress={() => deleteFile()}>
+                            <Text style={styles.popupItem}>Delete Story</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({

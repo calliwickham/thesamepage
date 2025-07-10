@@ -57,10 +57,32 @@ export default function DailyChallengeScreen() {
             setChallengeWords(generateThreeWords());
         }
     }, [file]);
+
     useEffect(() => {
-        if (!file && challengeWords.length === 3) {
+        const maybeAutoSave = async () => {
+            if (file || challengeWords.length !== 3) return;
+
+            const userId = auth.currentUser?.uid;
+            if (!userId) return;
+
+            const todayId = new Date().toISOString().split('T')[0];
+            const docRef = doc(firestore, 'Users', userId, 'DailyChallenges', todayId);
+            const snap = await getDoc(docRef);
+
+            if (snap.exists()) {
+                const data = snap.data();
+                if (data.published === true) {
+                    Alert.alert('Already completed', 'You’ve already submitted today’s challenge.');
+                    navigation.goBack();
+                    return;
+                }
+            }
+
+            // Safe to autosave
             onSaveOrPublish('save', story);
-        }
+        };
+
+        maybeAutoSave();
     }, [challengeWords]);
 
     const onSaveOrPublish = async (buttonType, text) => {
