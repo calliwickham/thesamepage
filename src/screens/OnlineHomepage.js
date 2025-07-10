@@ -231,13 +231,13 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         fontSize: 24,
-        fontWeight: '700',
-        fontFamily: 'Crimson Text',
+        fontWeight: '600',
+        fontFamily: 'CrimsonText-Bold',
         marginBottom: 4,
     },
     cardText: {
         fontSize: 18,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
     },
     topRight: {
         position: 'absolute',

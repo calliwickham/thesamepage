@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
+    fontWeight: '500',
     fontSize: 36,
     marginTop: 10,
   },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   closeText: {
     color: 'white',
     fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
+    fontWeight: '500',
     fontSize: 16,
   },
   confirmBox: {
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   confirmText: {
     fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
+    fontWeight: '500',
     fontSize: 16,
     color: '#000',
   },

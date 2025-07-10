@@ -119,9 +119,9 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: 'white' },
   header: {
     fontSize: 32,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     marginVertical: 16,
-    fontWeight: 'bold',
+    fontWeight: '500',
     paddingLeft: '5%',
     marginBottom: 10,
   },

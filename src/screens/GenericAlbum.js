@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 16,
         marginBottom: 2,
-        fontWeight: 'bold',
+        fontWeight: '500',
     },
     search: {
         marginHorizontal: '5%',
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     loadingText: {
         color: 'darkgreen',
         fontSize: 20,
-        fontFamily: 'Crimson Text'
+        fontFamily: 'CrimsonText-Regular'
     },
     messageBox: {
         padding: 24,
@@ -156,14 +156,14 @@ const styles = StyleSheet.create({
     },
     wipTitle: {
         fontSize: 22,
-        fontWeight: 'bold',
-        fontFamily: 'Crimson Text',
+        fontWeight: '500',
+        fontFamily: 'CrimsonText-SemiBold',
         marginBottom: 8,
         textAlign: 'center',
     },
     wipSubtitle: {
         fontSize: 16,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
         textAlign: 'center',
         color: '#555',
     },

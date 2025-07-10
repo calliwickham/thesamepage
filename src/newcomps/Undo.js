@@ -1,9 +1,13 @@
 import React from 'react';
 import Svg, { Path, G, Defs, Filter, FeFlood, FeColorMatrix, FeOffset, FeGaussianBlur, FeComposite, FeBlend } from 'react-native-svg';
 
-const UndoIcon = ({ width = 41, height = 38 }) => {
+const UndoIcon = ({width = 24, height = 24}) => {
   return (
-    <Svg width={width} height={height} viewBox="0 0 41 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <Svg width="41" 
+    height="38" 
+    viewBox="0 0 41 38" 
+    fill="none" xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMidYMid meet">
       <Defs>
         <Filter
           id="filter0_d_223_1014"

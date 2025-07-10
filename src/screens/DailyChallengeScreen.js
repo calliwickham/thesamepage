@@ -161,8 +161,8 @@ export default function DailyChallengeScreen() {
                     <Text style={styles.submitText}>Submit</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={handleUndo}>
-                    <UndoIcon width={50} height={50} />
+                <TouchableOpacity onPress={handleUndo} style={{marginRight: 10}}>
+                    <UndoIcon width={41} height={38} />
                 </TouchableOpacity>
             </View>
 
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 22,
         textAlign: 'center',
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Bold',
         fontWeight: '600',
         marginBottom: 20,
     },
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     wordText: {
         color: '#FFF4E2',
         fontSize: 20,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         fontWeight: '600',
         textAlign: 'center',
     },
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     },
     textBox: {
         fontSize: 18,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
         height: 200,
         textAlignVertical: 'top',
     },
@@ -268,13 +268,14 @@ const styles = StyleSheet.create({
         right: 10,
         backgroundColor: '#FFD6D6',
         paddingHorizontal: 16,
-        paddingVertical: 6,
+        paddingBottom: 8,
+        paddingTop: 4,
         borderRadius: 24,
     },
     clearText: {
         color: '#D33',
         fontWeight: '600',
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         fontSize: 16,
     },
     buttonRow: {
@@ -298,7 +299,7 @@ const styles = StyleSheet.create({
     },
     submitText: {
         fontSize: 20,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         fontWeight: '600',
         color: '#000',
     },
@@ -320,14 +321,14 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     popupTitle: {
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Bold',
         fontSize: 22,
-        fontWeight: 'bold',
+        fontWeight: '500',
         textAlign: 'center',
         marginBottom: 10,
     },
     popupMessage: {
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
         fontSize: 16,
         textAlign: 'center',
         marginBottom: 24,
@@ -348,9 +349,9 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
     exitText: {
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '600',
         color: '#fff',
     },
     saveButton: {
@@ -365,9 +366,9 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
     saveText: {
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '600',
         color: '#000',
     },
 });

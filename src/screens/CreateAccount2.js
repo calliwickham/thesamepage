@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    fontWeight: 'bold',
+    fontWeight: '500',
     fontFamily: 'Crimson Text',
     marginBottom: 10,
   },

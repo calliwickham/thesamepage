@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
   },
   plus: {
     fontSize: 26,
-    fontWeight: 'bold',
+    fontWeight: '500',
     color: '#10471B',
   },
   description: {

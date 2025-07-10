@@ -43,16 +43,16 @@ export default function FileCard({ file }) {
                 <View style={[styles.lowerSection, { flex: 1 - albumThemes[file.album].cardTitleFlex }]}>
                     {file.album === 'collaborative' && (
                         <Text style={styles.cardText}>
-                            Authors: <Text style={{ fontStyle: 'italic' }}>{file.authors}</Text>
+                            Authors: <Text style={{ fontFamily: 'CrimsonText-Italic' }}>{file.authors}</Text>
                         </Text>
                     )}
 
-                    <Text style={[styles.cardText, { fontStyle: 'italic' }]}>
+                    <Text style={[styles.cardText, { fontFamily: 'CrimsonText-Italic' }]}>
                         Date Created: {file.date}
                     </Text>
 
                     {file.album !== 'freewrite' && (
-                        <Text style={[styles.cardText, { fontStyle: 'italic' }]}>
+                        <Text style={[styles.cardText, { fontFamily: 'CrimsonText-Italic' }]}>
                             {file.wordcount} words
                         </Text>
                     )}
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         marginLeft: '5%',
         marginRight: '5%',
         fontSize: 22,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         padding: 0,
         textVerticalAlign: 'center'
     },
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     },
     cardText: {
         fontSize: 14,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
         textAlign: 'left',
         color: '#3F3F3F'
     },
