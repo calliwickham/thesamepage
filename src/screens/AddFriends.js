@@ -36,6 +36,10 @@ export default function AddFriends() {
     }, []);
 
     const handleSearch = async () => {
+
+        if (searchQuery === "")
+            return;
+
         try {
             const q = query(
                 collection(firestore, 'Users'),
