@@ -17,7 +17,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { generateThreeWords } from '../utils/wordPool';
 
 //firebase imports
-import { doc, collection, setDoc } from 'firebase/firestore';
+import { doc, collection, setDoc, getDoc } from 'firebase/firestore';
 import { auth, firestore } from '../constants/firebaseConfig.js'
 
 const getWordCount = (text) => {
@@ -31,7 +31,6 @@ import UndoIcon from '../newcomps/Undo';
 export default function DailyChallengeScreen() {
     const navigation = useNavigation();
 
-    const [pendingNavigation, setPendingNavigation] = useState(null);
     const [showExitModal, setShowExitModal] = useState(false);
 
     const route = useRoute();
@@ -43,47 +42,73 @@ export default function DailyChallengeScreen() {
     const [challengeWords, setChallengeWords] = useState([]);
 
     useEffect(() => {
-        if (file) {
-            setStory(file.text || '');
-            setPrevStory(file.text || '');
-            setDailyId(file.id || null);
-
-            if (Array.isArray(file.words) && file.words.length === 3) {
-                setChallengeWords(file.words);
-            } else {
-                setChallengeWords(generateThreeWords());
-            }
-        } else {
-            setChallengeWords(generateThreeWords());
-        }
-    }, [file]);
-
-    useEffect(() => {
-        const maybeAutoSave = async () => {
-            if (file || challengeWords.length !== 3) return;
-
+        const initDailyChallenge = async () => {
             const userId = auth.currentUser?.uid;
-            if (!userId) return;
+            if (!userId) {
+                return;
+            }
 
             const todayId = new Date().toISOString().split('T')[0];
             const docRef = doc(firestore, 'Users', userId, 'DailyChallenges', todayId);
-            const snap = await getDoc(docRef);
 
-            if (snap.exists()) {
-                const data = snap.data();
-                if (data.published === true) {
+            // Case 1: File was passed in — no need to save
+            if (file !== undefined && file !== null) {
+                // ✅ A real file was passed — load it
+                setDailyId(file.id);
+                setStory(file.text || '');
+                setPrevStory(file.text || '');
+
+                if (Array.isArray(file.words) && file.words.length === 3) {
+                    setChallengeWords(file.words);
+                } else {
+                    const fallbackWords = generateThreeWords();
+                    setChallengeWords(fallbackWords);
+                }
+
+                return;
+            }
+
+            // Case 2: No file — generate new words and save to Firestore
+            const words = generateThreeWords();
+            setChallengeWords(words);
+            setStory('');
+            setPrevStory('');
+            setDailyId(todayId);
+
+            const docSnapshot = await getDoc(docRef);
+            if (docSnapshot.exists()) {
+                const existingData = docSnapshot.data();
+                if (existingData.published === true) {
                     Alert.alert('Already completed', 'You’ve already submitted today’s challenge.');
                     navigation.goBack();
                     return;
                 }
+                // If in-progress, no need to save again
+                return;
             }
 
-            // Safe to autosave
-            onSaveOrPublish('save', story);
+            // 🆕 Save fresh challenge with generated words
+            const wordCount = 0;
+
+            const data = {
+                words,
+                text: '',
+                wordcount: wordCount,
+                date: new Date(),
+                published: false,
+                title: `${words[0]}, ${words[1]}, ${words[2]}`,
+            };
+
+            try {
+                await setDoc(docRef, data);
+                //console.log('✅ New Daily Challenge saved:', data);
+            } catch (error) {
+                console.error('⚠️ Failed to save Daily Challenge:', error);
+            }
         };
 
-        maybeAutoSave();
-    }, [challengeWords]);
+        initDailyChallenge();
+    }, []);
 
     const onSaveOrPublish = async (buttonType, text) => {
 
@@ -115,7 +140,7 @@ export default function DailyChallengeScreen() {
             }
 
             await setDoc(docRef, data);
-           //console.log('Daily Challenge saved successfully!');
+            //console.log('Daily Challenge saved successfully!');
         } catch (error) {
             console.log('Error saving Daily Challenge:', error);
         }
