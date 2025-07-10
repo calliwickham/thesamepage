@@ -4,8 +4,8 @@ import Logo from './Logo'; // ensure path is correct
 
 const Header = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>The Same Page</Text>
+    <View style={[styles.container]}>
+      <Text style={[styles.title]}>The Same Page</Text>
       <Logo width={50} height={50} />
     </View>
   );
@@ -31,5 +31,12 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '400',
     lineHeight: 55, // optionally set a line height close to fontSize
+    flexGrow: 1,
+    textAlign: 'left'
   },
+  debugRed: {
+    borderColor: 'red',
+    borderWidth: 1,
+    borderStyle: 'dashed'
+  }
 });
