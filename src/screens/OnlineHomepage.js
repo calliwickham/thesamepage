@@ -122,6 +122,7 @@ export default function OnlineHomepage() {
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#FFF1DC' }, styles.right]}
                     onPress={() => {
+                        if (!dataFetched) return;
                         if (challengeStatus === 'completed') {
                             alert('Challenge already completed!');
                         }

@@ -35,14 +35,14 @@ export default function FileViewer() {
         }
 
         
-        console.log('got docRef');
+        //console.log('got docRef');
         try {
             const docRef = doc(firestore, 'Users', userId, collectionName, file.id);
             await updateDoc(docRef, {
                 deleted: true,
                 deletedOn: new Date(), 
             });
-            console.log('File' + file.id + 'marked as deleted.');
+            //console.log('File' + file.id + 'marked as deleted.');
             alert('File Deleted');
             navigation.goBack();
             // Optionally navigate back or show a toast
