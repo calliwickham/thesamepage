@@ -142,7 +142,13 @@ export default function OfflineHomepage() {
                     if (title === "Free Write") {
                         navigation.navigate('FreeWriteScreen1');
                     } else if (title === "Daily Challenge") {
-                        navigation.navigate('DailyChallengeScreen', { file: todaysChallenge }); // placeholder
+                        if (!dataFetched) return;
+                        if (challengeStatus === 'completed') {
+                            alert('Challenge already completed!');
+                        }
+                        else {
+                            navigation.navigate('DailyChallengeScreen', { file: todaysChallenge });
+                        }
                     }
                 }}
             >
