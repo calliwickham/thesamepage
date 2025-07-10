@@ -8,6 +8,8 @@ import {
     ScrollView,
     Keyboard,
     TouchableWithoutFeedback,
+    Platform,
+    KeyboardAvoidingView,
     Alert,
     Dimensions
 } from 'react-native';
@@ -128,121 +130,127 @@ export default function FreeWrite() {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={styles.view}>
-                <View style={[styles.container]}>
-                    <View style={styles.headerRow} onLayout={(event) => {
-                        const { y, height } = event.nativeEvent.layout;
-                        setHeaderBottom(y + height);
-                    }}>
-                        <Text style={styles.header}>Free Write</Text>
-                        <TouchableOpacity style={styles.inspireButton} onPress={() => setIsModalVisible(true)}>
-                            <Text style={styles.inspireText}>Inspire Me</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={isModalVisible && styles.invisible}>
-                        <TextInput
-                            style={styles.titleInput}
-                            placeholder="Title of Work"
-                            value={title}
-                            onChangeText={handleTitleChange}
-                            placeholderTextColor="#aaa"
-                        />
-                    </View>
-
-                    <View style={[styles.scrollSection, isModalVisible && styles.invisible]}>
-                        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                            <TextInput
-                                style={styles.storyInput}
-                                placeholder="Write your story"
-                                value={story}
-                                onChangeText={handleStoryChange}
-                                placeholderTextColor="#ccc"
-                                multiline
-                            />
-                        </ScrollView>
-                        <TouchableOpacity onPress={handleClear} style={styles.clearButton}>
-                            <Text style={styles.clearText}>clear</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.buttonRow}>
-                        <TouchableOpacity onPress={() => onSaveOrPublish('save', title, story)}>
-                            <SaveIcon />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.publishButton} onPress={() => {
-                            onSaveOrPublish('publish', title, story);
-                            navigation.navigate('Albums');
-                            Alert.alert('Published', 'You can find it in the Free Write album.');
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={Platform.OS === 'android' ? 80 : 0}
+            >
+                <View style={styles.view}>
+                    <View style={[styles.container]}>
+                        <View style={styles.headerRow} onLayout={(event) => {
+                            const { y, height } = event.nativeEvent.layout;
+                            setHeaderBottom(y + height);
                         }}>
-                            <Text style={styles.publishText}>Publish</Text>
-                        </TouchableOpacity>
+                            <Text style={styles.header}>Free Write</Text>
+                            <TouchableOpacity style={styles.inspireButton} onPress={() => {Keyboard.dismiss(); setIsModalVisible(true)}}>
+                                <Text style={styles.inspireText}>Inspire Me</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={isModalVisible && styles.invisible}>
+                            <TextInput
+                                style={styles.titleInput}
+                                placeholder="Title of Work"
+                                value={title}
+                                onChangeText={handleTitleChange}
+                                placeholderTextColor="#aaa"
+                            />
+                        </View>
+
+                        <View style={[styles.scrollSection, isModalVisible && styles.invisible]}>
+                            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                                <TextInput
+                                    style={styles.storyInput}
+                                    placeholder="Write your story"
+                                    value={story}
+                                    onChangeText={handleStoryChange}
+                                    placeholderTextColor="#ccc"
+                                    multiline
+                                />
+                            </ScrollView>
+                            <TouchableOpacity onPress={handleClear} style={styles.clearButton}>
+                                <Text style={styles.clearText}>clear</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={styles.buttonRow}>
+                            <TouchableOpacity onPress={() => onSaveOrPublish('save', title, story)}>
+                                <SaveIcon />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.publishButton} onPress={() => {
+                                onSaveOrPublish('publish', title, story);
+                                navigation.navigate('Albums');
+                                Alert.alert('Published', 'You can find it in the Free Write album.');
+                            }}>
+                                <Text style={styles.publishText}>Publish</Text>
+                            </TouchableOpacity>
 
 
-                        <TouchableOpacity onPress={handleUndo}>
-                            <UndoIcon width={41} height={38} />
-                        </TouchableOpacity>
+                            <TouchableOpacity onPress={handleUndo}>
+                                <UndoIcon width={41} height={38} />
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
 
-                {isModalVisible && (
-                    <>
-                        {/* Modal background */}
-                        <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
+                    {isModalVisible && (
+                        <>
+                            {/* Modal background */}
+                            <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        bottom: 0,
+                                        backgroundColor: 'transparent',
+                                        zIndex: 998,
+                                    }}
+                                />
+                            </TouchableWithoutFeedback>
+
+                            {/* Modal popup wrapper — full screen width */}
                             <View
                                 style={{
                                     position: 'absolute',
-                                    top: 0,
+                                    top: headerBottom - 8,
                                     left: 0,
                                     right: 0,
-                                    bottom: 0,
-                                    backgroundColor: 'transparent',
-                                    zIndex: 998,
+                                    alignItems: 'center', // ✅ centers the SpeechBubble
+                                    zIndex: 999,
                                 }}
-                            />
-                        </TouchableWithoutFeedback>
-
-                        {/* Modal popup wrapper — full screen width */}
-                        <View
-                            style={{
-                                position: 'absolute',
-                                top: headerBottom - 8,
-                                left: 0,
-                                right: 0,
-                                alignItems: 'center', // ✅ centers the SpeechBubble
-                                zIndex: 999,
-                            }}
-                        >
-                            <View style={[styles.popUp, { width: '95%', overflow: 'visible' }]}>
-                                <SpeechBubble
-                                    style={{
-                                        height: Dimensions.get('window').height * 0.55,
-                                        width: '100%',
-                                    }}
-                                >
-                                    <View style={styles.popUpTitle}>
-                                        <Text style={styles.promptText}>Use these words to inspire your story...</Text>
-                                        <TouchableOpacity style={{ marginTop: 10 }} onPress={handleRefresh}>
-                                            <Shuffle />
-                                        </TouchableOpacity>
-                                    </View>
-
-                                    {inspirationalWords.map((word, index) => (
-                                        <View key={index} style={styles.wordButton}>
-                                            <Text style={styles.wordText}>{word}</Text>
+                            >
+                                <View style={[styles.popUp, { width: '95%', overflow: 'visible' }]}>
+                                    <SpeechBubble
+                                        style={{
+                                            height: Dimensions.get('window').height * 0.55,
+                                            width: '100%',
+                                        }}
+                                    >
+                                        <View style={styles.popUpTitle}>
+                                            <Text style={styles.promptText}>Use these words to inspire your story...</Text>
+                                            <TouchableOpacity style={{ marginTop: 10 }} onPress={handleRefresh}>
+                                                <Shuffle />
+                                            </TouchableOpacity>
                                         </View>
-                                    ))}
-                                </SpeechBubble>
-                                {/*Fills gaps in the speech bubble */}
-                                <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
-                                    <View style={{ position: 'absolute', backgroundColor: 'transparent', width: '100%', height: '15%' }}></View>
-                                </TouchableWithoutFeedback>
+
+                                        {inspirationalWords.map((word, index) => (
+                                            <View key={index} style={styles.wordButton}>
+                                                <Text style={styles.wordText}>{word}</Text>
+                                            </View>
+                                        ))}
+                                    </SpeechBubble>
+                                    {/*Fills gaps in the speech bubble */}
+                                    <TouchableWithoutFeedback onPress={() => setIsModalVisible(false)}>
+                                        <View style={{ position: 'absolute', backgroundColor: 'transparent', width: '100%', height: '15%' }}></View>
+                                    </TouchableWithoutFeedback>
+                                </View>
                             </View>
-                        </View>
-                    </>
-                )}
-            </View>
+                        </>
+                    )}
+                </View>
+            </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
     );
 }
