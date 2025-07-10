@@ -5,8 +5,9 @@ import {
     TextInput,
     TouchableOpacity,
     StyleSheet,
-    KeyboardAvoidingView,
     Platform,
+    KeyboardAvoidingView,
+    ScrollView,
     Modal,
     Alert
 } from 'react-native';
@@ -114,98 +115,104 @@ export default function DailyChallengeScreen() {
     };
 
     return (
-        <KeyboardAwareScrollView
-            contentContainerStyle={styles.container}
-            enableOnAndroid={true}
-            extraScrollHeight={20}
-            keyboardShouldPersistTaps="handled"
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'android' ? 80 : 0} // adjust as needed
         >
-            <Text style={styles.header}>
-                Write a short story inspired by{'\n'}these three words...
-            </Text>
+            <ScrollView
+                contentContainerStyle={[styles.container, { flexGrow: 1 }]}
+                keyboardShouldPersistTaps="handled"
+            >
+                <Text style={styles.header}>
+                    Write a short story inspired by{'\n'}these three words...
+                </Text>
 
-            <View style={styles.wordButton}>
-                <Text style={styles.wordText}>{challengeWords[0]}</Text>
-            </View>
-            <View style={styles.wordButton}>
-                <Text style={styles.wordText}>{challengeWords[1]}</Text>
-            </View>
-            <View style={styles.wordButton}>
-                <Text style={styles.wordText}>{challengeWords[2]}</Text>
-            </View>
+                <View style={styles.wordButton}>
+                    <Text style={styles.wordText}>{challengeWords[0]}</Text>
+                </View>
+                <View style={styles.wordButton}>
+                    <Text style={styles.wordText}>{challengeWords[1]}</Text>
+                </View>
+                <View style={styles.wordButton}>
+                    <Text style={styles.wordText}>{challengeWords[2]}</Text>
+                </View>
 
-            <View style={styles.textBoxWrapper}>
-                <TextInput
-                    style={styles.textBox}
-                    placeholder="Write your story"
-                    placeholderTextColor="#ccc"
-                    multiline
-                    value={story}
-                    onChangeText={handleStoryChange}
-                />
-                <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
-                    <Text style={styles.clearText}>clear</Text>
-                </TouchableOpacity>
-            </View>
+                <View style={styles.textBoxWrapper}>
+                    <TextInput
+                        style={styles.textBox}
+                        placeholder="Write your story"
+                        placeholderTextColor="#ccc"
+                        multiline
+                        scrollEnabled
+                        textAlignVertical="top"
+                        value={story}
+                        onChangeText={handleStoryChange}
+                    />
+                    <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
+                        <Text style={styles.clearText}>clear</Text>
+                    </TouchableOpacity>
+                </View>
 
-            <View style={styles.buttonRow}>
-                <TouchableOpacity onPress={() => onSaveOrPublish('save', story)}>
-                    <SaveIcon width={50} height={50} />
-                </TouchableOpacity>
+                <View style={styles.buttonRow}>
+                    <TouchableOpacity onPress={() => onSaveOrPublish('save', story)}>
+                        <SaveIcon width={50} height={50} />
+                    </TouchableOpacity>
 
-                <TouchableOpacity style={styles.submitButton} onPress={() => {
-                    onSaveOrPublish('publish', story);
-                    navigation.navigate('Albums');
-                    Alert.alert('Published', 'You can find it in the Daily Challenge album.');
-                }}>
-                    <Text style={styles.submitText}>Submit</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.submitButton} onPress={() => {
+                        onSaveOrPublish('publish', story);
+                        navigation.navigate('Albums');
+                        Alert.alert('Published', 'You can find it in the Daily Challenge album.');
+                    }}>
+                        <Text style={styles.submitText}>Submit</Text>
+                    </TouchableOpacity>
 
-                <TouchableOpacity onPress={handleUndo} style={{marginRight: 10}}>
-                    <UndoIcon width={41} height={38} />
-                </TouchableOpacity>
-            </View>
+                    <TouchableOpacity onPress={handleUndo} style={{ marginRight: 10 }}>
+                        <UndoIcon width={41} height={38} />
+                    </TouchableOpacity>
+                </View>
 
-            {/* Exit Warning Modal */}
-            {showExitModal && (
-                <Modal
-                    transparent
-                    animationType="fade"
-                    visible={showExitModal}
-                    onRequestClose={() => setShowExitModal(false)}
-                >
-                    <View style={styles.modalOverlay}>
-                        <View style={styles.popupBox}>
-                            <Text style={styles.popupTitle}>Save before exiting?</Text>
-                            <Text style={styles.popupMessage}>
-                                You still have until the end of the day to complete your challenge.
-                            </Text>
-                            <View style={styles.modalButtons}>
-                                <TouchableOpacity
-                                    style={styles.exitButton}
-                                    onPress={() => {
-                                        navigation.goBack();
-                                        setShowExitModal(false);
-                                    }}
-                                >
-                                    <Text style={styles.exitText}>Exit without saving</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={styles.saveButton}
-                                    onPress={() => {
-                                        onSaveOrPublish('save', story);
-                                        setShowExitModal(false);
-                                        navigation.goBack();
-                                    }}
-                                >
-                                    <Text style={styles.saveText}>Yes, Save</Text>
-                                </TouchableOpacity>
+                {/* Exit Warning Modal */}
+                {showExitModal && (
+                    <Modal
+                        transparent
+                        animationType="fade"
+                        visible={showExitModal}
+                        onRequestClose={() => setShowExitModal(false)}
+                    >
+                        <View style={styles.modalOverlay}>
+                            <View style={styles.popupBox}>
+                                <Text style={styles.popupTitle}>Save before exiting?</Text>
+                                <Text style={styles.popupMessage}>
+                                    You still have until the end of the day to complete your challenge.
+                                </Text>
+                                <View style={styles.modalButtons}>
+                                    <TouchableOpacity
+                                        style={styles.exitButton}
+                                        onPress={() => {
+                                            navigation.goBack();
+                                            setShowExitModal(false);
+                                        }}
+                                    >
+                                        <Text style={styles.exitText}>Exit without saving</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.saveButton}
+                                        onPress={() => {
+                                            onSaveOrPublish('save', story);
+                                            setShowExitModal(false);
+                                            navigation.goBack();
+                                        }}
+                                    >
+                                        <Text style={styles.saveText}>Yes, Save</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                </Modal>
-            )}
-        </KeyboardAwareScrollView>
+                    </Modal>
+                )}
+            </ScrollView>
+        </KeyboardAvoidingView>
 
     );
 }
@@ -213,7 +220,7 @@ export default function DailyChallengeScreen() {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#E8EFE2',
-        flex: 1,
+        //flex: 1,
         paddingTop: 20,
         paddingBottom: 10,
         paddingHorizontal: 24,
@@ -254,13 +261,14 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 5,
         position: 'relative',
-        flex: 1,
+        flexGrow: 1
     },
     textBox: {
         fontSize: 18,
         fontFamily: 'CrimsonText-Regular',
-        height: 200,
+        minHeight: 200,
         textAlignVertical: 'top',
+        flex: 1,
     },
     clearButton: {
         position: 'absolute',
