@@ -17,6 +17,8 @@ import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { deleteUser } from 'firebase/auth';
 import CheckBoxIcon from '../newcomps/CheckBoxIcon'; // Make sure this exists
 
+import { storeLocal } from '../constants/storeLocal.js'
+
 export default function EditOfflineSettingsPage() {
   const navigation = useNavigation();
   const [username, setUsername] = useState('');
@@ -52,6 +54,7 @@ export default function EditOfflineSettingsPage() {
         penname: username,
         autoDelete: selectedOption,
       });
+      await storeLocal("penname", username);
       navigation.navigate('OfflineSettingsPage');
     } catch (err) {
       console.error('Save error:', err);

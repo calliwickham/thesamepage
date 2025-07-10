@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { auth, firestore } from '../constants/firebaseConfig';
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { EmailAuthProvider, reauthenticateWithCredential, deleteUser } from 'firebase/auth';
+import { storeLocal } from '../constants/storeLocal.js'
 
 import Button from '../newcomps/Button';
 
@@ -58,6 +59,8 @@ export default function EditOnlineSettingsPage() {
                 bio: bio,
                 autoDelete: selectedDeleteOption,
             });
+
+            await storeLocal("penname", username);
 
             navigation.navigate('OnlineSettingsPage');
         } catch (err) {
