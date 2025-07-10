@@ -69,7 +69,7 @@ export default function GenericAlbum() {
         fetchData();
     }, []);
 
-    console.log('Rendering for albumKey:', albumKey, 'with theme:', albumThemes[albumKey]);
+    //console.log('Rendering for albumKey:', albumKey, 'with theme:', albumThemes[albumKey]);
 
     if (files === null) return <View style={styles.loadingView}><Text style={styles.loadingText}>Loading...</Text></View>;
 

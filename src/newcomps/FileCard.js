@@ -11,7 +11,7 @@ export default function FileCard({ file }) {
 
     function onPress() {
 
-        console.log(file);
+        //console.log(file);
 
         if (file.album === 'freewrite' && 'published' in file && file.published === false){
             navigation.navigate("FreeWriteScreen2", {file})

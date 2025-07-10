@@ -93,7 +93,7 @@ export default function DailyChallengeScreen() {
             }
 
             await setDoc(docRef, data);
-            console.log('Daily Challenge saved successfully!');
+           //console.log('Daily Challenge saved successfully!');
         } catch (error) {
             console.log('Error saving Daily Challenge:', error);
         }

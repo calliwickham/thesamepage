@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { signOut } from 'firebase/auth';
 import { auth, firestore } from '../constants/firebaseConfig';
@@ -46,7 +46,8 @@ export default function OnlineSettingsPage() {
       await signOut(auth);
       await clearLocal("penname");
       navigation.replace('Login');
-      console.log('User signed out');
+      alert('Logged out');
+      //console.log('User signed out');
     } catch (error) {
       console.error('Sign out error:', error);
     }

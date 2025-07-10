@@ -100,7 +100,7 @@ export default function FreeWrite() {
                 });
                 setFreeWriteId(docRef.id);
             }
-            console.log('FreeWrite saved successfully!');
+            //console.log('FreeWrite saved successfully!');
         } catch (error) {
             console.log('Error saving FreeWrite:', error);
         }
