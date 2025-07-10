@@ -14,7 +14,8 @@ import {
   collection,
   getDocs,
   deleteDoc,
-  doc
+  doc,
+  getDoc
 } from 'firebase/firestore';
 
 export default function EditFriends() {
@@ -25,24 +26,35 @@ export default function EditFriends() {
 
   useEffect(() => {
     const fetchFriends = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
+  const user = auth.currentUser;
+  if (!user) return;
 
-      try {
-        const snapshot = await getDocs(collection(firestore, 'Users', user.uid, 'Friends'));
-        const loaded = snapshot.docs.map((docSnap) => {
-          const data = docSnap.data();
-          return {
-            id: docSnap.id,
-            name: data.penname || 'Friend',
-            bio: data.bio || 'No bio submitted.',
-          };
-        });
-        setFriends(loaded);
-      } catch (error) {
-        console.error('Error fetching friends:', error);
-      }
-    };
+  try {
+    const snapshot = await getDocs(
+      collection(firestore, 'Users', user.uid, 'Friends')
+    );
+
+    const fetchedFriends = await Promise.all(snapshot.docs.map(async docSnap => {
+            const data = docSnap.data();
+            const friendId = data.friendId;
+            const friendRef = doc(firestore, 'Users', friendId);
+            const friendDoc = await getDoc(friendRef);
+            const friendData = friendDoc.exists() ? friendDoc.data() : {};
+
+            return {
+              id: docSnap.id,
+              name: data.penname || 'Friend',
+              date: data.added?.seconds ? new Date(data.added.seconds * 1000).toLocaleDateString() : '',
+              bio: friendData.bio || 'No bio submitted.',
+            };
+          }));
+
+          setFriends(fetchedFriends);
+        } catch (err) {
+          console.error('Error fetching friends:', err);
+        }
+      };
+
 
     fetchFriends();
   }, []);
@@ -144,12 +156,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
-    marginBottom: 16,
+    marginTop: 10,
+    marginBottom: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 6,
     elevation: 4,
+    width: '97%',
+    alignSelf: 'center',
   },
   cardRow: {
     flexDirection: 'row',
@@ -177,7 +192,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 30,
     marginTop: 12,
-    marginBottom: 20,
+    marginBottom: 30,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
