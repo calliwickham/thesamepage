@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     fontFamily: 'CrimsonText-Bold', // Update to match your actual file name
     fontSize: 18,
     fontStyle: 'normal',
-    fontWeight: '700',
+    fontWeight: '600',
     lineHeight: undefined,
   },
 });

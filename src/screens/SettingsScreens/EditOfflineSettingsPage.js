@@ -12,10 +12,12 @@ import {
   Linking,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { auth, firestore } from '../constants/firebaseConfig';
+import { auth, firestore } from '../../constants/firebaseConfig';
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { deleteUser } from 'firebase/auth';
-import CheckBoxIcon from '../newcomps/CheckBoxIcon'; // Make sure this exists
+import CheckBoxIcon from '../../newcomps/CheckBoxIcon'; // Make sure this exists
+
+import { storeLocal } from '../../constants/storeLocal.js'
 
 export default function EditOfflineSettingsPage() {
   const navigation = useNavigation();
@@ -52,6 +54,7 @@ export default function EditOfflineSettingsPage() {
         penname: username,
         autoDelete: selectedOption,
       });
+      await storeLocal("penname", username);
       navigation.navigate('OfflineSettingsPage');
     } catch (err) {
       console.error('Save error:', err);
@@ -210,18 +213,18 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 32,
-    fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '500',
     marginBottom: 20,
   },
   label: {
     fontSize: 20,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-SemiBold',
     marginBottom: 6,
   },
   input: {
     backgroundColor: '#fff',
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     fontSize: 18,
     borderRadius: 12,
     padding: 12,
@@ -247,7 +250,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   autoDeleteText: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-SemiBold',
     fontSize: 16,
     fontWeight: '600',
     color: '#aaa',
@@ -269,8 +272,8 @@ const styles = StyleSheet.create({
   saveText: {
     color: '#FFF4E2',
     fontSize: 20,
-    fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '600',
   },
   deleteButton: {
     backgroundColor: '#D60000',
@@ -283,8 +286,8 @@ const styles = StyleSheet.create({
   deleteText: {
     color: '#000',
     fontSize: 20,
-    fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '600',
   },
   divider: {
     height: 2,
@@ -293,7 +296,7 @@ const styles = StyleSheet.create({
   },
   convertTitle: {
     fontSize: 22,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontWeight: '600',
     marginTop: 16,
     marginBottom: 10,
@@ -315,12 +318,12 @@ const styles = StyleSheet.create({
   checkboxText: {
     flex: 1,
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     color: '#000',
   },
   link: {
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     color: '#0056B3',
     textDecorationLine: 'underline',
   },
@@ -334,8 +337,8 @@ const styles = StyleSheet.create({
   },
   convertText: {
     fontSize: 20,
-    fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontFamily: 'CrimsonText-SemiBold',
+    fontWeight: '600',
     color: '#000',
   },
   modalOverlay: {
@@ -356,13 +359,13 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 22,
-    fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '500',
     marginBottom: 10,
   },
   modalMessage: {
     fontSize: 18,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     textAlign: 'center',
     marginBottom: 24,
   },
@@ -380,8 +383,8 @@ const styles = StyleSheet.create({
   },
   goBackText: {
     fontSize: 18,
-    fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '500',
     color: '#000',
   },
   deleteConfirmButton: {

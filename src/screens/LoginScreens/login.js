@@ -10,14 +10,14 @@ import {
     StyleSheet,
     ScrollView,
 } from 'react-native';
-import { useUser } from '../contexts/UserContext';
+import { useUser } from '../../contexts/UserContext';
 
 
 //firebase imports
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, firestore } from '../constants/firebaseConfig.js'
+import { auth, firestore } from '../../constants/firebaseConfig.js'
 import { getDoc, doc } from 'firebase/firestore';
-import { storeLocal } from '../constants/storeLocal.js'
+import { storeLocal } from '../../constants/storeLocal.js'
 
 
 export default function LoginScreen() {
@@ -157,13 +157,13 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
         paddingHorizontal: 24,
-        paddingTop: 24,
+        paddingTop: 12,
         paddingBottom: 100,
         alignItems: 'center',
     },
     welcome: {
         fontSize: 36,
-        fontWeight: '700',
+        fontWeight: '600',
         fontFamily: 'CrimsonText-Bold',
         marginBottom: 8,
     },
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     },
     loginHeader: {
         fontSize: 32,
-        fontWeight: '700',
+        fontWeight: '600',
         fontFamily: 'CrimsonText-Bold',
         marginBottom: 12,
     },
@@ -251,7 +251,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Italianno',
         color: '#444',
-        marginTop: 24,
+        marginTop: 24,  
+        width: '100%',
+        alignSelf: 'center',
     },
     inputError: {
         borderColor: 'red',
@@ -260,7 +262,7 @@ const styles = StyleSheet.create({
     },
     warning: {
         color: '#B00000',
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         fontSize: 16,
         fontWeight: '600',
         textAlign: 'left',

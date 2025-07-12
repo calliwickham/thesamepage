@@ -10,13 +10,13 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import FileCard from '../newcomps/FileCard.js';
-import InProgressIcon from '../newcomps/InProgressIcon';
-import { ALBUMSTHEMES } from '../constants/AlbumsThemes.js';
+import FileCard from '../../../newcomps/FileCard.js';
+import InProgressIcon from '../../../newcomps/InProgressIcon';
+import { ALBUMSTHEMES } from '../../../constants/AlbumsThemes.js';
 
 //firestore imports
 import { getDocs, collection } from 'firebase/firestore';
-import { auth, firestore } from '../constants/firebaseConfig.js'
+import { auth, firestore } from '../../../constants/firebaseConfig.js'
 
 export default function FreeWriteScreen1() {
     const navigation = useNavigation();
@@ -101,8 +101,8 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 28,
-        fontFamily: 'Crimson Text',
-        fontWeight: 'bold',
+        fontFamily: 'CrimsonText-Bold',
+        fontWeight: '500',
         textAlign: 'center',
         marginBottom: 24,
     },
@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         fontSize: 18,
-        fontFamily: 'Crimson Text',
-        fontWeight: '600',
+        fontFamily: 'CrimsonText-SemiBold',
+        fontWeight: '500',
         marginBottom: 10,
     },
     divider: {
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     },
     cardDate: {
         fontSize: 16,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Italic',
         marginBottom: 6,
     },
     italic: {
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     },
     cardDesc: {
         fontSize: 16,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
     },
     newButton: {
         backgroundColor: '#FFD12D',
@@ -170,8 +170,8 @@ const styles = StyleSheet.create({
     },
     newButtonText: {
         fontSize: 20,
-        fontFamily: 'Crimson Text',
-        fontWeight: '700',
+        fontFamily: 'CrimsonText-Bold',
+        fontWeight: '600',
         color: '#000',
     },
     loadingView: {
@@ -183,6 +183,6 @@ const styles = StyleSheet.create({
     loadingText: {
         color: 'darkgreen',
         fontSize: 20,
-        fontFamily: 'Crimson Text'
+        fontFamily: 'CrimsonText-SemiBold'
     },
 });

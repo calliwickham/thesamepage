@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { signOut } from 'firebase/auth';
-import { auth, firestore } from '../constants/firebaseConfig';
-import { clearLocal } from '../constants/storeLocal.js';
+import { auth, firestore } from '../../constants/firebaseConfig';
+import { clearLocal } from '../../constants/storeLocal.js';
 import { doc, getDoc } from 'firebase/firestore';
 
 export default function OnlineSettingsPage() {
@@ -46,7 +46,8 @@ export default function OnlineSettingsPage() {
       await signOut(auth);
       await clearLocal("penname");
       navigation.replace('Login');
-      console.log('User signed out');
+      alert('Logged out');
+      //console.log('User signed out');
     } catch (error) {
       console.error('Sign out error:', error);
     }
@@ -104,20 +105,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 28,
-    fontFamily: 'Crimson Text',
-    fontWeight: 'bold',
-    marginBottom: 20,
+    fontSize: 32,
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '500',
   },
   label: {
     fontSize: 22,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-SemiBold',
     fontWeight: '600',
     marginTop: 20,
   },
   value: {
     fontSize: 20,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     marginTop: 6,
     marginLeft: 10,
   },
@@ -136,8 +136,8 @@ const styles = StyleSheet.create({
   },
   resetButtonText: {
     fontSize: 20,
-    fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '600',
     color: '#000',
   },
   optionRow: {
@@ -151,14 +151,15 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 18,
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     color: '#aaa',
     overflow: 'hidden',
   },
   selectedOption: {
     backgroundColor: '#ccc',
     color: '#000',
-    fontWeight: '700',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '600',
   },
   editButton: {
     backgroundColor: '#0B3D0B',
@@ -173,17 +174,18 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   editButtonText: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontSize: 22,
     fontWeight: '600',
     color: 'white',
   },
   link: {
     fontSize: 18,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     color: '#0056B3',
     textAlign: 'center',
     marginVertical: 24,
     textDecorationLine: 'underline',
+    marginBottom: 40,
   },
 });

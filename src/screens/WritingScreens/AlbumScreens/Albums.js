@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { collection, getDocs } from 'firebase/firestore';
-import { auth, firestore } from '../constants/firebaseConfig';
-import Button from '../newcomps/Button';
-import { ALBUMSTHEMES } from '../constants/AlbumsThemes.js';
+import { auth, firestore } from '../../../constants/firebaseConfig.js';
+import Button from '../../../newcomps/Button.js';
+import { ALBUMSTHEMES } from '../../../constants/AlbumsThemes.js';
 
 const albumsThemes = ALBUMSTHEMES;
 const cardHeight = Dimensions.get('window').height / 6.5;
@@ -125,61 +125,61 @@ export default function Albums() {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: 'white' },
-    header: {
-        fontSize: 32,
-        fontFamily: 'Crimson Text',
-        marginVertical: 16,
-        fontWeight: 'bold',
-        paddingLeft: '5%',
-        marginBottom: 10,
-    },
-    scrollContainer: {
-        paddingBottom: 0,
-        paddingLeft: '5%',
-        paddingRight: '5%',
-    },
-    card: {
-        width: '100%',
-        height: cardHeight,
-        borderRadius: 16,
-        marginBottom: 20,
-        paddingTop: 8,
-        paddingBottom: 8,
-        paddingLeft: 12,
-        paddingRight: 12,
-        borderStyle: 'solid',
-        borderWidth: 1,
-        elevation: 4,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-    },
-    upperSection: { flex: 0.4, justifyContent: 'center' },
-    albumTitle: {
-        fontSize: 24,
-        fontStyle: 'italic',
-        fontFamily: 'Crimson Text',
-    },
-    divider: {
-        height: 1,
-        backgroundColor: 'black',
-        marginVertical: 4,
-    },
-    lowerSection: {
-        flex: 0.6,
-        flexDirection: 'row',
-        marginTop: 4,
-    },
-    leftTextContainer: { flex: 1, justifyContent: 'center' },
-    descriptionText: {
-        fontSize: 16,
-        fontFamily: 'Crimson Text',
-    },
-    rightPlaceholder: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+  container: { flex: 1, backgroundColor: 'white' },
+  header: {
+    fontSize: 32,
+    fontFamily: 'CrimsonText-Bold',
+    marginVertical: 16,
+    fontWeight: '500',
+    paddingLeft: '5%',
+    marginBottom: 10,
+  },
+  scrollContainer: {
+    paddingBottom: 0,
+    paddingLeft: '5%',
+    paddingRight: '5%',
+  },
+  card: {
+    width: '100%',
+    height: cardHeight,
+    borderRadius: 16,
+    marginBottom: 20,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 12,
+    paddingRight: 12,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  upperSection: { flex: 0.4, justifyContent: 'center' },
+  albumTitle: {
+    fontSize: 24,
+    //fontStyle: 'italic',
+    fontFamily: 'CrimsonText-Italic',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: 'black',
+    marginVertical: 4,
+  },
+  lowerSection: {
+    flex: 0.6,
+    flexDirection: 'row',
+    marginTop: 4,
+  },
+  leftTextContainer: { flex: 1, justifyContent: 'center' },
+  descriptionText: {
+    fontSize: 16,
+    fontFamily: 'CrimsonText-Regular',
+  },
+  rightPlaceholder: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

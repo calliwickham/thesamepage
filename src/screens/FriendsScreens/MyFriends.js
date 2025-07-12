@@ -8,9 +8,11 @@ import {
   ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { auth, firestore } from '../constants/firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
-import RedNotif from '../newcomps/RedNotif';
+import { auth, firestore } from '../../constants/firebaseConfig';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import RedNotif from '../../newcomps/RedNotif';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 export default function MyFriends() {
   const [selectedFriend, setSelectedFriend] = useState(null);
@@ -18,24 +20,27 @@ export default function MyFriends() {
   const [hasFriendRequests, setHasFriendRequests] = useState(false);
   const navigation = useNavigation();
 
-  useEffect(() => {
+  useFocusEffect(
+  useCallback(() => {
     const fetchFriends = async () => {
       const user = auth.currentUser;
       if (!user) return;
 
       try {
-        const snapshot = await getDocs(
-          collection(firestore, 'Users', user.uid, 'Friends')
-        );
+        const snapshot = await getDocs(collection(firestore, 'Users', user.uid, 'Friends'));
+        const fetchedFriends = await Promise.all(snapshot.docs.map(async docSnap => {
+          const data = docSnap.data();
+          const friendId = data.friendId;
+          const friendRef = doc(firestore, 'Users', friendId);
+          const friendDoc = await getDoc(friendRef);
+          const friendData = friendDoc.exists() ? friendDoc.data() : {};
 
-        const fetchedFriends = snapshot.docs.map(doc => {
-          const data = doc.data();
           return {
             name: data.penname || 'Friend',
-            date: new Date(data.added?.seconds * 1000).toLocaleDateString(),
-            bio: data.bio || 'No bio submitted.',
+            date: data.added?.seconds ? new Date(data.added.seconds * 1000).toLocaleDateString() : '',
+            bio: friendData.bio || 'No bio submitted.',
           };
-        });
+        }));
 
         setFriends(fetchedFriends);
       } catch (err) {
@@ -48,9 +53,7 @@ export default function MyFriends() {
       if (!user) return;
 
       try {
-        const snapshot = await getDocs(
-          collection(firestore, 'Users', user.uid, 'FriendRequests')
-        );
+        const snapshot = await getDocs(collection(firestore, 'Users', user.uid, 'FriendRequests'));
         setHasFriendRequests(!snapshot.empty);
       } catch (err) {
         console.error('Error checking friend requests:', err);
@@ -59,7 +62,8 @@ export default function MyFriends() {
 
     fetchFriends();
     checkFriendRequests();
-  }, []);
+  }, [])
+);
 
   return (
     <View style={styles.container}>
@@ -92,7 +96,7 @@ export default function MyFriends() {
           <View style={styles.modalOverlay}>
             <View style={styles.modalBox}>
               <View style={styles.cardHeader}>
-                <Text style={styles.name}>{selectedFriend.name}</Text>
+                <Text style={styles.name} numberOfLines={2}>{selectedFriend.name}</Text>
                 <Text style={styles.date}>Friends Since: {selectedFriend.date}</Text>
               </View>
               <Text style={styles.fullDetails}>{selectedFriend.bio}</Text>
@@ -140,20 +144,23 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 34,
-    fontWeight: 'bold',
-    fontFamily: 'Crimson Text',
+    fontWeight: '500',
+    fontFamily: 'CrimsonText-Bold',
     marginBottom: 16,
   },
   card: {
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 6,
     elevation: 4,
+    width: '97%',
+    alignSelf: 'center',
   },
   cardHeader: {
     flexDirection: 'row',
@@ -162,17 +169,18 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    fontWeight: 'bold',
-    fontFamily: 'Crimson Text',
+    fontWeight: '500',
+    fontFamily: 'CrimsonText-Bold',
+    flexShrink: 1, 
+    flexBasis: '60%'
   },
   date: {
     fontSize: 16,
-    fontStyle: 'italic',
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Italic',
   },
   preview: {
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     color: '#333',
   },
   modalOverlay: {
@@ -194,7 +202,7 @@ const styles = StyleSheet.create({
   },
   fullDetails: {
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     marginTop: 12,
     marginBottom: 20,
     color: '#111',
@@ -215,7 +223,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: '#000',
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
   },
   bottomButtons: {
     position: 'absolute',
@@ -237,12 +245,13 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
+    marginBottom: 10,
   },
   addText: {
     color: '#fff',
     fontSize: 18,
-    fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '600',
   },
   badge: {
     backgroundColor: '#D60000',
@@ -254,7 +263,7 @@ const styles = StyleSheet.create({
   badgeText: {
     color: '#fff',
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   editButton: {
     backgroundColor: '#FFD12D',
@@ -266,11 +275,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
+    marginBottom: 10,
   },
   editText: {
     color: '#000',
     fontSize: 18,
-    fontFamily: 'Crimson Text',
-    fontWeight: '700',
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '600',
   },
 });

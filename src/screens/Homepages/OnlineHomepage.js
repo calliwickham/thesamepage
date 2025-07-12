@@ -3,16 +3,16 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import InProgressIcon from '../newcomps/InProgressIcon';
-import CheckBoxIcon from '../newcomps/CheckBoxIcon';
-import YellowWarning from '../newcomps/YellowWarning';
-import CalendarIcon from '../newcomps/CalendarIcon';
-import SinglePage from '../newcomps/SinglePage';
-import Puzzle from '../newcomps/Puzzle';
+import InProgressIcon from '../../newcomps/InProgressIcon';
+import CheckBoxIcon from '../../newcomps/CheckBoxIcon';
+import YellowWarning from '../../newcomps/YellowWarning';
+import CalendarIcon from '../../newcomps/CalendarIcon';
+import SinglePage from '../../newcomps/SinglePage';
+import Puzzle from '../../newcomps/Puzzle';
 
 //firebase imports
 import { collection, query, where, getDocs, getDoc, deleteDoc, doc } from 'firebase/firestore';
-import { auth, firestore } from '../constants/firebaseConfig';
+import { auth, firestore } from '../../constants/firebaseConfig';
 
 export default function OnlineHomepage() {
     const navigation = useNavigation();
@@ -122,6 +122,7 @@ export default function OnlineHomepage() {
                 <TouchableOpacity
                     style={[styles.card, { backgroundColor: '#FFF1DC' }, styles.right]}
                     onPress={() => {
+                        if (!dataFetched) return;
                         if (challengeStatus === 'completed') {
                             alert('Challenge already completed!');
                         }
@@ -188,9 +189,9 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 38,
-        fontWeight: '700',
+        fontWeight: '500',
         marginBottom: 20,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Bold',
         paddingLeft: '5%'
     },
     card: {
@@ -241,13 +242,13 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         fontSize: 24,
-        fontWeight: '700',
-        fontFamily: 'Crimson Text',
+        fontWeight: '600',
+        fontFamily: 'CrimsonText-Bold',
         marginBottom: 4,
     },
     cardText: {
         fontSize: 18,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
     },
     topRight: {
         position: 'absolute',

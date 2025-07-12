@@ -5,17 +5,17 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import isEmail from 'validator/lib/isEmail';
 
 import GuestModal from './GuestModal.js';
-import CheckBoxIcon from '../newcomps/CheckBoxIcon';
-import Button from '../newcomps/Button';
-import NavArrow from '../newcomps/NavArrow';
+import CheckBoxIcon from '../../newcomps/CheckBoxIcon';
+import Button from '../../newcomps/Button';
+import NavArrow from '../../newcomps/NavArrow';
 import { useNavigation } from '@react-navigation/native';
-import { useUser } from '../contexts/UserContext';
+import { useUser } from '../../contexts/UserContext';
 
 //firebase imports
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, firestore } from '../constants/firebaseConfig.js'
+import { auth, firestore } from '../../constants/firebaseConfig.js'
 import { doc, setDoc } from "firebase/firestore";
-import { storeLocal } from '../constants/storeLocal.js'
+import { storeLocal } from '../../constants/storeLocal.js'
 import uuid from 'react-native-uuid';
 import { getAuth, signInAnonymously } from 'firebase/auth';
 //import { storeLocal, getLocal, removeLocal } from '../utils/localStorage';
@@ -180,7 +180,7 @@ export default function CreateOnline1() {
                     <Text style={styles.checkboxText}>
                         By checking this box, you acknowledge that your account will be online, allowing you to collaborate, connect, and communicate with other users. You also agree to follow our{' '}
                         <Text
-                            style={[styles.link, { fontFamily: 'Crimson Text', fontWeight: '500' }]}
+                            style={[styles.link, { fontFamily: 'CrimsonText-Bold', fontWeight: '500' }]}
                             onPress={() => Linking.openURL('https://example.com/community-guidelines')}
                         >
                             Community Guidelines
@@ -268,8 +268,8 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 32,
-        fontWeight: 'bold',
-        fontFamily: 'Crimson Text',
+        fontWeight: '500',
+        fontFamily: 'CrimsonText-Bold',
         marginBottom: 8,
     },
     divider: {
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     checkboxText: {
         flex: 1,
         fontSize: 16,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
         color: '#000',
     },
     link: {
@@ -320,15 +320,15 @@ const styles = StyleSheet.create({
     },
     warning: {
         color: '#B00000',
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         fontSize: 16,
         fontWeight: '600',
         textAlign: 'left',
     },
     buttonText: {
         fontSize: 22,
-        fontWeight: '700',
-        fontFamily: 'Crimson Text',
+        fontWeight: '600',
+        fontFamily: 'CrimsonText-Bold',
     },
     linkText: {
         marginTop: 12,

@@ -1,33 +1,112 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
 
-import InProgressIcon from '../newcomps/InProgressIcon';
-import CheckBoxIcon from '../newcomps/CheckBoxIcon';
-import YellowNotif from '../newcomps/YellowNotif';
-import CalendarIcon from '../newcomps/CalendarIcon';
-import SinglePage from '../newcomps/SinglePage';
-import Puzzle from '../newcomps/Puzzle';
+import InProgressIcon from '../../newcomps/InProgressIcon';
+import CheckBoxIcon from '../../newcomps/CheckBoxIcon';
+import YellowNotif from '../../newcomps/YellowNotif';
+import YellowWarning from '../../newcomps/YellowWarning';
+import CalendarIcon from '../../newcomps/CalendarIcon';
+import SinglePage from '../../newcomps/SinglePage';
+import Puzzle from '../../newcomps/Puzzle';
+
+//firebase imports
+import { collection, query, where, getDocs, getDoc, deleteDoc, doc } from 'firebase/firestore';
+import { auth, firestore } from '../../constants/firebaseConfig';
 
 export default function OfflineHomepage() {
     const navigation = useNavigation();
 
+    //For daily challenge notifs
+    const [dataFetched, setDataFetched] = useState(false);
+    const [todaysChallenge, setTodaysChallenge] = useState(null);
+    const [challengeStatus, setChallengeStatus] = useState('none'); // 'none' | 'in-progress' | 'completed'
+    useEffect(() => {
+        const cleanupUnpublishedChallenges = async () => {
+            try {
+                const userId = auth.currentUser?.uid;
+
+                //console.log("user id is" + userId);
+                if (!userId) return;
+
+                const dailyRef = collection(firestore, 'Users', userId, 'DailyChallenges');
+                const unpublishedQuery = query(dailyRef, where('published', '==', false));
+                const snapshot = await getDocs(unpublishedQuery);
+
+                const todayISO = new Date().toISOString().split('T')[0];
+                const deletionPromises = [];
+
+                snapshot.docs.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const entryDate = data.date?.toDate?.();
+
+                    if (!entryDate) {
+                        console.warn(`Skipping deletion: missing or invalid date for doc ${docSnap.id}`);
+                        return;
+                    }
+
+                    const entryISO = entryDate.toISOString().split('T')[0];
+
+                    if (entryISO !== todayISO) {
+                        const deletionRef = doc(firestore, 'Users', userId, 'DailyChallenges', docSnap.id);
+                        deletionPromises.push(deleteDoc(deletionRef));
+                    }
+                });
+
+                await Promise.all(deletionPromises);
+            } catch (error) {
+                console.error('Error cleaning unpublished challenges:', error);
+            }
+        };
+
+        const checkDailyChallengeStatus = async () => {
+            try {
+                const userId = auth.currentUser?.uid;
+                const todayId = new Date().toISOString().split('T')[0];
+                const todayDocRef = doc(firestore, 'Users', userId, 'DailyChallenges', todayId);
+                const todaySnap = await getDoc(todayDocRef);
+
+                if (todaySnap.exists()) {
+                    const data = todaySnap.data();
+
+                    if (data.published === true) {
+                        setChallengeStatus('completed');
+                    } else {
+                        setChallengeStatus('in-progress');
+                        setTodaysChallenge({ id: todaySnap.id, ...data });
+                    }
+                } else {
+                    setChallengeStatus('none');
+                }
+                setDataFetched(true);
+            } catch (error) {
+                console.error('Error loading daily challenge:', error);
+            }
+        };
+
+        const runStartupChecks = async () => {
+            await cleanupUnpublishedChallenges();
+            await checkDailyChallengeStatus();
+        };
+
+        console.log(challengeStatus);
+
+        runStartupChecks();
+    }, []);
 
     //skewed card constructor
     const SkewedCard = ({ backgroundColor, borderColor, position, icon, title, text, notif, inProgress, isBlurred }) => {
         const CardContent = (
             <>
-                <View style={[styles.circle, {borderColor}]}>{icon}</View>
-                <View style={styles.textContainer}>
+                <View style={[styles.circle, { borderColor }]}>{icon}</View>
+                <View style={[styles.textContainer]}>
                     <Text style={styles.cardTitle}>{title}</Text>
                     <Text style={styles.cardText}>{text}</Text>
+                    {title === 'Daily Challenge' && dataFetched && challengeStatus === 'none' ? <View style={styles.topRight}><YellowWarning /></View> : null}
+                    {title === 'Daily Challenge' && challengeStatus === 'completed' ? <View style={styles.bottomRight}><CheckBoxIcon /></View> : null}
+                    {title === 'Daily Challenge' && challengeStatus === 'in-progress' ? <View style={styles.bottomRight}><InProgressIcon /></View> : null}
                 </View>
-                {notif && <View style={styles.topRight}><YellowNotif /></View>}
-                {inProgress && <View style={styles.topRight}><InProgressIcon /></View>}
-                {title === "Daily Challenge" && (
-                    <View style={styles.bottomRight}><CheckBoxIcon /></View>
-                )}
             </>
         );
 
@@ -51,7 +130,7 @@ export default function OfflineHomepage() {
                     <View style={styles.errorBox}>
                         <Text style={styles.errorText}>
                             To access Collaborative Mode, you{'\n'}
-                            must have an <Text style={{ fontWeight: 'bold' }}>Online Account</Text>. You may{'\n'}
+                            must have an <Text style={{ fontWeight: '500', fontFamily: 'CrimsonText-SemiBold' }}>Online Account</Text>. You may{'\n'}
                             update your account type in Settings.
                         </Text>
                     </View>
@@ -60,22 +139,28 @@ export default function OfflineHomepage() {
         ) : (
             <TouchableOpacity
                 onPress={() => {
-                if (title === "Free Write") {
-                    navigation.navigate('FreeWriteScreen1');
-                } else if (title === "Daily Challenge") {
-                    navigation.navigate('DailyChallengeScreen'); // placeholder
-                }
+                    if (title === "Free Write") {
+                        navigation.navigate('FreeWriteScreen1');
+                    } else if (title === "Daily Challenge") {
+                        if (!dataFetched) return;
+                        if (challengeStatus === 'completed') {
+                            alert('Challenge already completed!');
+                        }
+                        else {
+                            navigation.navigate('DailyChallengeScreen', { file: todaysChallenge });
+                        }
+                    }
                 }}
             >
                 <View
-                style={[
-                    styles.card,
-                    { backgroundColor },
-                    position === "left" && styles.left,
-                    position === "right" && styles.right,
-                ]}
+                    style={[
+                        styles.card,
+                        { backgroundColor },
+                        position === "left" && styles.left,
+                        position === "right" && styles.right,
+                    ]}
                 >
-                {CardContent}
+                    {CardContent}
                 </View>
             </TouchableOpacity>
         );
@@ -138,9 +223,9 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 38,
-        fontWeight: '700',
+        fontWeight: '600',
         marginBottom: 20,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Bold',
         paddingLeft: '5%'
     },
     card: {
@@ -198,23 +283,23 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         fontSize: 24,
-        fontWeight: '700',
-        fontFamily: 'Crimson Text',
+        fontWeight: '600',
+        fontFamily: 'CrimsonText-Bold',
         marginBottom: 4,
     },
     cardText: {
         fontSize: 18,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
     },
     topRight: {
         position: 'absolute',
-        top: '-15%',
-        right: 8,
+        top: -30,
+        right: 0,
     },
     bottomRight: {
         position: 'absolute',
-        bottom: 8,
-        right: 8,
+        bottom: -10,
+        right: 0,
     },
     errorBox: {
         borderColor: '#ff7270',
@@ -237,10 +322,15 @@ const styles = StyleSheet.create({
     errorText: {
         color: '#F00',
         textAlign: 'center',
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-SemiBold',
         fontSize: 16,
         fontStyle: 'normal',
         fontWeight: '600',
         lineHeight: 22,
     },
+    debugBorder: {
+        borderColor: 'blue',
+        borderWidth: 2,
+        borderStyle: 'dashed'
+    }
 });

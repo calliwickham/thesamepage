@@ -10,19 +10,22 @@ import {
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
-import FileCard from '../newcomps/FileCard.js';
-import SearchBox from '../newcomps/SearchBox.js';
-import { ALBUMSTHEMES } from '../constants/AlbumsThemes.js';
+import FileCard from '../../../newcomps/FileCard.js';
+import SearchBox from '../../../newcomps/SearchBox.js';
+import { ALBUMSTHEMES } from '../../../constants/AlbumsThemes.js';
+import { useIsFocused } from '@react-navigation/native';
+
 
 //firestore imports
 import { getDocs, collection } from 'firebase/firestore';
-import { auth, firestore } from '../constants/firebaseConfig.js'
+import { auth, firestore } from '../../../constants/firebaseConfig.js'
 
 export default function GenericAlbum() {
     const route = useRoute();
     const navigation = useNavigation();
     const { albumKey } = route.params;
     const albumThemes = ALBUMSTHEMES;
+    const isFocused = useIsFocused();
 
 
     const [files, setFiles] = useState(null);
@@ -72,9 +75,9 @@ export default function GenericAlbum() {
         };
 
         fetchData();
-    }, []);
+    }, [isFocused]);
 
-    console.log('Rendering for albumKey:', albumKey, 'with theme:', albumThemes[albumKey]);
+    //console.log('Rendering for albumKey:', albumKey, 'with theme:', albumThemes[albumKey]);
 
     if (files === null) return <View style={styles.loadingView}><Text style={styles.loadingText}>Loading...</Text></View>;
 
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 16,
         marginBottom: 2,
-        fontWeight: 'bold',
+        fontWeight: '500',
     },
     search: {
         marginHorizontal: '5%',
@@ -146,7 +149,7 @@ const styles = StyleSheet.create({
     loadingText: {
         color: 'darkgreen',
         fontSize: 20,
-        fontFamily: 'Crimson Text'
+        fontFamily: 'CrimsonText-Regular'
     },
     messageBox: {
         padding: 24,
@@ -161,14 +164,14 @@ const styles = StyleSheet.create({
     },
     wipTitle: {
         fontSize: 22,
-        fontWeight: 'bold',
-        fontFamily: 'Crimson Text',
+        fontWeight: '500',
+        fontFamily: 'CrimsonText-SemiBold',
         marginBottom: 8,
         textAlign: 'center',
     },
     wipSubtitle: {
         fontSize: 16,
-        fontFamily: 'Crimson Text',
+        fontFamily: 'CrimsonText-Regular',
         textAlign: 'center',
         color: '#555',
     },

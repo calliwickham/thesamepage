@@ -10,34 +10,27 @@ import Footer from './src/newcomps/Footer';
 import OfflineFooter from './src/newcomps/OfflineFooter';
 import { UserProvider, useUser } from './src/contexts/UserContext';
 
-import {
-    DebugScreen,
-    ChallengeScreen,
-    CreateStoryScreen,
-    FriendsScreen,
-} from './src/screens/initialscreens';
-
-import GenericAlbum from './src/screens/GenericAlbum';
-import Albums from './src/screens/Albums.js';
-import FileViewer from './src/screens/FileViewer';
-import OnlineHomepage from './src/screens/OnlineHomepage';
-import OfflineHomepage from './src/screens/OfflineHomepage';
-import LoginScreen from './src/screens/login';
-import CreateOnline1 from './src/screens/CreateAccount1';
-import CreateAccount2 from './src/screens/CreateAccount2';
-import OnlineSettingsPage from './src/screens/OnlineSettingsPage.js';
-import EditOnlineSettingsPage from './src/screens/EditOnlineSettingsPage.js';
-import ResetPassword from './src/screens/ResetPassword.js';
-import OfflineSettingsPage from './src/screens/OfflineSettingsPage.js';
-import EditOfflineSettingsPage from './src/screens/EditOfflineSettingsPage.js';
-import FreeWriteScreen1 from './src/screens/FreeWriteInProgress.js';
-import FreeWrite from './src/screens/FreeWrite.js';
-import DailyChallengeScreen from './src/screens/DailyChallengeScreen.js';
-import MyFriends from './src/screens/MyFriends.js';
-import EditFriends from './src/screens/EditFriends.js';
-import AddFriends from './src/screens/AddFriends.js';
-import FriendRequests from './src/screens/FriendRequests.js';
-import CollaborativeWritingWIP from './src/newcomps/CollaborativeWritingWIP.js';
+import GenericAlbum from './src/screens/WritingScreens/AlbumScreens/GenericAlbum.js';
+import Albums from './src/screens/WritingScreens/AlbumScreens/Albums.js';
+import FileViewer from './src/screens/WritingScreens/AlbumScreens/FileViewer.js';
+import OnlineHomepage from './src/screens/Homepages/OnlineHomepage.js';
+import OfflineHomepage from './src/screens/Homepages/OfflineHomepage.js';
+import LoginScreen from './src/screens/LoginScreens/login.js';
+import CreateOnline1 from './src/screens/LoginScreens/CreateAccount1.js';
+import CreateAccount2 from './src/screens/LoginScreens/CreateAccount2.js';
+import OnlineSettingsPage from './src/screens/SettingsScreens/OnlineSettingsPage.js';
+import EditOfflineSettingsPage from './src/screens/SettingsScreens/EditOfflineSettingsPage.js';
+import ResetPassword from './src/screens/VerificationScreens/ResetPassword.js';
+import OfflineSettingsPage from './src/screens/SettingsScreens/OfflineSettingsPage.js';
+import EditOnlineSettingsPage from './src/screens/SettingsScreens/EditOnlineSettingsPage.js';
+import FreeWriteScreen1 from './src/screens/WritingScreens/FreeWriteScreens/FreeWriteInProgress.js';
+import FreeWrite from './src/screens/WritingScreens/FreeWriteScreens/FreeWrite.js';
+import DailyChallengeScreen from './src/screens/WritingScreens/DailyScreens/DailyChallengeScreen.js';
+import MyFriends from './src/screens/FriendsScreens/MyFriends.js';
+import EditFriends from './src/screens/FriendsScreens/EditFriends.js';
+import AddFriends from './src/screens/FriendsScreens/AddFriends.js';
+import FriendRequests from './src/screens/FriendsScreens/FriendRequests.js';
+import CollaborativeWritingWIP from './src/screens/WritingScreens/CollabScreens/CollaborativeWritingWIP.js';
 import AuthGate from './src/screens/AuthGate.js'
 
 import { onAuthStateChanged } from "firebase/auth";
@@ -124,16 +117,12 @@ export default function App() {
                             <Stack.Screen name="OnlineSettingsPage" component={OnlineSettingsPage} />
                             <Stack.Screen name="OnlineHomepage" component={OnlineHomepage} />
                             <Stack.Screen name="OfflineHomepage" component={OfflineHomepage} />
-                            <Stack.Screen name="Challenge" component={ChallengeScreen} />
-                            <Stack.Screen name="CreateStory" component={CreateStoryScreen} />
                             <Stack.Screen name="Albums" component={Albums} />
                             <Stack.Screen name="FileViewer" component={FileViewer} />
                             <Stack.Screen name="GenericAlbum" component={GenericAlbum} />
-                            <Stack.Screen name="Friends" component={FriendsScreen} />
                             <Stack.Screen name="Login" component={LoginScreen} />
                             <Stack.Screen name="CreateAccount1" component={CreateOnline1} />
                             <Stack.Screen name="CreateAccount2" component={CreateAccount2} />
-                            <Stack.Screen name="Debug" component={DebugScreen} />
                         </Stack.Navigator>
                     </View>
                     {currentRoute !== 'CreateAccount1' && currentRoute !== 'CreateAccount2' && currentRoute !== 'Login' && (

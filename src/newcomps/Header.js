@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>The Same Page</Text>
-      <Logo width={50} height={50} />
+      <Logo width={45} height={50} />
     </View>
   );
 };
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 40,
     paddingBottom: 10,
-    paddingHorizontal: 17,
+    paddingHorizontal: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -31,5 +31,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '400',
     lineHeight: 55, // optionally set a line height close to fontSize
-  },
+    flexGrow: 1,
+    textAlign: 'left'
+  }, 
 });

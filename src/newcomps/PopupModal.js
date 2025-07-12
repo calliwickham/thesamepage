@@ -40,13 +40,13 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   title: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontSize: 20,
-    fontWeight: '700',
+    fontWeight: '600',
     marginBottom: 12,
   },
   message: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 20,
@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   buttonText: {
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Bold',
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: '600',
   },
 });

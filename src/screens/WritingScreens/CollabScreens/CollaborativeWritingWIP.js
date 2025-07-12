@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontWeight: 'bold',
-    fontFamily: 'Crimson Text',
+    fontWeight: '600',
+    fontFamily: 'CrimsonText-Bold',
     marginBottom: 20,
   },
   tabs: {
@@ -73,12 +73,13 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
     borderBottomWidth: 2,
     textAlign: 'center',
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
   },
   activeTab: {
     borderColor: '#10471B',
     color: '#10471B',
-    fontWeight: 'bold',
+    fontWeight: '500',
+    fontFamily: 'CrimsonText-Bold',
   },
   disabledTab: {
     borderColor: '#ccc',
@@ -98,14 +99,14 @@ const styles = StyleSheet.create({
   },
   wipTitle: {
     fontSize: 22,
-    fontWeight: 'bold',
-    fontFamily: 'Crimson Text',
+    fontWeight: '500',
+    fontFamily: 'CrimsonText-Bold',
     marginBottom: 8,
     textAlign: 'center',
   },
   wipSubtitle: {
     fontSize: 16,
-    fontFamily: 'Crimson Text',
+    fontFamily: 'CrimsonText-Regular',
     textAlign: 'center',
     color: '#555',
   },
@@ -121,11 +122,12 @@ const styles = StyleSheet.create({
     elevation: 4,
     marginTop: 'auto',
     marginBottom: 24,
+    opacity: 0.6,
   },
   buttonText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    fontFamily: 'Crimson Text',
+    fontWeight: '500',
+    fontFamily: 'CrimsonText-Bold',
     color: '#000',
   },
 });

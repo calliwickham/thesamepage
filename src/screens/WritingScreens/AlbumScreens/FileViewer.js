@@ -4,13 +4,13 @@ import {
     TouchableOpacity, Modal, Alert
 } from 'react-native';
 import { useRoute, useNavigation } from "@react-navigation/native";
-import Bookmark from '../newcomps/Bookmark';
-import EmptyBookmark from '../newcomps/EmptyBookmark';
-import InfoIcon from '../newcomps/InfoIcon';
+import Bookmark from '../../../newcomps/Bookmark';
+import EmptyBookmark from '../../../newcomps/EmptyBookmark';
+import InfoIcon from '../../../newcomps/InfoIcon';
 
 import { getDocs, collection, doc, updateDoc } from 'firebase/firestore';
-import { auth, firestore } from '../constants/firebaseConfig.js'
-import { ALBUMSTHEMES } from '../constants/AlbumsThemes.js';
+import { auth, firestore } from '../../../constants/firebaseConfig.js'
+import { ALBUMSTHEMES } from '../../../constants/AlbumsThemes.js';
 
 export default function FileViewer() {
     const navigation = useNavigation();
@@ -35,14 +35,14 @@ export default function FileViewer() {
         }
 
         
-        console.log('got docRef');
+        //console.log('got docRef');
         try {
             const docRef = doc(firestore, 'Users', userId, collectionName, file.id);
             await updateDoc(docRef, {
                 deleted: true,
                 deletedOn: new Date(), 
             });
-            console.log('File' + file.id + 'marked as deleted.');
+            //console.log('File' + file.id + 'marked as deleted.');
             alert('File Deleted');
             navigation.goBack();
             // Optionally navigate back or show a toast
@@ -91,12 +91,21 @@ export default function FileViewer() {
                     {/* Modal content */}
                     <View style={styles.popupMenu}>
                         <View style={styles.popupSection}>
-                            <Text style={styles.popupTitle}>About File</Text>
+                          <Text style={styles.popupTitle}>About File</Text>
+
+                          {file.date && (
                             <Text style={styles.popupSub}>
-                                Created <Text style={styles.italic}>8/12/2023</Text>
+                              Created <Text style={styles.italic}>
+                                {file.date}
+                              </Text>
                             </Text>
-                            <Text style={styles.popupSub}>140 words</Text>
+                          )}
+
+                          <Text style={styles.popupSub}>
+                            {file.wordcount || file.text?.split(/\s+/).length || 0} words
+                          </Text>
                         </View>
+
 
                         <View style={styles.popupDivider} />
 
@@ -115,103 +124,103 @@ export default function FileViewer() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-    },
-    topBar: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        marginTop: 6,
-        marginHorizontal: 12,
-    },
-    rightIcons: {
-        flexDirection: 'row',
-        gap: 16,
-    },
-    header: {
-        fontSize: 32,
-        fontFamily: 'Crimson Text',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        marginTop: 12,
-        marginBottom: 8,
-        paddingHorizontal: 20,
-    },
-    divider: {
-        height: 1,
-        backgroundColor: 'black',
-        width: '100%',
-    },
-    scrollContainer: {
-        paddingHorizontal: 20,
-        paddingTop: 12,
-        paddingBottom: 100,
-    },
-    text: {
-        fontSize: 18,
-        fontFamily: 'Crimson Text',
-        lineHeight: 28,
-    },
-    returnButton: {
-        backgroundColor: '#10471B',
-        paddingVertical: 14,
-        marginHorizontal: 20,
-        marginBottom: 20,
-        borderRadius: 28,
-        alignItems: 'center',
-    },
-    returnButtonText: {
-        color: 'white',
-        fontSize: 18,
-        fontFamily: 'Crimson Text',
-        fontWeight: 'bold',
-    },
-    modalOverlay: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'flex-end',
-        paddingTop: 80,
-        paddingRight: 16,
-        backgroundColor: 'rgba(0,0,0,0.2)',
-    },
-    popupMenu: {
-        width: 260,
-        backgroundColor: '#fff',
-        borderRadius: 12,
-        paddingVertical: 10,
-        paddingHorizontal: 14,
-        shadowColor: '#000',
-        shadowOpacity: 0.25,
-        shadowRadius: 6,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 8,
-    },
-    popupSection: {
-        marginBottom: 10,
-    },
-    popupTitle: {
-        fontWeight: 'bold',
-        fontSize: 18,
-        fontFamily: 'Crimson Text',
-        marginBottom: 4,
-    },
-    popupSub: {
-        fontSize: 15,
-        fontFamily: 'Crimson Text',
-    },
-    italic: {
-        fontStyle: 'italic',
-    },
-    popupDivider: {
-        height: 1,
-        backgroundColor: '#aaa',
-        marginVertical: 10,
-    },
-    popupItem: {
-        fontSize: 16,
-        fontFamily: 'Crimson Text',
-        paddingVertical: 6,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  topBar: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginTop: 6,
+    marginHorizontal: 12,
+  },
+  rightIcons: {
+    flexDirection: 'row',
+    gap: 16,
+  },
+  header: {
+    fontSize: 32,
+    fontFamily: 'CrimsonText-Bold',
+    textAlign: 'center',
+    fontWeight: '500',
+    marginTop: 12,
+    marginBottom: 8,
+    paddingHorizontal: 20,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: 'black',
+    width: '100%',
+  },
+  scrollContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    paddingBottom: 100,
+  },
+  text: {
+    fontSize: 18,
+    fontFamily: 'CrimsonText-Regular',
+    lineHeight: 28,
+  },
+  returnButton: {
+    backgroundColor: '#10471B',
+    paddingVertical: 14,
+    marginHorizontal: 20,
+    marginBottom: 20,
+    borderRadius: 28,
+    alignItems: 'center',
+  },
+  returnButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontFamily: 'CrimsonText-Bold',
+    fontWeight: '500',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
+    paddingTop: 80,
+    paddingRight: 16,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+  },
+  popupMenu: {
+    width: 260,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 8,
+  },
+  popupSection: {
+    marginBottom: 10,
+  },
+  popupTitle: {
+    fontWeight: '500',
+    fontSize: 18,
+    fontFamily: 'CrimsonText-SemiBold',
+    marginBottom: 4,
+  },
+  popupSub: {
+    fontSize: 15,
+    fontFamily: 'CrimsonText-Regular',
+  },
+  italic: {
+    fontFamily: 'CrimsonText-Italic',
+  },
+  popupDivider: {
+    height: 1,
+    backgroundColor: '#aaa',
+    marginVertical: 10,
+  },
+  popupItem: {
+    fontSize: 16,
+    fontFamily: 'CrimsonText-Regular',
+    paddingVertical: 6,
+  },
 });
